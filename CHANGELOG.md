@@ -7,6 +7,7 @@ All notable updates to this private working library are recorded here.
 ### Added
 
 - Pattern files 02–08 in `patterns/`. The index listed these in 0.1.0, but only pattern 01 had been committed.
+- Five motion skill specifications in `skills/`: cursor-luminous-flow, scroll-helix-flow, immersive-float, scroll-vortex-transit and hover-door-bloom.
 
 ### Planned
 

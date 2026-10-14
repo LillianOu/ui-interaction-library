@@ -13,6 +13,14 @@ Eight documented patterns live in [`patterns/`](patterns/). New work continues a
 - [Changelog](CHANGELOG.md)
 - [Licence decision](LICENSE-DECISION.md)
 
+Five motion skill specifications live in [`skills/`](skills/), one folder per skill with a `SKILL.md`, usable by Claude Code (`.claude/skills/`) and Codex (`.agents/skills/`):
+
+- `cursor-luminous-flow` — Cursor-driven Luminous Flow
+- `scroll-helix-flow` — Scroll-driven Helix Flow
+- `immersive-float` — Immersive Float
+- `scroll-vortex-transit` — Scroll-driven Vortex Transit
+- `hover-door-bloom` — Hover-triggered Door Bloom
+
 ## Working principles
 
 - Describe reusable behaviours, not a single product scenario.
