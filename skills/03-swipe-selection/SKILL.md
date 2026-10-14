@@ -1,8 +1,18 @@
+---
+name: 03-swipe-selection
+description: Use when letting users pick one option from a horizontal swipeable set. Swipe Selection (滑動選擇) UI interaction recipe covering pointer, touch, keyboard, accessibility and reduced motion.
+---
 # 03 — 滑動選擇 / Swipe Selection
+
+**Category:** 輸入與控制 / Input & Controls
 
 ## Effect
 
 The user swipes through a horizontal set of options (cards, plans, colours, dates) and the item that settles in the centre becomes the selection. Neighbouring items stay partly visible to show there is more, and the selected item is clearly emphasised once it snaps into place.
+
+## When to use
+
+Use when letting users pick one option from a horizontal swipeable set. This skill is an interaction recipe, not an existing code component.
 
 ## Copy-ready English prompt
 

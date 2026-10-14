@@ -1,8 +1,18 @@
+---
+name: 05-floating-label
+description: Use when building form fields whose label floats above the value. Floating Label (浮動標籤) UI interaction recipe covering pointer, touch, keyboard, accessibility and reduced motion.
+---
 # 05 — 浮動標籤 / Floating Label
+
+**Category:** 輸入與控制 / Input & Controls
 
 ## Effect
 
 A form field shows its label inside the input as a placeholder-like prompt; when the field is focused or filled, the label moves up and shrinks to sit above the value. The field stays compact without ever losing its label, so the user always knows what the field is for.
+
+## When to use
+
+Use when building form fields whose label floats above the value. This skill is an interaction recipe, not an existing code component.
 
 ## Copy-ready English prompt
 

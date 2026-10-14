@@ -1,8 +1,18 @@
+---
+name: 07-drag-to-expand-and-collapse
+description: Use when building a bottom sheet, drawer or panel that is dragged open and closed. Drag to Expand & Collapse (拖曳展開與收合) UI interaction recipe covering pointer, touch, keyboard, accessibility and reduced motion.
+---
 # 07 — 拖曳展開與收合 / Drag to Expand & Collapse
+
+**Category:** 版面與導覽 / Layout & Navigation
 
 ## Effect
 
 A panel such as a bottom sheet, side drawer or card can be pulled open or pushed closed by dragging its handle. It follows the finger, then snaps to the nearest defined height (collapsed, half or full) based on how far and how fast it was moved. Tapping the handle or a button does the same thing without dragging.
+
+## When to use
+
+Use when building a bottom sheet, drawer or panel that is dragged open and closed. This skill is an interaction recipe, not an existing code component.
 
 ## Copy-ready English prompt
 

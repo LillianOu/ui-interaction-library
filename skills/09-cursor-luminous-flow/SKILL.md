@@ -1,8 +1,10 @@
 ---
-name: cursor-luminous-flow
-description: Build cursor-driven luminous flow for accessible interactive websites.
+name: 09-cursor-luminous-flow
+description: Use when building cursor-driven luminous flow for an interactive website. Motion effect recipe for React + TypeScript with reduced-motion and touch fallbacks.
 ---
-# Cursor-driven Luminous Flow
+# 09 — 游標流光 / Cursor-driven Luminous Flow
+
+**Category:** 動態視覺效果 / Motion Effects
 
 ## When to use
 Use when the user requests pointer movement over an atmospheric scene. This skill is an implementation recipe, not an existing code component.

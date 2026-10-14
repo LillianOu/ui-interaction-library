@@ -1,8 +1,18 @@
+---
+name: 06-drag-to-reorder
+description: Use when letting users reorder items in a list or grid by dragging. Drag to Reorder (拖曳排序) UI interaction recipe covering pointer, touch, keyboard, accessibility and reduced motion.
+---
 # 06 — 拖曳排序 / Drag to Reorder
+
+**Category:** 版面與導覽 / Layout & Navigation
 
 ## Effect
 
 The user picks up an item in a list or grid and drags it to a new position. The dragged item lifts above the others, and the remaining items slide aside to show where it will land. On release it settles into place and the new order is saved.
+
+## When to use
+
+Use when letting users reorder items in a list or grid by dragging. This skill is an interaction recipe, not an existing code component.
 
 ## Copy-ready English prompt
 

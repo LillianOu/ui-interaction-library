@@ -1,8 +1,18 @@
+---
+name: 04-animated-state-transition
+description: Use when animating a button, toggle or status between idle, loading, success and error. Animated State Transition (動態狀態切換) UI interaction recipe covering pointer, touch, keyboard, accessibility and reduced motion.
+---
 # 04 — 動態狀態切換 / Animated State Transition
+
+**Category:** 回饋與狀態 / Feedback & State
 
 ## Effect
 
 A single control or element changes state (idle, loading, success, error; off and on; saved and unsaved) with a short morphing transition, so the user sees what changed in place rather than having content swap abruptly. The element keeps its position and size stable so the surrounding layout does not jump.
+
+## When to use
+
+Use when animating a button, toggle or status between idle, loading, success and error. This skill is an interaction recipe, not an existing code component.
 
 ## Copy-ready English prompt
 

@@ -1,8 +1,10 @@
 ---
-name: scroll-vortex-transit
-description: Build scroll-driven vortex transit for accessible interactive websites.
+name: 12-scroll-vortex-transit
+description: Use when building scroll-driven vortex transit for an interactive website. Motion effect recipe for React + TypeScript with reduced-motion and touch fallbacks.
 ---
-# Scroll-driven Vortex Transit
+# 12 — 滾動漩渦轉場 / Scroll-driven Vortex Transit
+
+**Category:** 動態視覺效果 / Motion Effects
 
 ## When to use
 Use when the user requests scrolling through a depth-based vortex transition. This skill is an implementation recipe, not an existing code component.

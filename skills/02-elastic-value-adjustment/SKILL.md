@@ -1,8 +1,18 @@
+---
+name: 02-elastic-value-adjustment
+description: Use when building a draggable or scrubbable numeric control such as quantity, size or volume. Elastic Value Adjustment (彈性數值調節) UI interaction recipe covering pointer, touch, keyboard, accessibility and reduced motion.
+---
 # 02 — 彈性數值調節 / Elastic Value Adjustment
+
+**Category:** 輸入與控制 / Input & Controls
 
 ## Effect
 
 A numeric value is changed by dragging, scrubbing or pressing, and the control responds with a soft, spring-like give that makes the value feel physical. Pulling past the minimum or maximum stretches slightly and settles back, so the user feels the boundary instead of hitting a dead stop. The current value stays readable and exact at all times.
+
+## When to use
+
+Use when building a draggable or scrubbable numeric control such as quantity, size or volume. This skill is an interaction recipe, not an existing code component.
 
 ## Copy-ready English prompt
 

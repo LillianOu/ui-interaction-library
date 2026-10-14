@@ -1,8 +1,10 @@
 ---
-name: scroll-helix-flow
-description: Build scroll-driven helix flow for accessible interactive websites.
+name: 10-scroll-helix-flow
+description: Use when building scroll-driven helix flow for an interactive website. Motion effect recipe for React + TypeScript with reduced-motion and touch fallbacks.
 ---
-# Scroll-driven Helix Flow
+# 10 — 滾動螺旋流動 / Scroll-driven Helix Flow
+
+**Category:** 動態視覺效果 / Motion Effects
 
 ## When to use
 Use when the user requests scrolling through a spiralling helix. This skill is an implementation recipe, not an existing code component.

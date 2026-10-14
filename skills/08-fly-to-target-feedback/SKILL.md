@@ -1,8 +1,18 @@
+---
+name: 08-fly-to-target-feedback
+description: Use when confirming add-to-cart, save or add-to-list actions with an item flying to its destination. Fly-to-Target Feedback (飛向目標的回饋) UI interaction recipe covering pointer, touch, keyboard, accessibility and reduced motion.
+---
 # 08 — 飛向目標的回饋 / Fly-to-Target Feedback
+
+**Category:** 回饋與狀態 / Feedback & State
 
 ## Effect
 
 After an action such as "Add to cart", "Save" or "Add to list", a small copy of the item flies along a short arc from where the user acted to the place where it now lives (a cart icon, a folder, a counter). The target then reacts with a brief pulse and an updated count, confirming where the item went.
+
+## When to use
+
+Use when confirming add-to-cart, save or add-to-list actions with an item flying to its destination. This skill is an interaction recipe, not an existing code component.
 
 ## Copy-ready English prompt
 

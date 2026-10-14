@@ -1,8 +1,10 @@
 ---
-name: immersive-float
-description: Build immersive float for accessible interactive websites.
+name: 11-immersive-float
+description: Use when building immersive float for an interactive website. Motion effect recipe for React + TypeScript with reduced-motion and touch fallbacks.
 ---
-# Immersive Float
+# 11 — 沉浸式漂浮 / Immersive Float
+
+**Category:** 動態視覺效果 / Motion Effects
 
 ## When to use
 Use when the user requests activating a floating immersive object. This skill is an implementation recipe, not an existing code component.

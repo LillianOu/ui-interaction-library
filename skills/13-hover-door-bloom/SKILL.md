@@ -1,8 +1,10 @@
 ---
-name: hover-door-bloom
-description: Build hover-triggered door bloom interaction for accessible interactive websites.
+name: 13-hover-door-bloom
+description: Use when building hover-triggered door bloom interaction for an interactive website. Motion effect recipe for React + TypeScript with reduced-motion and touch fallbacks.
 ---
-# Hover-triggered Door Bloom Interaction
+# 13 — 滑過開門綻放 / Hover-triggered Door Bloom Interaction
+
+**Category:** 動態視覺效果 / Motion Effects
 
 ## When to use
 Use when the user requests hovering or focusing on an interactive door or panel. This skill is an implementation recipe, not an existing code component.
