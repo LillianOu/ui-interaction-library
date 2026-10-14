@@ -4,6 +4,10 @@ All notable updates to this private working library are recorded here.
 
 ## [Unreleased]
 
+### Added
+
+- Pattern files 02–08 in `patterns/`. The index listed these in 0.1.0, but only pattern 01 had been committed.
+
 ### Planned
 
 - 09 — Cursor-driven animated hero / 游標驅動的動態主視覺 (future pattern; not yet documented).
