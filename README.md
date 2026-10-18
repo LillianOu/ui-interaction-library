@@ -39,7 +39,21 @@ Each skill is an implementation recipe, not finished code. It tells you, or an A
 | 12 | 滾動漩渦轉場 | Scroll-driven Vortex Transit | Scroll | [`12-scroll-vortex-transit`](skills/12-scroll-vortex-transit/SKILL.md) |
 | 13 | 滑過開門綻放 | Hover-triggered Door Bloom | Hover / focus | [`13-hover-door-bloom`](skills/13-hover-door-bloom/SKILL.md) |
 
-Next number: **14**.
+### 設計工具組 / Design Toolkit
+
+A crew of characters, each one a guide to the best open-source design skills for one job. Numbered in workflow order: sketch the flow, map the system, set the taste, gather references, build, produce, then inspect. Each crew member explains when to call the original skills and how to install them; it does not copy them.
+
+| No. | 中文 | English (powered by) | Job | Skill |
+| --- | --- | --- | --- | --- |
+| 15 | 松鼠草圖師 | Sketch Squirrel (Wireframer) | Lo-fi clickable wireframes | [`15-sketch-squirrel-wireframer`](skills/15-sketch-squirrel-wireframer/SKILL.md) |
+| 16 | 河狸藍圖師 | Blueprint Beaver (draw.io) | Editable system and flow diagrams | [`16-blueprint-beaver-drawio`](skills/16-blueprint-beaver-drawio/SKILL.md) |
+| 17 | 孔雀品味師 | Pearl Peacock (Taste Pack) | Visual direction without AI slop | [`17-pearl-peacock-taste-pack`](skills/17-pearl-peacock-taste-pack/SKILL.md) |
+| 18 | 喜鵲靈感庫 | Magpie Muse (UI UX Pro Max + UIZZE) | Palettes, fonts and real-screen references | [`18-magpie-muse-ui-references`](skills/18-magpie-muse-ui-references/SKILL.md) |
+| 19 | 螞蟻組件師 | Builder Ant (shadcn/ui) | Build with React components | [`19-builder-ant-shadcn`](skills/19-builder-ant-shadcn/SKILL.md) |
+| 20 | 章魚工作室 | Octo Studio (Huashu + Baoyu) | Prototypes, decks and animations in one prompt | [`20-octo-studio-huashu-baoyu`](skills/20-octo-studio-huashu-baoyu/SKILL.md) |
+| 21 | 鷹眼質檢員 | Hawk Inspector (Quality Pack) | Standards, score, polish and motion check | [`21-hawk-inspector-quality-pack`](skills/21-hawk-inspector-quality-pack/SKILL.md) |
+
+Next number: **22** (14 is reserved for the planned cursor-driven hero).
 
 ## How to use
 
@@ -51,11 +65,14 @@ Next number: **14**.
 
 **By hand:** open a `SKILL.md` and paste its copy-ready prompt into any AI coding tool.
 
+**Design Toolkit crew (15–21):** install the crew member as above, then install the original skills it names with the `npx skills add` commands in its `SKILL.md`. Call a character by name, for example "Ask Hawk Inspector to check this page."
+
 ## Repository layout
 
 ```
 skills/<NN>-<name>/SKILL.md   one folder per skill, numbered in the order added
-templates/SKILL-TEMPLATE.md   starting point for a new skill
+templates/SKILL-TEMPLATE.md   starting point for a new interaction skill
+templates/TOOLKIT-SKILL-TEMPLATE.md   starting point for a new Design Toolkit crew member
 CONTRIBUTING.md               how to add a skill and pick its category
 CHANGELOG.md                  what changed and when
 LICENSE-DECISION.md           licence status

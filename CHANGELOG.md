@@ -2,6 +2,24 @@
 
 All notable updates to this library are recorded here.
 
+## [0.3.0] - 2026-10-18
+
+### Added
+
+- New category 設計工具組 / Design Toolkit: seven character guides that route to 15 open-source design skills, numbered in workflow order.
+  - 15 Sketch Squirrel (Wireframer): agilek/wireframer-skill.
+  - 16 Blueprint Beaver (draw.io): Agents365-ai/drawio-skill.
+  - 17 Pearl Peacock (Taste Pack): anthropics frontend-design; Leonxlnx design-taste-frontend, high-end-visual-design, minimalist-ui.
+  - 18 Magpie Muse (UI UX Pro Max + UIZZE): nextlevelbuilder ui-ux-pro-max; UIZZE anti-ui-slop.
+  - 19 Builder Ant (shadcn/ui): shadcn.
+  - 20 Octo Studio (Huashu + Baoyu): alchaincyf huashu-design; JimLiu baoyu-design.
+  - 21 Hawk Inspector (Quality Pack): Vercel web-design-guidelines; educlopez ui-craft; pbakaus impeccable; Emil Kowalski emil-design-eng.
+- `templates/TOOLKIT-SKILL-TEMPLATE.md` and contribution rules for crew members (licence check, own words, one job each).
+
+### Notes
+
+- Number 14 stays reserved for the planned cursor-driven hero.
+
 ## [0.2.0] - 2026-10-15
 
 ### Changed
