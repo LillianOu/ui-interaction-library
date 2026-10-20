@@ -1,67 +1,105 @@
 ---
 name: 17-pearl-peacock-taste-pack
-description: Use when choosing the visual direction for a new page or app so it does not look generic or AI-made: distinctive, premium-agency or quiet editorial-minimal. Pearl Peacock routes to Anthropic's frontend-design and Leonxlnx's design-taste-frontend, high-end-visual-design and minimalist-ui.
+description: Use when a website, landing page, portfolio or app screen (web dashboard or mobile app) needs a visual direction that does not look generic or AI-made, when an existing UI needs a restyle, or when you want a reference board before code. Pearl Peacock routes to Leonxlnx's Taste Skill family (design-taste-frontend, the classic dial-based variants and the image-generation reference skills) and Anthropic's frontend-design.
 ---
 # 17 — 孔雀品味師 / Pearl Peacock (Taste Pack)
 
 **Category:** 設計工具組 / Design Toolkit
-**Powered by:** [anthropics/skills](https://github.com/anthropics/skills) `frontend-design` (Apache-2.0) · [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) `design-taste-frontend`, `high-end-visual-design`, `minimalist-ui` (MIT)
+**Powered by:** [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) `design-taste-frontend` (MIT) · [Leonxlnx/taste-skill-classics](https://github.com/Leonxlnx/taste-skill-classics) `high-end-visual-design`, `minimalist-ui`, `industrial-brutalist-ui`, `gpt-taste`, `design-taste-frontend-v2-experimental` (MIT) · [Leonxlnx/imagegen-skills](https://github.com/Leonxlnx/imagegen-skills) `imagegen-frontend-web`, `imagegen-frontend-mobile`, `brandkit`, `image-to-code` (MIT) · [anthropics/skills](https://github.com/anthropics/skills) `frontend-design` (Apache-2.0)
 
 > A crew member is a guide, not a copy. It explains when to call an external skill, how to install it and how to get good results. It contains none of the original skills' text; install the originals to use them.
 
 ## What it does
 
-Pearl Peacock decides how a page should look and feel before it is built. The four skills behind it all fight "AI slop" (purple gradients, identical cards, centred hero with three icons), but each pushes towards a different taste. Pearl Peacock picks one, so they do not pull in different directions at once.
+Pearl Peacock decides how a page or screen should look before anything is built, and keeps one taste in charge of the whole project. AI tools left alone produce the average of everything they have seen: flat hierarchy, random spacing, a blue-purple gradient and a row of identical icon cards. Taste Skill replaces those defaults with written, checkable design decisions. Pearl Peacock tells you which of its many variants to call for the job in front of you.
 
 ## When to use
 
-- Use when starting a landing page, portfolio, product page or app shell and the look is not decided.
-- Use when an existing page "looks like every other AI site" and needs a clear point of view.
+- Use when starting a landing page, portfolio, product site or app shell and the look is not decided.
+- Use when designing app screens: web dashboards, settings, inboxes, or mobile app flows.
+- Use when an existing page or screen "looks like every other AI site" and needs a restyle without a rebuild.
+- Use when you want to see the direction as a reference board (web, mobile or brand kit) before any code is written.
 - Do not use to check a finished UI for bugs, accessibility or polish. Call 21 Hawk Inspector.
-- Do not use to look up palettes, font pairings or real reference screens. Call 18 Magpie Muse.
+- Do not use to look up palettes, font pairings or real reference screens from existing products. Call 18 Magpie Muse.
 
 ## Routing
 
-Pick one direction per project. Installing all four is fine; calling more than one on the same page is not.
+Pick one direction per project. Installing several is fine; running more than one on the same page is not.
 
-| Direction | Call | Best for |
+### Build in code
+
+| Job | Call | Notes |
 | --- | --- | --- |
-| Distinctive, brief-specific identity | `frontend-design` | Any brief where the look should come from the subject itself; already built into Claude, so no install needed in Claude apps |
-| Researched art direction with a screenshot check loop | `design-taste-frontend` | Marketing sites, portfolios and one-pagers; studies gallery-grade sites and inspects the result in a real browser |
-| Expensive, agency-style polish | `high-end-visual-design` | Premium brands, product launches, jewellery and luxury retail |
-| Calm editorial minimalism | `minimalist-ui` | Content-led sites, notes-style apps, portfolios that let work speak; warm monochrome, no gradients |
+| Default for any website or web app screen | `design-taste-frontend` | Current Taste Skill (v2.1). A script offers three researched directions, you pick one, then it builds and checks the result in a real browser at three widths. Has a separate route for app screens (dashboards, admin, settings, inboxes). |
+| Restyle an existing page or screen | `design-taste-frontend` | Ask for a redesign. It records the "before", keeps your stack and content, then changes type, colour, layout, states and stock components in order, and shows before and after. (The old `redesign-existing-projects` skill was folded into this.) |
+| Brief-specific look, no setup | `frontend-design` | Built into Claude apps. Good when Node and a browser are not available. |
+| Tune the look with three dials | `design-taste-frontend-v2-experimental` | The version shown in most social posts. You set three 1–10 numbers at the top: layout variance (symmetric → asymmetric), motion intensity (hover only → scroll and magnetic effects), visual density (airy → packed data). |
+| Expensive, agency-style polish | `high-end-visual-design` | Premium brands, launches, jewellery and luxury retail. |
+| Calm editorial minimalism | `minimalist-ui` | Content-led sites, notes-style apps, portfolios that let work speak. |
+| Hard Swiss / brutalist | `industrial-brutalist-ui` | Bold type, sharp contrast, experimental grids. |
+| Stricter rules for GPT or Codex | `gpt-taste` | Use when the coding agent is not Claude. |
+
+The classic skills (everything in `taste-skill-classics`) only run when you call them by name. They will not trigger on their own.
+
+### Reference board first, code second
+
+| Job | Call | Notes |
+| --- | --- | --- |
+| Website comps: hero, landing, long page | `imagegen-frontend-web` | Produces images only. Use with an image model (ChatGPT Images, Firefly, Gemini), then hand the frames to the coding agent. |
+| Mobile app screens and flows | `imagegen-frontend-mobile` | iOS, Android or cross-platform; keeps a set of screens consistent. Also uses the three dials. |
+| Brand kit board: logo directions, palette, type, applications | `brandkit` | Lock the brand before pages are made, so every page follows it. |
+| One workflow: generate references, analyse, then code | `image-to-code` | Say "generate images, then analyse, then code" in the prompt. |
 
 ## Install
 
 ```bash
+# Default (start here):
+npx skills add https://github.com/Leonxlnx/taste-skill --skill design-taste-frontend
+
+# Classic variants, only the ones you want:
+npx skills add https://github.com/Leonxlnx/taste-skill-classics --skill design-taste-frontend-v2-experimental
+npx skills add https://github.com/Leonxlnx/taste-skill-classics --skill high-end-visual-design
+npx skills add https://github.com/Leonxlnx/taste-skill-classics --skill minimalist-ui
+
+# Reference boards:
+npx skills add https://github.com/Leonxlnx/imagegen-skills --skill imagegen-frontend-web
+npx skills add https://github.com/Leonxlnx/imagegen-skills --skill imagegen-frontend-mobile
+npx skills add https://github.com/Leonxlnx/imagegen-skills --skill brandkit
+
 # frontend-design is already available in Claude apps; for other agents:
 npx skills add anthropics/skills --skill frontend-design
-# The three Leonxlnx directions (install only the ones you want):
-npx skills add https://github.com/Leonxlnx/taste-skill --skill design-taste-frontend
-npx skills add https://github.com/Leonxlnx/taste-skill --skill high-end-visual-design
-npx skills add https://github.com/Leonxlnx/taste-skill --skill minimalist-ui
 ```
 
-Requirements: `design-taste-frontend` runs its browser check with Node 22+ and an installed Chrome, Edge or Chromium, and needs network access to find images. The other three need nothing extra.
+Requirements: `design-taste-frontend` runs its scripts with Node 22+ and an installed Chrome, Edge or Chromium, and needs network access to find pictures; no API keys. The classic and image-generation skills need nothing extra; the image skills need an image model to render.
 
 ## How to ask
 
-- "Ask Pearl Peacock for a premium direction for the AARVO Shop jewellery homepage."
-- "Pearl Peacock, minimal: redesign my portfolio case-study page."
-- "Pearl Peacock: three directions for this landing page, then I'll pick."
+- "Pearl Peacock: give me three directions for the AARVO Shop jewellery homepage, then I'll pick."
+- "Pearl Peacock, restyle: this portfolio case-study page looks generic. Keep the content."
+- "Pearl Peacock, app screen: design the dashboard for my 3PL returns app."
+- "Pearl Peacock, mobile board: six screens for a kids' learning app, then build screen one."
+- "Pearl Peacock, dials: variance 7, motion 3, density 2, for a minimal portfolio hero."
 
 ## Watch-outs
 
-- These skills are opinionated and will overrule your brand if you let them. Give them your brand colours, fonts and logo first.
+- Taste Skill changed on 2026-10-19 (v2.1.3): one skill stays in the main repo; the classics and image skills moved to two new repos with the same install names. Posts made before then show old install paths. Ignore any `uv add taste-skill` command; the real installer is `npx skills add`.
+- The three dials belong to the classic and image-generation skills. The current default does not use them; it offers researched directions instead.
+- These skills are opinionated and will overrule your brand if you let them. Give them your brand colours, fonts and logo first, or run `brandkit` first.
+- Good taste still needs a good brief, the right references and your judgement. The skill does not make every output a masterpiece.
 - `high-end-visual-design` leans on heavy motion and layered cards; check performance on a mid-range phone.
 - Taste is not usability. Always finish with 21 Hawk Inspector.
 
 ## Credit
 
-`frontend-design` by Anthropic, Apache-2.0, checked at commit `dbd4588`. `design-taste-frontend`, `high-end-visual-design` and `minimalist-ui` by Leonxlnx, MIT, checked at commit `f624f37`. Checked on 2026-10-18.
+`design-taste-frontend` by Leonxlnx, MIT, checked at commit `63aba5f`. Classic skills by Leonxlnx, MIT, checked at `taste-skill-classics` commit `5e08c93`. Image-generation skills by Leonxlnx, MIT, checked at `imagegen-skills` commit `beb16b0`. `frontend-design` by Anthropic, Apache-2.0, checked at commit `dbd4588` on 2026-10-18. Taste Skill repos checked on 2026-10-20.
 
 ## Copy-ready English prompt
 
 ```text
-Use the <frontend-design | design-taste-frontend | high-end-visual-design | minimalist-ui> skill to set the visual direction for <page>. Audience: <who>. Brand: <colours, fonts, logo, tone words>. Avoid generic AI patterns. Before building, state the direction in five lines (idea, layout, type, palette, motion), then build it and show a screenshot.
+Use the <design-taste-frontend | design-taste-frontend-v2-experimental | high-end-visual-design | minimalist-ui | imagegen-frontend-web | imagegen-frontend-mobile | brandkit> skill for <page or screen>.
+Type of work: <new page | restyle of an existing page | app screen | mobile flow | reference board>.
+Audience: <who>. Goal: <what the user should do>.
+Brand: <colours, fonts, logo, three tone words>.
+Dials (classic and image skills only): variance <1-10>, motion <1-10>, density <1-10>.
+Before building, state the direction in five lines (idea, layout, type, palette, motion). Then build it, show screenshots at phone and desktop width, and list anything that still looks templated.
 ```

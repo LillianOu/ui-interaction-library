@@ -2,6 +2,16 @@
 
 All notable updates to this library are recorded here.
 
+## [0.3.1] - 2026-10-20
+
+### Changed
+
+- 17 Pearl Peacock (Taste Pack) now covers the whole Taste Skill family after its 2026-10-19 reorganisation: the default `design-taste-frontend` (including app screens and restyles), the dial-based classics in Leonxlnx/taste-skill-classics, and the reference-board skills in Leonxlnx/imagegen-skills (`imagegen-frontend-web`, `imagegen-frontend-mobile`, `brandkit`, `image-to-code`).
+
+### Fixed
+
+- Install commands for `high-end-visual-design` and `minimalist-ui` pointed at the old repo; they now use Leonxlnx/taste-skill-classics.
+
 ## [0.3.0] - 2026-10-18
 
 ### Added
