@@ -2,6 +2,18 @@
 
 All notable updates to this library are recorded here.
 
+## [0.5.0] - 2026-10-22
+
+### Added
+
+- Live demo for every interaction skill: `demo/01-…` to `demo/13-…` pages, one per skill, each built on the shared shell `demo/assets/demo.css` with its own inline, dependency-free interaction code, reduced-motion fallback and keyboard support.
+- `demo/index.html` is now a gallery of all interaction skills, filterable by category; skills 22–29 link to their sections on `demo/returns-bench.html`.
+- `demo/_template.html` and a CONTRIBUTING step: every new interaction skill ships with a demo page.
+
+### Changed
+
+- The Returns Bench showcase moved from `demo/index.html` to `demo/returns-bench.html`; `vercel.json` now opens the gallery.
+
 ## [0.4.1] - 2026-10-22
 
 ### Added

@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>10 · Scroll-driven Helix Flow</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Scroll-driven Helix Flow.
+   A tall bounded section; its inner panel is pinned with position:sticky while
+   scroll progress 0 → 1 scrubs a projected 3D double helix drawn on canvas.
+   Colours come from the tokens, so light and dark schemes each get their own look. */
+.hx{position:relative; height:420vh; border-block:1px solid var(--line);
+  --hx-bg-1:var(--bg); --hx-bg-2:var(--cyan-soft); --hx-bg-3:var(--violet-soft)}
+.hx-pin{position:sticky; top:0; height:100vh; height:100svh; overflow:hidden; isolation:isolate;
+  background:
+    radial-gradient(80% 60% at 75% 25%, var(--hx-bg-3), transparent 70%),
+    radial-gradient(70% 60% at 15% 85%, var(--hx-bg-2), transparent 70%),
+    var(--hx-bg-1)}
+.hx canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+
+.hx-cap{position:absolute; z-index:2; left:0; right:0; bottom:clamp(72px,12vh,120px); pointer-events:none}
+.hx-cap .wrap{position:relative; min-height:200px}
+.hx-step{position:absolute; left:max(16px,env(safe-area-inset-left,0px)); right:16px; bottom:0; max-width:520px;
+  opacity:0; transform:translateY(18px); transition:opacity .5s var(--ease), transform .7s var(--ease)}
+.hx-step.on{opacity:1; transform:none}
+.hx-step .k{font-family:var(--f-mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan)}
+.hx-step h2{font-family:var(--f-display); font-weight:800; text-transform:uppercase; line-height:.9;
+  font-size:clamp(48px,8vw,112px); margin-top:8px}
+.hx-step p{margin-top:12px; color:var(--muted); max-width:38ch; font-size:clamp(15px,1.4vw,18px)}
+.hx-step p, .hx-step h2{text-shadow:0 0 18px var(--bg), 0 0 2px var(--bg)}
+
+.hx-rail{position:absolute; z-index:3; right:max(16px,env(safe-area-inset-right,0px)); top:50%; transform:translateY(-50%);
+  display:grid; justify-items:end; gap:10px; font-family:var(--f-mono); font-size:12px; letter-spacing:.08em; color:var(--muted)}
+.hx-rail .bar{width:3px; height:min(36vh,280px); border-radius:3px; background:var(--line); position:relative; overflow:hidden}
+.hx-rail .fill{position:absolute; inset:0; transform-origin:top; transform:scaleY(var(--p,0));
+  background:linear-gradient(var(--cyan),var(--violet))}
+.hx-rail output{color:var(--ink); font-weight:600; min-width:4ch; text-align:right}
+
+.hx-skip{position:absolute; z-index:4; top:72px; right:max(16px,env(safe-area-inset-right,0px));
+  font-family:var(--f-mono); font-size:12px; letter-spacing:.06em; color:var(--muted); text-decoration:none;
+  padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:var(--glass)}
+.hx-skip:hover{color:var(--violet)}
+
+.hx-after{padding-block:clamp(56px,10vw,120px); display:grid; gap:14px}
+.hx-after h2{font-family:var(--f-display); font-weight:800; text-transform:uppercase; font-size:clamp(36px,6vw,72px); line-height:.95}
+.hx-after p{color:var(--muted); max-width:60ch}
+.hx-after dl{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px 28px; margin:18px 0 0}
+.hx-after dt{font-family:var(--f-mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan)}
+.hx-after dd{margin:6px 0 0; color:var(--muted); font-size:15px}
+
+@media (max-width:560px){
+  .hx-rail{top:auto; bottom:24px; transform:none}
+  .hx-rail .bar{display:none}
+  .hx-cap{bottom:64px}
+}
+
+/* Static version: reduced motion (or no canvas). Same three chapters, no scrubbing. */
+.hx.is-static{height:auto}
+.hx.is-static .hx-pin{position:relative; height:auto; min-height:0; display:block}
+.hx.is-static canvas{position:relative; width:100%; height:clamp(320px,56vh,600px)}
+.hx.is-static .hx-cap{position:relative; bottom:auto; padding-block:8px 48px}
+.hx.is-static .hx-cap .wrap{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:28px; min-height:0}
+.hx.is-static .hx-step{position:static; opacity:1; transform:none; transition:none}
+.hx.is-static .hx-step h2{font-size:clamp(40px,5vw,64px)}
+.hx.is-static .hx-rail, .hx.is-static .hx-skip{display:none}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="09-cursor-luminous-flow.html">Prev</a><a href="11-immersive-float.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/10-scroll-helix-flow/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">10 · Motion Effects</p>
+    <h1>Scroll-driven Helix Flow</h1>
+    <p class="zh">滾動螺旋流動</p>
+    <p class="lede">Scroll down. The section pins, and scroll progress turns a double helix, carries the camera through its depth, and lights each link as it passes. Keep scrolling and it releases the page.</p>
+    <div class="d-try"><span>Mouse / trackpad: scroll</span><span>Touch: swipe</span><span>Keyboard: Space, Page Down, arrows</span></div>
+  </section>
+
+  <section class="hx" id="hx" data-scroll aria-label="Helix scroll scene">
+    <div class="hx-pin">
+      <canvas aria-hidden="true"></canvas>
+      <a class="hx-skip" href="#hx-after">Skip scene ↓</a>
+      <div class="hx-cap"><div class="wrap">
+        <div class="hx-step" data-at="0"><p class="k">01 · Origin</p><h2>Two strands</h2><p>Far away and upright, the helix waits. Nothing is linked yet.</p></div>
+        <div class="hx-step" data-at="1"><p class="k">02 · Ascent</p><h2>Through the turn</h2><p>Scrolling spins the structure and pulls the camera into it. Links light up as the scan passes.</p></div>
+        <div class="hx-step" data-at="2"><p class="k">03 · Arrival</p><h2>Fully linked</h2><p>Every rung glows. The helix lies down, settles, and lets the page continue.</p></div>
+      </div></div>
+      <div class="hx-rail" aria-hidden="true"><div class="bar"><div class="fill"></div></div><output>0%</output></div>
+    </div>
+  </section>
+
+  <section class="hx-after wrap" id="hx-after" tabindex="-1">
+    <p class="d-num">Exit</p>
+    <h2>The pin releases</h2>
+    <p>Once progress reaches 1 the sticky panel scrolls away with the page, so scrolling is never trapped. Scroll back up to scrub in reverse.</p>
+    <dl>
+      <div><dt>Input</dt><dd>Scroll progress of the bounded section, 0 → 1, eased with a lerp of 0.12 per frame.</dd></div>
+      <div><dt>Timeline</dt><dd>0–0.5: dolly in from z 17 to 6, tilt and 2 turns. 0.5–1: pull back to z 12, lie the axis flat, all rungs lit.</dd></div>
+      <div><dt>Render</dt><dd>Canvas 2D projection, 2 × 200 beads with pre-rendered glow sprites, depth sorted. Renders only while on screen.</dd></div>
+      <div><dt>Reduced motion</dt><dd>The section stops pinning; one static, fully linked helix with the three chapters listed beneath it.</dd></div>
+    </dl>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/10-scroll-helix-flow/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  'use strict';
+  const section = document.getElementById('hx');
+  const pin = section.querySelector('.hx-pin');
+  const canvas = section.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+  const steps = [...section.querySelectorAll('.hx-step')];
+  const fill = section.querySelector('.hx-rail .fill');
+  const out = section.querySelector('.hx-rail output');
+  const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const mqDark = matchMedia('(prefers-color-scheme: dark)');
+  const ac = new AbortController();
+  const on = (t, e, f, o) => t.addEventListener(e, f, Object.assign({ signal: ac.signal }, o));
+
+  /* Editable parameters */
+  const P = {
+    beads: 200, turns: 5, radius: 1.25, length: 13,
+    spinTurns: 2.2,        // extra turns added by full scroll
+    lerp: .12,             // scrub smoothing
+    idleSpin: .00012,      // gentle life while still (rad/ms)
+    dust: 90,
+  };
+  if (!ctx) { section.classList.add('is-static'); return; }
+
+  let W = 0, H = 0, dpr = 1, f = 1;
+  let reduced = mqReduce.matches, visible = false, raf = 0, last = 0, time = 0;
+  let target = 0, p = 0, dark = false, colors, sprites;
+
+  const hexToRgb = h => { h = (h || '').trim().replace('#', ''); if (h.length === 3) h = h.split('').map(c => c + c).join(''); const n = parseInt(h || '888888', 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+  function makeSprite(c, core) {
+    const s = document.createElement('canvas'); s.width = s.height = 64;
+    const g = s.getContext('2d'); const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, rgba(core, 1)); gr.addColorStop(.18, rgba(c, .95)); gr.addColorStop(.45, rgba(c, .28)); gr.addColorStop(1, rgba(c, 0));
+    g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return s;
+  }
+  function readTheme() {
+    const cs = getComputedStyle(document.documentElement);
+    const t = document.documentElement.dataset.theme;
+    dark = t ? t === 'dark' : mqDark.matches;
+    const cyan = hexToRgb(cs.getPropertyValue('--cyan')), violet = hexToRgb(cs.getPropertyValue('--violet'));
+    const ink = hexToRgb(cs.getPropertyValue('--ink'));
+    const white = [255, 255, 255];
+    colors = { cyan, violet, ink, hot: dark ? [230, 250, 255] : mix(cyan, ink, .25) };
+    sprites = {
+      cyan: makeSprite(cyan, dark ? mix(cyan, white, .6) : cyan),
+      violet: makeSprite(violet, dark ? mix(violet, white, .6) : violet),
+      hot: makeSprite(dark ? mix(cyan, white, .5) : mix(cyan, ink, .15), dark ? white : mix(cyan, ink, .3)),
+    };
+  }
+
+  /* Geometry (helix along local Y) */
+  let beads = [], rungs = [], dust = [];
+  function build() {
+    beads = []; rungs = [];
+    for (let s = 0; s < 2; s++) for (let i = 0; i < P.beads; i++) {
+      const u = i / (P.beads - 1);
+      beads.push({ s, u, th: u * P.turns * 6.2832 + s * Math.PI, y: (u - .5) * P.length });
+    }
+    const every = 5;
+    for (let i = 2; i < P.beads - 2; i += every) rungs.push({ i, u: i / (P.beads - 1) });
+    dust = Array.from({ length: P.dust }, () => {
+      const r = 2 + Math.random() * 5, a = Math.random() * 6.2832;
+      return { x: Math.cos(a) * r, y: (Math.random() - .5) * P.length * 1.3, z: Math.sin(a) * r, k: Math.random() };
+    });
+  }
+
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const sm = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+  function pose(q, t) {
+    // q: 0..1 progress. Two acts: dolly in (0→.5), pull back and lay flat (.5→1)
+    const a = sm(0, .55, q), b = sm(.45, 1, q);
+    return {
+      spin: q * P.spinTurns * 6.2832 + t * P.idleSpin,
+      tiltZ: lerp(lerp(.08, -.55, a), -1.5708 + .12, b),   // final: axis nearly horizontal
+      tiltX: lerp(lerp(.15, .5, a), .28, b),
+      camZ: lerp(lerp(19, 5.6, a), 12.5, b) * (W < 640 ? 1.18 : 1),
+      shiftY: lerp(lerp(0, -2.2, a), 0, b),
+      scan: q,                                            // links lit up to this fraction
+      scale: f,
+    };
+  }
+
+  const tmp = [];
+  function project(x, y, z, o) {
+    // spin about Y, then tilt X, then tilt Z, then camera
+    const cs = Math.cos(o.spin), sn = Math.sin(o.spin);
+    let X = x * cs + z * sn, Z = -x * sn + z * cs, Y = y + o.shiftY;
+    const cx = Math.cos(o.tiltX), sx = Math.sin(o.tiltX);
+    let Y2 = Y * cx - Z * sx, Z2 = Y * sx + Z * cx;
+    const cz = Math.cos(o.tiltZ), sz = Math.sin(o.tiltZ);
+    const X3 = X * cz - Y2 * sz, Y3 = X * sz + Y2 * cz;
+    const d = o.camZ - Z2;
+    if (d < .6) return null;
+    const k = o.scale / d;
+    return { x: W / 2 + X3 * k, y: H * .46 - Y3 * k, d, k };
+  }
+
+  function render(q, t) {
+    const o = pose(q, t);
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = dark ? 'lighter' : 'source-over';
+    const unit = Math.min(W, H) / 900;
+
+    // dust (depth cue)
+    for (const m of dust) {
+      const pr = project(m.x, m.y, m.z, o); if (!pr) continue;
+      const r = Math.max(.6, 120 / pr.d * unit) * (.4 + m.k * .6);
+      ctx.globalAlpha = Math.min(.45, 2.2 / pr.d) * (dark ? 1 : .7);
+      ctx.drawImage(m.k > .5 ? sprites.violet : sprites.cyan, pr.x - r, pr.y - r, r * 2, r * 2);
+    }
+
+    // project beads
+    tmp.length = 0;
+    for (let i = 0; i < beads.length; i++) {
+      const b = beads[i];
+      const pr = project(Math.cos(b.th) * P.radius, b.y, Math.sin(b.th) * P.radius, o);
+      b.pr = pr; if (pr) tmp.push(b);
+    }
+    const scanU = o.scan * 1.08 - .04;
+
+    // rungs (drawn first, beneath beads)
+    ctx.lineCap = 'round';
+    for (const r of rungs) {
+      const a = beads[r.i].pr, b = beads[r.i + P.beads].pr;
+      if (!a || !b) continue;
+      const lit = r.u <= scanU, near = Math.exp(-Math.pow((r.u - scanU) / .035, 2));
+      const depthA = Math.min(1, 9 / ((a.d + b.d) / 2));
+      const g = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+      const al = Math.min(1, (lit ? (dark ? .75 : .7) : .12) * Math.max(depthA, .8) + near * .5);
+      g.addColorStop(0, rgba(colors.cyan, al)); g.addColorStop(.5, rgba(near > .2 ? colors.hot : mix(colors.cyan, colors.violet, .5), al)); g.addColorStop(1, rgba(colors.violet, al));
+      ctx.strokeStyle = g; ctx.lineWidth = Math.max(lit ? 1.4 : .8, (lit ? 3 : 1.2) * 14 / ((a.d + b.d) / 2) * unit);
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    }
+
+    // beads, far to near
+    tmp.sort((m, n) => n.pr.d - m.pr.d);
+    for (const b of tmp) {
+      const pr = b.pr;
+      const near = Math.exp(-Math.pow((b.u - scanU) / .03, 2));
+      const lit = b.u <= scanU;
+      const base = (lit ? 1 : .62) + near * 1.6;
+      const r = Math.max(1.6, 120 / pr.d * unit * base);
+      const fog = Math.min(1, 10 / pr.d);
+      ctx.globalAlpha = Math.min(1, (lit ? .95 : (dark ? .6 : .85)) * Math.max(fog, .7) + near * .4);
+      ctx.drawImage(near > .35 ? sprites.hot : (b.s ? sprites.violet : sprites.cyan), pr.x - r, pr.y - r, r * 2, r * 2);
+    }
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function updateUI(q) {
+    const idx = q < .33 ? 0 : q < .72 ? 1 : 2;
+    steps.forEach((s, i) => s.classList.toggle('on', i === idx));
+    fill.style.setProperty('--p', q.toFixed(3));
+    out.textContent = Math.round(q * 100) + '%';
+  }
+
+  function readProgress() {
+    const r = section.getBoundingClientRect();
+    const total = section.offsetHeight - pin.offsetHeight;
+    return total > 0 ? Math.max(0, Math.min(1, -r.top / total)) : 0;
+  }
+
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    f = Math.min(W, H * 1.1) * 1.05;          // focal length in px
+    if (reduced) drawStatic(); else render(p, time);
+  }
+
+  function drawStatic() { render(1, 0); steps.forEach(s => s.classList.add('on')); }
+
+  function frame(now) {
+    raf = 0;
+    const dt = last ? Math.min(64, now - last) : 16.667; last = now; time += dt;
+    target = readProgress();
+    p += (target - p) * (1 - Math.pow(1 - P.lerp, dt / 16.667));
+    if (Math.abs(target - p) < .0004) p = target;
+    render(p, time); updateUI(p);
+    sched();
+  }
+  function sched() {
+    const run = visible && !document.hidden && !reduced;
+    if (run && !raf) { last = 0; raf = requestAnimationFrame(frame); }
+    else if (!run && raf) { cancelAnimationFrame(raf); raf = 0; }
+  }
+
+  function applyMode() {
+    section.classList.toggle('is-static', reduced);
+    resize();
+    if (!reduced) { p = target = readProgress(); updateUI(p); }
+    sched();
+  }
+
+  readTheme(); build();
+  const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; sched(); });
+  io.observe(section);
+  const ro = new ResizeObserver(resize); ro.observe(canvas);
+  on(document, 'visibilitychange', sched);
+  on(mqReduce, 'change', () => { reduced = mqReduce.matches; applyMode(); });
+  on(mqDark, 'change', () => { readTheme(); if (reduced) drawStatic(); else render(p, time); });
+  on(window, 'pagehide', e => { cancelAnimationFrame(raf); raf = 0; if (!e.persisted) { io.disconnect(); ro.disconnect(); ac.abort(); } });
+  on(window, 'pageshow', e => { if (e.persisted) sched(); });
+  applyMode();
+})();
+</script>
+</body>
+</html>

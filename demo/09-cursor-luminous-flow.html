@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>09 · Cursor-driven Luminous Flow</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Cursor-driven Luminous Flow.
+   The stage is a night scene in both colour schemes so the light reads as light.
+   Glow colours are the dark-scheme cyan and violet tokens from assets/demo.css. */
+.lum{
+  --glow-a:#3DCFEA;           /* --cyan (dark scheme) */
+  --glow-b:#A08CFF;           /* --violet (dark scheme) */
+  --night-1:#070A12; --night-2:#0E1230; --night-3:#14213A;
+  --px:0; --py:0;             /* smoothed pointer, normalised [-1,1] */
+  position:relative; width:100%; height:clamp(540px,88svh,880px);
+  overflow:hidden; isolation:isolate; color:#ECF2F6;
+  background:
+    radial-gradient(120% 90% at 70% 10%, var(--night-3) 0%, transparent 60%),
+    radial-gradient(90% 80% at 10% 100%, #1A1440 0%, transparent 65%),
+    linear-gradient(180deg, var(--night-2), var(--night-1));
+  touch-action:pan-y;         /* vertical page scroll always wins on touch */
+  cursor:crosshair; outline:none;
+  border-block:1px solid var(--line);
+}
+.lum:focus-visible{box-shadow:inset 0 0 0 3px var(--glow-a)}
+.lum canvas{position:absolute; inset:0; width:100%; height:100%; display:block; z-index:2}
+
+/* Parallax light blobs (DOM layers, transform-only) */
+.lum .blob{position:absolute; border-radius:50%; filter:blur(60px); opacity:.55; z-index:1; pointer-events:none; will-change:transform}
+.lum .b1{width:46vmax; height:46vmax; left:-12vmax; top:-14vmax; background:radial-gradient(circle, rgba(61,207,234,.55), transparent 65%);
+  transform:translate3d(calc(var(--px) * -38px), calc(var(--py) * -26px), 0)}
+.lum .b2{width:40vmax; height:40vmax; right:-14vmax; bottom:-18vmax; background:radial-gradient(circle, rgba(160,140,255,.6), transparent 65%);
+  transform:translate3d(calc(var(--px) * -64px), calc(var(--py) * -44px), 0)}
+.lum .b3{width:22vmax; height:22vmax; left:48%; top:30%; background:radial-gradient(circle, rgba(120,170,255,.35), transparent 70%);
+  transform:translate3d(calc(var(--px) * 30px), calc(var(--py) * 22px), 0)}
+.lum .grain{position:absolute; inset:0; z-index:3; pointer-events:none; opacity:.5;
+  background:radial-gradient(140% 100% at 50% 40%, transparent 55%, rgba(3,5,10,.75) 100%)}
+
+/* Hero copy */
+.lum .copy{position:absolute; z-index:4; left:0; right:0; bottom:clamp(88px,12vh,128px); pointer-events:none;
+  transform:translate3d(calc(var(--px) * 10px), calc(var(--py) * 8px), 0)}
+.lum .eyebrow{font-family:var(--f-mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--glow-a); margin-bottom:14px}
+.lum h2{font-family:var(--f-display); font-weight:800; text-transform:uppercase; line-height:.9;
+  font-size:clamp(46px,9vw,128px); letter-spacing:.005em; max-width:11ch;
+  text-shadow:0 0 40px rgba(61,207,234,.25)}
+.lum h2 em{font-style:normal; background:linear-gradient(90deg,var(--glow-a),var(--glow-b)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.lum .copy p{margin-top:16px; max-width:42ch; color:#B9C6D2; font-size:clamp(15px,1.4vw,18px)}
+
+/* Controls */
+.lum .ui{position:absolute; z-index:5; left:0; right:0; bottom:20px}
+.lum .ui .wrap{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; justify-content:space-between}
+.lum .hint{font-family:var(--f-mono); font-size:12px; letter-spacing:.06em; color:#98A5B1}
+.lum .hint b{color:#ECF2F6; font-weight:500}
+.lum .ctrls{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+.lum label{display:flex; align-items:center; gap:10px; font-family:var(--f-mono); font-size:12px; letter-spacing:.06em; color:#B9C6D2}
+.lum input[type=range]{width:120px; accent-color:var(--glow-a)}
+.lum .pill{min-height:40px; padding:0 16px; border-radius:999px; border:1px solid rgba(236,242,246,.22);
+  background:rgba(20,26,33,.55); color:#ECF2F6; font:600 14px/1 var(--f-body); cursor:pointer;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px)}
+.lum .pill:hover{border-color:var(--glow-a)}
+.lum .pill:focus-visible, .lum input:focus-visible{outline:3px solid var(--glow-a); outline-offset:3px}
+
+.lum-notes{padding-block:clamp(36px,6vw,64px)}
+.lum-notes dl{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px 28px; margin:0}
+.lum-notes dt{font-family:var(--f-mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan)}
+.lum-notes dd{margin:6px 0 0; color:var(--muted); font-size:15px}
+
+@media (max-width:560px){
+  .lum .copy{bottom:120px}
+  .lum input[type=range]{width:96px}
+  .lum .hint{flex-basis:100%}
+}
+@media (prefers-reduced-motion: reduce){
+  .lum .blob, .lum .copy{transform:none}
+}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="08-fly-to-target-feedback.html">Prev</a><a href="10-scroll-helix-flow.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/09-cursor-luminous-flow/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">09 · Motion Effects</p>
+    <h1>Cursor-driven Luminous Flow</h1>
+    <p class="zh">游標流光</p>
+    <p class="lede">Move across the night scene below. A damped ribbon of light follows the pointer, the background drifts in parallax, and when you leave it settles into a slow ambient loop.</p>
+    <div class="d-try"><span>Mouse: move</span><span>Touch: drag sideways</span><span>Keyboard: focus, then arrow keys</span></div>
+  </section>
+
+  <section class="lum" id="lum" tabindex="0" aria-label="Luminous flow scene. Move the pointer, drag, or use the arrow keys to steer the light." aria-describedby="lum-hint">
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+    <div class="blob b3" aria-hidden="true"></div>
+    <canvas aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="copy"><div class="wrap">
+      <p class="eyebrow">Studio Lumen · Reel 2026</p>
+      <h2>Light that <em>follows</em> intent</h2>
+      <p>A soft volumetric trail, damped by a spring and layered over three depths of parallax.</p>
+    </div></div>
+    <div class="ui"><div class="wrap">
+      <p class="hint" id="lum-hint"><b>Move</b> to steer · <b>leave</b> to drift · <b>arrows</b> when focused</p>
+      <div class="ctrls">
+        <label>Intensity <input type="range" id="lum-intensity" min="0.4" max="1.6" step="0.1" value="1"></label>
+        <button class="pill" id="lum-pause" type="button" aria-pressed="false">Pause</button>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="lum-notes wrap" aria-label="Parameters">
+    <dl>
+      <div><dt>Input</dt><dd>pointermove / pointerleave on the scene, normalised to [-1, 1]. Arrow keys nudge the target when the scene has focus.</dd></div>
+      <div><dt>Motion</dt><dd>Spring stiffness 0.07, damping 0.82. Ribbon of 5 strands over the last 56 positions; particles shed in proportion to speed.</dd></div>
+      <div><dt>Touch</dt><dd>Follows the finger while dragging sideways (vertical drags still scroll the page), otherwise a slow Lissajous loop.</dd></div>
+      <div><dt>Reduced motion</dt><dd>One static frame of the same ribbon and copy. No loop, no parallax, no particles.</dd></div>
+    </dl>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/09-cursor-luminous-flow/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  'use strict';
+  const stage = document.getElementById('lum');
+  const canvas = stage.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+  const intensityInput = document.getElementById('lum-intensity');
+  const pauseBtn = document.getElementById('lum-pause');
+  const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const ac = new AbortController();
+  const on = (t, e, f, o) => t.addEventListener(e, f, Object.assign({ signal: ac.signal }, o));
+
+  /* Editable parameters */
+  const P = {
+    stiffness: 0.07, damping: 0.82,
+    trail: 56, strands: 5, spread: 1,
+    ambientSpeed: 1, idleMs: 1400, maxParticles: 240, stars: 110,
+  };
+
+  const css = getComputedStyle(stage);
+  const hexToRgb = h => { h = h.trim().replace('#', ''); if (h.length === 3) h = h.split('').map(c => c + c).join(''); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+  const A = hexToRgb(css.getPropertyValue('--glow-a') || '#3DCFEA');
+  const B = hexToRgb(css.getPropertyValue('--glow-b') || '#A08CFF');
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+  const strandColors = [A, mix(A, B, .35), [220, 244, 255], mix(A, B, .7), B];
+
+  /* Glow sprite for particles and stars */
+  const sprite = document.createElement('canvas');
+  sprite.width = sprite.height = 64;
+  { const s = sprite.getContext('2d'); const g = s.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.25, rgba(mix(A, [255,255,255], .4), .8));
+    g.addColorStop(1, 'rgba(0,0,0,0)'); s.fillStyle = g; s.fillRect(0, 0, 64, 64); }
+
+  let W = 0, H = 0, dpr = 1, scale = 1;
+  let visible = true, paused = false, reduced = mqReduce.matches, raf = 0, last = 0, time = 0;
+  let intensity = 1;
+
+  const head = { x: 0, y: 0, vx: 0, vy: 0 };
+  const target = { x: 0, y: 0 };            // px in stage space
+  const norm = { x: 0, y: 0 };              // smoothed, [-1,1] (drives parallax)
+  let mode = 'ambient', lastInput = -1e9;
+  let hist = [];
+  const particles = [];
+  let stars = [];
+
+  function resize() {
+    const r = stage.getBoundingClientRect();
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    scale = Math.min(1.25, Math.max(.6, Math.min(W, H) / 760));
+    stars = Array.from({ length: Math.round(P.stars * Math.min(1.4, W / 1000 + .4)) }, () => ({
+      x: Math.random() * W, y: Math.random() * H, z: .2 + Math.random() * .8, tw: Math.random() * 6.28,
+    }));
+    if (!hist.length) { head.x = target.x = W * .62; head.y = target.y = H * .38; resetHist(); }
+    if (reduced) drawStatic();
+  }
+  function resetHist() { hist = Array.from({ length: P.trail }, () => ({ x: head.x, y: head.y })); }
+
+  /* Input: pointer normalised to [-1,1] */
+  function setFromClient(cx, cy) {
+    const r = stage.getBoundingClientRect();
+    const nx = ((cx - r.left) / r.width) * 2 - 1, ny = ((cy - r.top) / r.height) * 2 - 1;
+    target.x = (nx + 1) / 2 * W; target.y = (ny + 1) / 2 * H;
+    lastInput = performance.now(); mode = 'pointer';
+  }
+  on(stage, 'pointermove', e => { if (e.pointerType === 'touch' && !touchActive) return; setFromClient(e.clientX, e.clientY); });
+  let touchActive = false;
+  on(stage, 'pointerdown', e => { if (e.pointerType === 'touch') { touchActive = true; setFromClient(e.clientX, e.clientY); } });
+  const endTouch = e => { if (e.pointerType === 'touch') { touchActive = false; lastInput = performance.now() - P.idleMs + 500; } };
+  on(stage, 'pointerup', endTouch); on(stage, 'pointercancel', endTouch);
+  on(stage, 'pointerleave', e => { if (e.pointerType !== 'touch') lastInput = -1e9; });
+  on(stage, 'keydown', e => {
+    const step = Math.min(W, H) * .07;
+    const d = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+    if (!d) return;
+    e.preventDefault();
+    if (mode !== 'pointer' || performance.now() - lastInput > P.idleMs) { target.x = head.x; target.y = head.y; }
+    target.x = Math.max(0, Math.min(W, target.x + d[0] * step));
+    target.y = Math.max(0, Math.min(H, target.y + d[1] * step));
+    lastInput = performance.now() + 1200; mode = 'pointer';
+    if (reduced) drawStatic();
+  });
+  on(intensityInput, 'input', () => { intensity = +intensityInput.value; if (reduced) drawStatic(); });
+  on(pauseBtn, 'click', () => { paused = !paused; pauseBtn.setAttribute('aria-pressed', String(paused)); pauseBtn.textContent = paused ? 'Play' : 'Pause'; sched(); });
+
+  /* Simulation */
+  function step(dt, now) {
+    const f = Math.min(dt / 16.667, 3);
+    if (now - lastInput > P.idleMs && !touchActive) {
+      mode = 'ambient';
+      const t = time * .00028 * P.ambientSpeed;
+      target.x = W * (.5 + .34 * Math.sin(t * 1.0 + .6) + .06 * Math.sin(t * 3.1));
+      target.y = H * (.42 + .22 * Math.sin(t * 1.63 + 1.1) + .05 * Math.cos(t * 2.3));
+    }
+    // damped spring
+    for (let i = 0; i < Math.ceil(f); i++) {
+      const k = f / Math.ceil(f);
+      head.vx += (target.x - head.x) * P.stiffness * k; head.vy += (target.y - head.y) * P.stiffness * k;
+      head.vx *= Math.pow(P.damping, k); head.vy *= Math.pow(P.damping, k);
+      head.x += head.vx * k; head.y += head.vy * k;
+    }
+    hist.push({ x: head.x, y: head.y }); if (hist.length > P.trail) hist.shift();
+    const nx = head.x / W * 2 - 1, ny = head.y / H * 2 - 1;
+    norm.x += (nx - norm.x) * .06 * f; norm.y += (ny - norm.y) * .06 * f;
+
+    const speed = Math.hypot(head.vx, head.vy);
+    const emit = Math.min(6, speed * .12 + .25) * intensity * f;
+    for (let i = 0; i < emit && particles.length < P.maxParticles; i++) {
+      const a = Math.random() * 6.283, s = Math.random() * 1.2;
+      particles.push({ x: head.x + (Math.random() - .5) * 14, y: head.y + (Math.random() - .5) * 14,
+        vx: Math.cos(a) * s - head.vx * .05, vy: Math.sin(a) * s - head.vy * .05 - .25,
+        life: 0, max: 50 + Math.random() * 70, r: (1 + Math.random() * 2.2) * scale, c: Math.random() < .5 ? A : B });
+    }
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i]; p.life += f;
+      p.vx *= .985; p.vy = p.vy * .985 - .008 * f; p.x += p.vx * f; p.y += p.vy * f;
+      if (p.life > p.max) particles.splice(i, 1);
+    }
+  }
+
+  function drawRibbon(t) {
+    const n = hist.length; if (n < 3) return;
+    ctx.lineCap = 'round';
+    const amp = 34 * scale * P.spread;
+    for (let k = 0; k < P.strands; k++) {
+      const col = strandColors[k % strandColors.length];
+      const phase = k * 1.27, ampK = amp * (.55 + .18 * k);
+      const pts = new Array(n);
+      for (let i = 0; i < n; i++) {
+        const a = hist[Math.max(0, i - 1)], b = hist[Math.min(n - 1, i + 1)];
+        let tx = b.x - a.x, ty = b.y - a.y; const l = Math.hypot(tx, ty) || 1; tx /= l; ty /= l;
+        const w = i / (n - 1);
+        const off = Math.sin(t * .0021 + i * .2 + phase) * ampK * Math.pow(1 - w, .9) + (k - 2) * 3 * scale * (1 - w);
+        pts[i] = { x: hist[i].x - ty * off, y: hist[i].y + tx * off, w };
+      }
+      for (let pass = 0; pass < 2; pass++) {
+        for (let i = 1; i < n - 1; i++) {
+          const p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1], w = p1.w;
+          const alpha = Math.pow(w, 1.6) * intensity;
+          if (alpha < .01) continue;
+          ctx.beginPath();
+          ctx.moveTo((p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
+          ctx.quadraticCurveTo(p1.x, p1.y, (p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+          if (pass === 0) { ctx.strokeStyle = rgba(col, Math.min(1, alpha * .07)); ctx.lineWidth = (10 + 26 * w) * scale; }
+          else { ctx.strokeStyle = rgba(col, Math.min(1, alpha * .85)); ctx.lineWidth = (.6 + 2.2 * w) * scale; }
+          ctx.stroke();
+        }
+      }
+    }
+    // luminous head
+    const h = hist[n - 1], R = 120 * scale * (.75 + .25 * intensity);
+    const pulse = 1 + .06 * Math.sin(t * .004);
+    let g = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, R * pulse);
+    g.addColorStop(0, rgba([235, 250, 255], .9 * Math.min(1, intensity)));
+    g.addColorStop(.12, rgba(A, .55 * intensity));
+    g.addColorStop(.45, rgba(B, .16 * intensity));
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(h.x, h.y, R * pulse, 0, 6.283); ctx.fill();
+  }
+
+  function drawStars(t, still) {
+    const ox = -norm.x * 40, oy = -norm.y * 28;
+    for (const s of stars) {
+      const tw = still ? .7 : .55 + .45 * Math.sin(t * .0015 + s.tw);
+      const r = (1.5 + s.z * 4) * scale;
+      ctx.globalAlpha = .18 + .5 * s.z * tw;
+      ctx.drawImage(sprite, s.x + ox * s.z - r, s.y + oy * s.z - r, r * 2, r * 2);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function render(t) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    drawStars(t, false);
+    drawRibbon(t);
+    for (const p of particles) {
+      const k = 1 - p.life / p.max, r = p.r * (2 + 2 * k);
+      ctx.globalAlpha = k * .9 * Math.min(1, intensity);
+      ctx.drawImage(sprite, p.x - r, p.y - r, r * 2, r * 2);
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+    stage.style.setProperty('--px', norm.x.toFixed(4));
+    stage.style.setProperty('--py', norm.y.toFixed(4));
+  }
+
+  /* Reduced motion: one calm frame of the same composition */
+  function drawStatic() {
+    if (!W) return;
+    const tx = (mode === 'pointer') ? target.x : W * .66, ty = (mode === 'pointer') ? target.y : H * .34;
+    hist = Array.from({ length: P.trail }, (_, i) => {
+      const w = i / (P.trail - 1);
+      return { x: tx - (1 - w) * W * .55, y: ty + Math.sin((1 - w) * 3.1) * H * .16 + (1 - w) * H * .12 };
+    });
+    norm.x = 0; norm.y = 0; particles.length = 0;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    drawStars(0, true); drawRibbon(900);
+    ctx.globalCompositeOperation = 'source-over';
+    stage.style.setProperty('--px', 0); stage.style.setProperty('--py', 0);
+  }
+
+  function frame(now) {
+    raf = 0;
+    const dt = last ? Math.min(64, now - last) : 16.667; last = now; time += dt;
+    step(dt, now); render(time);
+    sched();
+  }
+  function sched() {
+    const run = visible && !document.hidden && !paused && !reduced;
+    if (run && !raf) { last = 0; raf = requestAnimationFrame(frame); }
+    else if (!run && raf) { cancelAnimationFrame(raf); raf = 0; }
+  }
+
+  const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; sched(); }, { threshold: 0 });
+  io.observe(stage);
+  const ro = new ResizeObserver(() => resize());
+  ro.observe(stage);
+  on(document, 'visibilitychange', sched);
+  on(mqReduce, 'change', () => { reduced = mqReduce.matches; pauseBtn.hidden = reduced; if (reduced) drawStatic(); else { resetHist(); } sched(); });
+  on(window, 'pagehide', e => { if (e.persisted) { cancelAnimationFrame(raf); raf = 0; return; } teardown(); });
+  on(window, 'pageshow', e => { if (e.persisted) sched(); });
+  function teardown() { cancelAnimationFrame(raf); raf = 0; io.disconnect(); ro.disconnect(); ac.abort(); particles.length = 0; }
+
+  pauseBtn.hidden = reduced;
+  resize(); sched();
+})();
+</script>
+</body>
+</html>
