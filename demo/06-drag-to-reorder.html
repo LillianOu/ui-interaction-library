@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>06 · Drag to Reorder</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Interaction CSS for this demo only. Use the tokens from assets/demo.css. */
+.ro{max-width:640px;margin-inline:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 20px 50px -30px rgba(10,20,40,.35);overflow:hidden}
+.ro-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px 16px;padding:clamp(16px,3vw,24px) clamp(16px,3vw,24px) 14px;border-bottom:1px solid var(--line)}
+.ro-head h2{font-size:clamp(19px,2.2vw,22px);font-weight:700}
+.ro-head p{color:var(--muted);font-size:14.5px;margin-top:2px}
+.ro-pill{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);font:500 12.5px/1.2 var(--f-mono);color:var(--muted);white-space:nowrap}
+.ro-pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.ro-pill[data-state="saving"]::before{background:var(--warn)}
+.ro-pill[data-state="error"]{color:var(--err);border-color:color-mix(in srgb,var(--err) 40%,transparent)}
+.ro-pill[data-state="error"]::before{background:var(--err)}
+.ro-opts{display:flex;align-items:center;gap:8px;padding:10px clamp(16px,3vw,24px);border-bottom:1px solid var(--line);font-size:14px;color:var(--muted)}
+.ro-opts input{width:18px;height:18px;accent-color:var(--violet);margin:0}
+
+.ro-scroll{position:relative;max-height:460px;overflow-y:auto;overscroll-behavior:contain;padding:12px}
+.ro-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ro-item{position:relative;display:flex;align-items:center;gap:10px;min-height:64px;padding:8px 8px 8px 4px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);transform:translate3d(0,0,0);touch-action:pan-y;-webkit-user-select:none;user-select:none}
+.ro-list.is-sorting .ro-item:not(.is-dragging){transition:transform .22s var(--ease)}
+.ro-item.is-dragging{z-index:5;box-shadow:0 18px 40px -14px rgba(10,20,40,.45),0 0 0 2px var(--violet);cursor:grabbing}
+.ro-item.is-lifted{box-shadow:0 0 0 2px var(--violet);background:color-mix(in srgb,var(--violet-soft) 55%,var(--surface))}
+.ro-item.is-settling{transition:transform .24s var(--ease)}
+.ro-item.is-locked{background:color-mix(in srgb,var(--ink) 4%,var(--surface));border-style:dashed}
+.ro-item.is-pressing{background:color-mix(in srgb,var(--violet-soft) 40%,var(--surface))}
+
+.ro-handle{flex:none;display:grid;place-items:center;width:40px;height:48px;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:grab;touch-action:none}
+.ro-handle:hover{color:var(--ink);background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.ro-handle[aria-pressed="true"]{color:var(--violet)}
+.ro-handle svg{width:14px;height:22px}
+.ro-lock{flex:none;display:grid;place-items:center;width:40px;height:48px;color:var(--muted)}
+.ro-pos{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:var(--cyan-soft);color:var(--cyan);font:600 13px/1 var(--f-mono)}
+.ro-body{flex:1;min-width:0;display:grid;gap:1px}
+.ro-body strong{font-size:15.5px;font-weight:600;line-height:1.3}
+.ro-body span{font:400 12.5px/1.35 var(--f-mono);color:var(--muted)}
+.ro-moves{flex:none;display:flex;gap:4px}
+.ro-moves button{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);cursor:pointer;padding:0}
+.ro-moves button:hover{border-color:color-mix(in srgb,var(--ink) 35%,transparent)}
+.ro-moves button[aria-disabled="true"]{opacity:.35;cursor:not-allowed}
+.ro-moves svg{width:14px;height:14px}
+.ro-help{padding:10px clamp(16px,3vw,24px) 16px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--line)}
+@media (max-width:420px){.ro-pos{display:none}.ro-body strong{font-size:15px}}
+
+@media (prefers-reduced-motion: reduce){
+  .ro-list.is-sorting .ro-item:not(.is-dragging),.ro-item.is-settling{transition:none}
+}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="05-floating-label.html">Prev</a><a href="07-drag-to-expand-and-collapse.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/06-drag-to-reorder/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">06 · Layout &amp; Navigation</p>
+    <h1>Drag to Reorder</h1>
+    <p class="zh">拖曳排序</p>
+    <p class="lede">Reorder the stops on a warehouse pick route. Drag a grip handle, long-press a row on touch, or use the keyboard. The order saves when you drop.</p>
+    <div class="d-try"><span>Mouse: drag the grip</span><span>Touch: long-press</span><span>Keyboard: Space, ↑ ↓, Esc</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame">
+      <div class="ro">
+        <div class="ro-head">
+          <div>
+            <h2 id="ro-title">Pick route · Wave 14</h2>
+            <p>9 stops · Sydney DC, mezzanine</p>
+          </div>
+          <span class="ro-pill" id="roPill" data-state="saved">Saved</span>
+        </div>
+        <label class="ro-opts"><input type="checkbox" id="failToggle"> Simulate a failed save</label>
+        <div class="ro-scroll" id="roScroll">
+          <ul class="ro-list" id="roList" aria-labelledby="ro-title"></ul>
+        </div>
+        <p class="ro-help" id="ro-instr">Grip: drag, or press Space to pick up, ↑ ↓ to move, Space to drop, Esc to cancel.</p>
+      </div>
+      <p class="sr-only" id="roLive" aria-live="assertive" aria-atomic="true"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/06-drag-to-reorder/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+/* Interaction JS for this demo only. Respect prefers-reduced-motion. */
+(function(){
+  const DATA = [
+    {id:'start', name:'Start: pack bench 2', meta:'Fixed start point', locked:true},
+    {id:'mailer', name:'Kraft mailer boxes, small', meta:'Aisle B · Bin 04 · ×24'},
+    {id:'wrap', name:'Bubble wrap roll, 50 m', meta:'Aisle B · Bin 11 · ×3'},
+    {id:'labels', name:'Thermal labels 100×150', meta:'Aisle C · Bin 02 · ×6 rolls'},
+    {id:'tape', name:'Packing tape, clear', meta:'Aisle A · Bin 07 · ×12'},
+    {id:'fill', name:'Void fill paper', meta:'Aisle D · Bin 01 · ×2 bales'},
+    {id:'satchel', name:'Courier satchels, large', meta:'Aisle A · Bin 15 · ×40'},
+    {id:'fragile', name:'Fragile stickers', meta:'Aisle C · Bin 09 · ×1 roll'},
+    {id:'tote', name:'Returns totes, blue', meta:'Aisle E · Bin 03 · ×5'}
+  ];
+  const byId = Object.fromEntries(DATA.map(d => [d.id, d]));
+  const list = document.getElementById('roList');
+  const scroller = document.getElementById('roScroll');
+  const live = document.getElementById('roLive');
+  const pill = document.getElementById('roPill');
+  const failToggle = document.getElementById('failToggle');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const GRIP = '<svg viewBox="0 0 14 22" aria-hidden="true"><g fill="currentColor"><circle cx="4" cy="4" r="1.7"/><circle cx="10" cy="4" r="1.7"/><circle cx="4" cy="11" r="1.7"/><circle cx="10" cy="11" r="1.7"/><circle cx="4" cy="18" r="1.7"/><circle cx="10" cy="18" r="1.7"/></g></svg>';
+  const LOCK = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+  const UP = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 11V3M3.5 6.5 7 3l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const DOWN = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 3v8M3.5 7.5 7 11l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // Render with stable ids (data-id), never relying on indexes for identity.
+  DATA.forEach(d => {
+    const li = document.createElement('li');
+    li.className = 'ro-item' + (d.locked ? ' is-locked' : '');
+    li.dataset.id = d.id;
+    li.innerHTML = (d.locked
+        ? '<span class="ro-lock" title="Locked">' + LOCK + '</span>'
+        : '<button type="button" class="ro-handle" aria-pressed="false" aria-describedby="ro-instr">' + GRIP + '</button>') +
+      '<span class="ro-pos" aria-hidden="true"></span>' +
+      '<div class="ro-body"><strong>' + d.name + '</strong><span>' + d.meta + (d.locked ? ' · locked' : '') + '</span></div>' +
+      (d.locked ? '' : '<div class="ro-moves"><button type="button" data-move="-1">' + UP + '</button><button type="button" data-move="1">' + DOWN + '</button></div>');
+    list.appendChild(li);
+  });
+
+  const items = () => Array.from(list.children);
+  const order = () => items().map(li => li.dataset.id);
+  const minIndex = () => { let i = 0; const all = items(); while (i < all.length && all[i].classList.contains('is-locked')) i++; return i; };
+  let savedOrder = order();
+
+  function refresh(){
+    const all = items(), n = all.length, lo = minIndex();
+    all.forEach((li, i) => {
+      li.querySelector('.ro-pos').textContent = i + 1;
+      const d = byId[li.dataset.id];
+      const h = li.querySelector('.ro-handle');
+      if (h) h.setAttribute('aria-label', 'Reorder ' + d.name + ', stop ' + (i+1) + ' of ' + n);
+      const [up, down] = li.querySelectorAll('[data-move]');
+      if (up){
+        up.setAttribute('aria-label', 'Move ' + d.name + ' up');
+        down.setAttribute('aria-label', 'Move ' + d.name + ' down');
+        up.setAttribute('aria-disabled', String(i <= lo));
+        down.setAttribute('aria-disabled', String(i >= n - 1));
+      }
+    });
+  }
+  function say(msg){ live.textContent = ''; requestAnimationFrame(() => { live.textContent = msg; }); }
+  function posMsg(li){ const all = items(); return byId[li.dataset.id].name + ', stop ' + (all.indexOf(li) + 1) + ' of ' + all.length; }
+
+  // FLIP: reorder the DOM to `ids` and animate every item from where it was.
+  function reorderTo(ids, keepFocus){
+    const before = new Map(items().map(li => [li, li.getBoundingClientRect().top]));
+    const active = document.activeElement;
+    ids.forEach(id => list.appendChild(list.querySelector('[data-id="' + id + '"]')));
+    if (keepFocus && active && list.contains(active)) active.focus({preventScroll:false});
+    refresh();
+    if (reduce.matches) return;
+    items().forEach(li => {
+      const dy = before.get(li) - li.getBoundingClientRect().top;
+      if (!dy) return;
+      li.classList.remove('is-settling');
+      li.style.transform = 'translate3d(0,' + dy + 'px,0)';
+      li.getBoundingClientRect();
+      li.classList.add('is-settling');
+      li.style.transform = '';
+      li.addEventListener('transitionend', () => li.classList.remove('is-settling'), {once:true});
+    });
+  }
+
+  // Persist only on drop; roll back visibly on failure.
+  let saveTimer = 0;
+  function persist(){
+    const next = order();
+    if (next.join() === savedOrder.join()) return;
+    clearTimeout(saveTimer);
+    pill.dataset.state = 'saving'; pill.textContent = 'Saving…';
+    saveTimer = setTimeout(() => {
+      if (failToggle.checked){
+        reorderTo(savedOrder, true);
+        pill.dataset.state = 'error'; pill.textContent = 'Not saved';
+        say('Could not save the new order. Route restored.');
+      } else {
+        savedOrder = next;
+        pill.dataset.state = 'saved'; pill.textContent = 'Saved';
+      }
+    }, 700);
+  }
+
+  /* ---------- Pointer drag ---------- */
+  let drag = null;
+  function contentY(clientY){ return clientY - scroller.getBoundingClientRect().top + scroller.scrollTop; }
+
+  function begin(li, e, captureEl){
+    if (drag || kb) return;
+    const all = items();
+    const sTop = scroller.getBoundingClientRect().top - scroller.scrollTop;
+    const rects = all.map(el => { const r = el.getBoundingClientRect(); return {top: r.top - sTop, h: r.height}; });
+    const from = all.indexOf(li);
+    drag = {li, all, rects, from, target: from, startY: contentY(e.clientY), lastClientY: e.clientY,
+            gap: rects.length > 1 ? rects[1].top - (rects[0].top + rects[0].h) : 8,
+            pointerId: e.pointerId, captureEl, raf: 0, startOrder: order()};
+    try { captureEl.setPointerCapture(e.pointerId); } catch(_){}
+    list.classList.add('is-sorting');
+    li.classList.add('is-dragging');
+    li.querySelector('.ro-handle')?.setAttribute('aria-pressed', 'true');
+    say('Picked up ' + posMsg(li) + '.');
+    drag.raf = requestAnimationFrame(autoScroll);
+  }
+
+  function move(clientY){
+    if (!drag) return;
+    if (!drag.li.isConnected){ cancel(); return; }   // item removed mid-drag
+    drag.lastClientY = clientY;
+    const {li, all, rects, from} = drag;
+    const dy = contentY(clientY) - drag.startY;
+    li.style.transform = 'translate3d(0,' + dy + 'px,0) scale(1.02)';
+    const center = rects[from].top + dy + rects[from].h / 2;
+    let target = from;
+    for (let i = 0; i < all.length; i++){
+      if (i === from) continue;
+      const mid = rects[i].top + rects[i].h / 2;
+      if (i < from && center < mid) target = Math.min(target, i);
+      if (i > from && center > mid) target = Math.max(target, i);
+    }
+    target = Math.max(target, minIndex());           // locked items are not drop targets
+    const shift = rects[from].h + drag.gap;
+    all.forEach((el, i) => {
+      if (i === from) return;
+      let s = 0;
+      if (from < target && i > from && i <= target) s = -shift;
+      if (target < from && i >= target && i < from) s = shift;
+      el.style.transform = s ? 'translate3d(0,' + s + 'px,0)' : '';
+    });
+    if (target !== drag.target){
+      drag.target = target;
+      say(byId[li.dataset.id].name + ', stop ' + (from + 1) + ' of ' + all.length + ', now stop ' + (target + 1) + '.');
+    }
+  }
+
+  function autoScroll(){
+    if (!drag) return;
+    const r = scroller.getBoundingClientRect(), edge = 56, y = drag.lastClientY;
+    let v = 0;
+    if (y < r.top + edge) v = -Math.ceil((r.top + edge - y) / 5);
+    else if (y > r.bottom - edge) v = Math.ceil((y - (r.bottom - edge)) / 5);
+    if (v){
+      const prev = scroller.scrollTop;
+      scroller.scrollTop += Math.max(-14, Math.min(14, v));
+      if (scroller.scrollTop !== prev) move(y);
+    }
+    drag.raf = requestAnimationFrame(autoScroll);
+  }
+
+  function cleanup(){
+    cancelAnimationFrame(drag.raf);
+    try { drag.captureEl.releasePointerCapture(drag.pointerId); } catch(_){}
+    drag.li.querySelector('.ro-handle')?.setAttribute('aria-pressed', 'false');
+    const d = drag; drag = null; return d;
+  }
+
+  function drop(){
+    if (!drag) return;
+    const d = cleanup();
+    const {li, all, from, target} = d;
+    const fromTop = li.getBoundingClientRect().top;
+    list.classList.remove('is-sorting');
+    all.forEach(el => { el.style.transform = ''; });
+    li.classList.remove('is-dragging');
+    if (target !== from){
+      const ref = target > from ? all[target].nextSibling : all[target];
+      list.insertBefore(li, ref);
+    }
+    refresh();
+    if (!reduce.matches){
+      const delta = fromTop - li.getBoundingClientRect().top;
+      if (delta){
+        li.style.transform = 'translate3d(0,' + delta + 'px,0)';
+        li.getBoundingClientRect();
+        li.classList.add('is-settling');
+        li.style.transform = '';
+        li.addEventListener('transitionend', () => li.classList.remove('is-settling'), {once:true});
+      }
+    }
+    say(target !== from ? 'Dropped. ' + posMsg(li) + '.' : 'Dropped. Order unchanged.');
+    persist();
+  }
+
+  function cancel(){
+    if (!drag) return;
+    const d = cleanup();
+    d.all.forEach(el => { el.style.transform = ''; });
+    d.li.classList.remove('is-dragging');
+    if (!reduce.matches){ d.li.classList.add('is-settling'); d.li.addEventListener('transitionend', () => d.li.classList.remove('is-settling'), {once:true}); }
+    setTimeout(() => list.classList.remove('is-sorting'), 240);
+    if (d.li.isConnected) say('Move cancelled. ' + posMsg(d.li) + '.');
+  }
+
+  // Handle: immediate drag for mouse, pen and touch.
+  list.addEventListener('pointerdown', e => {
+    const handle = e.target.closest('.ro-handle');
+    const li = e.target.closest('.ro-item');
+    if (!li || li.classList.contains('is-locked')) return;
+    if (handle){
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      e.preventDefault();
+      begin(li, e, handle);
+      return;
+    }
+    // Long press on the row (touch only) so taps and scrolling still work.
+    if (e.pointerType === 'touch' && !e.target.closest('button')){
+      const sx = e.clientX, sy = e.clientY;
+      li.classList.add('is-pressing');
+      const t = setTimeout(() => { li.classList.remove('is-pressing'); begin(li, e, li); if (navigator.vibrate) navigator.vibrate(10); }, 380);
+      const abort = ev => {
+        if (ev.type === 'pointermove' && Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return;
+        clearTimeout(t); li.classList.remove('is-pressing');
+        li.removeEventListener('pointermove', abort); li.removeEventListener('pointerup', abort); li.removeEventListener('pointercancel', abort);
+      };
+      li.addEventListener('pointermove', abort); li.addEventListener('pointerup', abort); li.addEventListener('pointercancel', abort);
+    }
+  });
+  window.addEventListener('pointermove', e => { if (drag && e.pointerId === drag.pointerId) move(e.clientY); });
+  window.addEventListener('pointerup', e => { if (drag && e.pointerId === drag.pointerId) drop(); });
+  window.addEventListener('pointercancel', e => { if (drag && e.pointerId === drag.pointerId) cancel(); });
+  list.addEventListener('lostpointercapture', e => { if (drag && e.pointerId === drag.pointerId) setTimeout(() => { if (drag) cancel(); }, 0); });
+  // Stop the page scrolling under an active touch drag.
+  list.addEventListener('touchmove', e => { if (drag) e.preventDefault(); }, {passive:false});
+  window.addEventListener('blur', () => cancel());
+
+  /* ---------- Keyboard ---------- */
+  let kb = null;
+  list.addEventListener('keydown', e => {
+    const handle = e.target.closest('.ro-handle');
+    if (!handle) return;
+    const li = handle.closest('.ro-item');
+    if (drag) { if (e.key === 'Escape'){ e.preventDefault(); cancel(); } return; }
+    if (e.key === ' ' || e.key === 'Enter'){
+      e.preventDefault();
+      if (!kb){
+        kb = {li, startOrder: order()};
+        li.classList.add('is-lifted'); handle.setAttribute('aria-pressed', 'true');
+        say('Picked up ' + posMsg(li) + '. Use up and down arrows to move, Space to drop, Escape to cancel.');
+      } else { endKb(true); }
+    } else if (kb && (e.key === 'ArrowUp' || e.key === 'ArrowDown')){
+      e.preventDefault();
+      step(li, e.key === 'ArrowUp' ? -1 : 1, true);
+    } else if (kb && e.key === 'Escape'){
+      e.preventDefault(); endKb(false);
+    }
+  });
+  list.addEventListener('focusout', e => {
+    if (kb && e.target.closest('.ro-item') === kb.li && !kb.moving) setTimeout(() => { if (kb && !kb.li.contains(document.activeElement)) endKb(true); }, 0);
+  });
+  function endKb(commit){
+    const {li, startOrder} = kb; kb = null;
+    li.classList.remove('is-lifted');
+    li.querySelector('.ro-handle').setAttribute('aria-pressed', 'false');
+    if (commit){ say('Dropped. ' + posMsg(li) + '.'); persist(); }
+    else { reorderTo(startOrder, true); say('Move cancelled. ' + posMsg(li) + '.'); }
+  }
+  function step(li, dir, quiet){
+    const ids = order(), i = ids.indexOf(li.dataset.id), j = i + dir;
+    if (j < minIndex() || j >= ids.length){ say(posMsg(li) + '. Cannot move further.'); return false; }
+    ids.splice(i, 1); ids.splice(j, 0, li.dataset.id);
+    if (kb) kb.moving = true;
+    reorderTo(ids, true);
+    if (kb) kb.moving = false;
+    say(byId[li.dataset.id].name + ', stop ' + (i + 1) + ' of ' + ids.length + ', now stop ' + (j + 1) + '.');
+    return true;
+  }
+
+  // Move up / Move down buttons for people who cannot drag.
+  list.addEventListener('click', e => {
+    const b = e.target.closest('[data-move]');
+    if (!b || b.getAttribute('aria-disabled') === 'true' || drag || kb) return;
+    const li = b.closest('.ro-item');
+    if (step(li, +b.dataset.move)) persist();
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>

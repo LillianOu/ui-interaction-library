@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>08 · Fly-to-Target Feedback</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Interaction CSS for this demo only. Use the tokens from assets/demo.css. */
+.fy{max-width:920px;margin-inline:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 20px 50px -30px rgba(10,20,40,.35)}
+.fy-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px clamp(14px,3vw,22px);border-bottom:1px solid var(--line)}
+.fy-brand{font:800 22px/1 var(--f-display);letter-spacing:.04em;text-transform:uppercase}
+.fy-brand small{display:block;font:500 12px/1.4 var(--f-mono);letter-spacing:.04em;text-transform:none;color:var(--muted)}
+.fy-cart{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 15px/1 var(--f-body);cursor:pointer}
+.fy-cart svg{width:22px;height:22px}
+.fy-badge{min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--violet);color:var(--on-fill);display:inline-grid;place-items:center;font:700 13px/1 var(--f-mono)}
+.fy-badge[data-zero="true"]{background:color-mix(in srgb,var(--ink) 10%,transparent);color:var(--muted)}
+
+.fy-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,2vw,18px);padding:clamp(14px,3vw,22px)}
+@media (max-width:760px){.fy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fy-card{display:flex;flex-direction:column;gap:8px;min-width:0}
+.fy-thumb{aspect-ratio:1;border-radius:var(--r-md);background:linear-gradient(160deg,var(--cyan-soft),var(--violet-soft));display:grid;place-items:center;overflow:hidden}
+.fy-thumb svg{width:64%;height:64%}
+.fy-card h3{font-size:15.5px;font-weight:600;line-height:1.3}
+.fy-row{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:14px;color:var(--muted)}
+.fy-row b{color:var(--ink);font:600 15px/1 var(--f-mono)}
+.fy-add{min-height:44px;width:100%;border-radius:12px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);font:600 15px/1 var(--f-body);cursor:pointer;padding:0 10px;transition:opacity .15s}
+.fy-add:hover{opacity:.88}
+.fy-add:active{transform:scale(.98)}
+.fy-msg{min-height:1.4em;font-size:13px;line-height:1.35;font-weight:600}
+.fy-msg.ok{color:var(--ok)}
+.fy-msg.err{color:var(--err)}
+
+/* Visual-only clone; never in the accessibility tree, never hit-testable */
+.fy-clone{position:fixed;left:0;top:0;z-index:100;pointer-events:none;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,var(--cyan-soft),var(--violet-soft));display:grid;place-items:center;box-shadow:0 12px 30px -10px rgba(10,20,40,.4);will-change:transform,opacity}
+.fy-clone svg{width:64%;height:64%}
+
+/* Thumbnail art, drawn with theme tokens */
+.a-ink{fill:var(--ink)} .a-surf{fill:var(--surface)} .a-kraft{fill:var(--kraft)} .a-cyan{fill:var(--cyan)} .a-vio{fill:var(--violet)} .a-muted{fill:var(--muted)}
+.s-ink{stroke:var(--ink)} .s-surf{stroke:var(--surface)}
+
+.fy-note{padding:0 clamp(14px,3vw,22px) 18px;color:var(--muted);font-size:13.5px}
+@media (prefers-reduced-motion: reduce){.fy-add:active{transform:none}}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="07-drag-to-expand-and-collapse.html">Prev</a><a href="09-cursor-luminous-flow.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/08-fly-to-target-feedback/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">08 · Feedback &amp; State</p>
+    <h1>Fly-to-Target Feedback</h1>
+    <p class="zh">飛向目標的回饋</p>
+    <p class="lede">Add something to the cart and a small copy of it arcs into the cart, which pulses with the new count. Scroll the cart out of view and you get an inline note instead.</p>
+    <div class="d-try"><span>Mouse</span><span>Touch</span><span>Keyboard: Tab, Enter</span><span>Candle: only 1 in stock</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame">
+      <div class="fy">
+        <div class="fy-bar">
+          <p class="fy-brand">Harbour Home<small>Homewares · Sydney</small></p>
+          <button type="button" class="fy-cart" id="fyCart" aria-label="Cart, 0 items">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h2l2 10h10l2-7H7.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17" cy="19" r="1.5" fill="currentColor"/></svg>
+            <span class="fy-badge" id="fyBadge" data-zero="true" aria-hidden="true">0</span>
+          </button>
+        </div>
+        <div class="fy-grid" id="fyGrid"></div>
+        <p class="fy-note">Feedback is decorative. The count and a screen reader announcement confirm each add, and focus stays on the button you pressed.</p>
+      </div>
+      <p class="sr-only" id="fyLive" aria-live="polite" aria-atomic="true"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/08-fly-to-target-feedback/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+/* Interaction JS for this demo only. Respect prefers-reduced-motion. */
+(function(){
+  const ART = {
+    mug:'<svg viewBox="0 0 100 100" aria-hidden="true"><rect class="a-surf s-ink" x="22" y="28" width="44" height="50" rx="8" stroke-width="3"/><path class="s-ink" d="M66 40h6a10 10 0 0 1 0 20h-6" fill="none" stroke-width="5" stroke-linecap="round"/><rect class="a-cyan" x="22" y="28" width="44" height="12" rx="6"/></svg>',
+    towel:'<svg viewBox="0 0 100 100" aria-hidden="true"><rect class="a-surf s-ink" x="26" y="18" width="48" height="64" rx="4" stroke-width="3"/><path class="s-ink" d="M26 64h48M26 70h48" stroke-width="3"/><path class="s-ink" d="M38 18v64M50 18v64M62 18v64" stroke-width="1.2" opacity=".35"/><rect class="a-vio" x="44" y="10" width="12" height="10" rx="3"/></svg>',
+    candle:'<svg viewBox="0 0 100 100" aria-hidden="true"><path class="a-kraft" d="M50 14c6 8 7 13 0 20c-7-7-6-12 0-20z"/><rect class="a-ink" x="48.5" y="32" width="3" height="8"/><rect class="a-surf s-ink" x="30" y="40" width="40" height="44" rx="6" stroke-width="3"/><rect class="a-kraft" x="30" y="56" width="40" height="12" opacity=".7"/></svg>',
+    board:'<svg viewBox="0 0 100 100" aria-hidden="true"><rect class="a-kraft" x="18" y="34" width="56" height="40" rx="12"/><rect class="a-kraft" x="72" y="48" width="16" height="12" rx="6"/><circle class="a-surf" cx="82" cy="54" r="3"/><path class="s-surf" d="M28 46c10 4 24 4 36 0M28 58c10 4 24 4 36 0" fill="none" stroke-width="2" opacity=".5"/></svg>'
+  };
+  const PRODUCTS = [
+    {id:'mug', name:'Stoneware mug', price:24, stock:99},
+    {id:'towel', name:'Linen tea towel', price:18, stock:99},
+    {id:'candle', name:'Beeswax candle', price:32, stock:1},
+    {id:'board', name:'Olive wood board', price:46, stock:99}
+  ];
+  const grid = document.getElementById('fyGrid');
+  grid.innerHTML = PRODUCTS.map(p =>
+    '<article class="fy-card" data-id="' + p.id + '" aria-labelledby="t-' + p.id + '">' +
+      '<div class="fy-thumb">' + ART[p.id] + '</div>' +
+      '<h3 id="t-' + p.id + '">' + p.name + '</h3>' +
+      '<div class="fy-row"><span>' + (p.stock < 5 ? p.stock + ' left' : 'In stock') + '</span><b>$' + p.price + '</b></div>' +
+      '<button type="button" class="fy-add" aria-describedby="m-' + p.id + '">Add to cart</button>' +
+      '<p class="fy-msg" id="m-' + p.id + '"></p>' +
+    '</article>').join('');
+
+  const cart = document.getElementById('fyCart');
+  const badge = document.getElementById('fyBadge');
+  const live = document.getElementById('fyLive');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const MAX_FLIGHTS = 3;
+  const inCart = {};
+  let count = 0;
+  const flights = [];   // {clone, anim}
+
+  function say(msg){ live.textContent = ''; requestAnimationFrame(() => { live.textContent = msg; }); }
+  function showBadge(){ badge.textContent = count; badge.dataset.zero = String(count === 0); }
+  function pulse(){
+    if (reduce.matches) return;
+    badge.animate([{transform:'scale(1)'},{transform:'scale(1.35)'},{transform:'scale(1)'}], {duration:320, easing:'cubic-bezier(.2,.8,.2,1)'});
+    cart.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}], {duration:320, easing:'cubic-bezier(.2,.8,.2,1)'});
+  }
+  function flash(card, text, kind){
+    const m = card.querySelector('.fy-msg');
+    m.className = 'fy-msg ' + kind; m.textContent = text;
+    clearTimeout(m._t);
+    m._t = setTimeout(() => { m.textContent = ''; m.className = 'fy-msg'; }, kind === 'err' ? 4000 : 2200);
+  }
+  function targetVisible(){
+    const r = cart.getBoundingClientRect();
+    if (!cart.offsetParent || r.width === 0) return false;           // hidden or collapsed
+    return r.top >= 0 && r.bottom <= window.innerHeight && r.left >= 0 && r.right <= window.innerWidth;
+  }
+
+  // Finish every flight now: remove clones, bring the target up to date.
+  function finishAll(){
+    while (flights.length){ const f = flights.pop(); f.anim.cancel(); f.clone.remove(); }
+    showBadge();
+  }
+
+  function fly(card){
+    const thumb = card.querySelector('.fy-thumb');
+    const s = thumb.getBoundingClientRect(), t = badge.getBoundingClientRect();
+    if (flights.length >= MAX_FLIGHTS){ const f = flights.shift(); f.anim.cancel(); f.clone.remove(); }
+    const size = Math.min(s.width, 120);
+    const clone = document.createElement('div');
+    clone.className = 'fy-clone';
+    clone.setAttribute('aria-hidden', 'true');
+    clone.innerHTML = thumb.innerHTML;
+    clone.style.width = clone.style.height = size + 'px';
+    document.body.appendChild(clone);
+
+    const x0 = s.left + s.width / 2, y0 = s.top + s.height / 2;
+    const x1 = t.left + t.width / 2, y1 = t.top + t.height / 2;
+    const cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - Math.max(80, Math.abs(x1 - x0) * 0.25);
+    const end = 22 / size, frames = [], N = 16;
+    for (let i = 0; i <= N; i++){
+      const k = i / N, u = 1 - k;
+      const x = u*u*x0 + 2*u*k*cx + k*k*x1, y = u*u*y0 + 2*u*k*cy + k*k*y1;
+      const sc = 1 + (end - 1) * (k * k * (3 - 2 * k));
+      frames.push({transform:'translate(' + (x - size/2) + 'px,' + (y - size/2) + 'px) scale(' + sc + ')', opacity: k > .85 ? 1 - (k - .85) / .15 * .6 : 1, offset: k});
+    }
+    const anim = clone.animate(frames, {duration: 620, easing: 'cubic-bezier(.45,.05,.55,.95)', fill: 'forwards'});
+    const f = {clone, anim};
+    flights.push(f);
+    anim.onfinish = () => {
+      clone.remove();
+      const i = flights.indexOf(f); if (i > -1) flights.splice(i, 1);
+      showBadge(); pulse();
+    };
+  }
+
+  grid.addEventListener('click', e => {
+    const btn = e.target.closest('.fy-add');
+    if (!btn) return;
+    const card = btn.closest('.fy-card');
+    const p = PRODUCTS.find(x => x.id === card.dataset.id);
+    const have = inCart[p.id] || 0;
+
+    // Failure: never animate success; explain next to the button.
+    if (have >= p.stock){
+      flash(card, 'Only ' + p.stock + ' in stock, and it is already in your cart.', 'err');
+      say('Could not add ' + p.name + '. Only ' + p.stock + ' in stock.');
+      return;
+    }
+
+    // The action completes immediately; the animation never gates it.
+    inCart[p.id] = have + 1;
+    count++;
+    cart.setAttribute('aria-label', 'Cart, ' + count + (count === 1 ? ' item' : ' items'));
+    say('Added ' + p.name + ' to cart. ' + count + (count === 1 ? ' item.' : ' items.'));
+
+    if (reduce.matches){ showBadge(); flash(card, 'Added to cart', 'ok'); return; }
+    if (!targetVisible()){ showBadge(); flash(card, 'Added to cart · ' + count + (count === 1 ? ' item' : ' items'), 'ok'); return; }
+    fly(card);
+  });
+
+  // Clones are positioned for the current viewport, so finish them on scroll, resize or leaving.
+  window.addEventListener('scroll', () => { if (flights.length) finishAll(); }, {passive:true});
+  window.addEventListener('resize', () => { if (flights.length) finishAll(); });
+  window.addEventListener('pagehide', finishAll);
+})();
+</script>
+</body>
+</html>

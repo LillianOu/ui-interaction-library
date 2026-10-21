@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>07 · Drag to Expand &amp; Collapse</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Interaction CSS for this demo only. Use the tokens from assets/demo.css. */
+.bs-stage{position:relative;max-width:460px;height:clamp(540px,78vh,680px);margin-inline:auto;border-radius:26px;overflow:hidden;background:var(--surface);border:1px solid var(--line);box-shadow:0 24px 60px -32px rgba(10,20,40,.45);isolation:isolate}
+.bs-map{position:absolute;inset:0;color:var(--muted)}
+.bs-map svg{width:100%;height:100%;display:block}
+.bs-map .blk{fill:color-mix(in srgb,var(--ink) 4%,var(--surface))}
+.bs-map .park{fill:color-mix(in srgb,var(--ok) 14%,var(--surface))}
+.bs-map .water{fill:var(--cyan-soft)}
+.bs-map .road{stroke:var(--line);stroke-width:10;fill:none}
+.bs-map .route{stroke:var(--cyan);stroke-width:4;fill:none;stroke-linecap:round;stroke-dasharray:2 9}
+.bs-map .pin{fill:var(--violet)}
+.bs-map .pin-ring{fill:var(--violet);opacity:.18}
+.bs-map .hub{fill:var(--ink)}
+.bs-top{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;z-index:1}
+.bs-chip{padding:7px 12px;border-radius:999px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);font:500 12.5px/1.2 var(--f-mono);color:var(--ink)}
+.bs-seg{display:flex;padding:3px;gap:2px;border-radius:999px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line)}
+.bs-seg button{min-height:32px;padding:0 11px;border:0;border-radius:999px;background:transparent;color:var(--muted);font:600 13px/1 var(--f-body);cursor:pointer}
+.bs-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+.bs-sheet{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;flex-direction:column;background:var(--surface);border-radius:22px 22px 0 0;border-top:1px solid var(--line);box-shadow:0 -14px 40px -18px rgba(10,20,40,.35);will-change:transform;transform:translate3d(0,100%,0)}
+.bs-sheet.is-animating{transition:transform .38s cubic-bezier(.22,1,.36,1)}
+.bs-handle{flex:none;display:grid;justify-items:center;gap:8px;width:100%;padding:10px 18px 12px;border:0;border-radius:22px 22px 0 0;background:transparent;color:var(--ink);text-align:start;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none}
+.bs-handle:active{cursor:grabbing}
+.bs-handle:focus-visible{outline-offset:-4px;border-radius:22px 22px 8px 8px}
+.bs-bar{width:44px;height:5px;border-radius:99px;background:color-mix(in srgb,var(--ink) 22%,transparent)}
+.bs-hrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;width:100%}
+.bs-hrow strong{font-size:17px;font-weight:700}
+.bs-hrow span{font:500 12.5px/1 var(--f-mono);color:var(--muted);white-space:nowrap}
+.bs-content{flex:1;min-height:0;overflow:hidden;overscroll-behavior:contain;padding:0 14px calc(18px + env(safe-area-inset-bottom,0px))}
+.bs-sheet[data-state="full"] .bs-content{overflow-y:auto}
+.bs-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 0 14px}
+.bs-sum div{padding:10px;border-radius:12px;background:color-mix(in srgb,var(--ink) 4%,var(--surface));border:1px solid var(--line)}
+.bs-sum b{display:block;font:700 22px/1.1 var(--f-body)}
+.bs-sum small{font-size:12.5px;color:var(--muted)}
+.bs-list{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.bs-list li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--line)}
+.bs-ico{width:36px;height:36px;border-radius:10px;background:color-mix(in srgb,var(--kraft) 22%,var(--surface));display:grid;place-items:center;color:var(--kraft)}
+.bs-ico svg{width:18px;height:18px}
+.bs-list b{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.bs-list small{font:400 12px/1.3 var(--f-mono);color:var(--muted)}
+.bs-st{font:600 12px/1 var(--f-mono);padding:5px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.bs-st.t{color:var(--cyan)} .bs-st.d{color:var(--warn)} .bs-st.a{color:var(--ok)}
+
+@media (prefers-reduced-motion: reduce){.bs-sheet.is-animating{transition:none}}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="06-drag-to-reorder.html">Prev</a><a href="08-fly-to-target-feedback.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/07-drag-to-expand-and-collapse/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">07 · Layout &amp; Navigation</p>
+    <h1>Drag to Expand &amp; Collapse</h1>
+    <p class="zh">拖曳展開與收合</p>
+    <p class="lede">Pull the returns sheet up or flick it down. It snaps to peek, half or full by distance and speed. Tap the handle to step through the same states.</p>
+    <div class="d-try"><span>Mouse: drag the handle</span><span>Touch: drag or flick</span><span>Keyboard: Enter, Space, Esc</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame">
+      <div class="bs-stage" id="bsStage">
+        <div class="bs-map" aria-hidden="true">
+          <svg viewBox="0 0 460 680" preserveAspectRatio="xMidYMid slice">
+            <rect class="blk" x="0" y="0" width="460" height="680"/>
+            <path class="water" d="M0 520 C90 490 160 560 250 540 S400 500 460 530 V680 H0Z"/>
+            <rect class="park" x="250" y="150" width="130" height="110" rx="14"/>
+            <path class="road" d="M-10 110 H470 M-10 300 H470 M-10 440 H470 M70 -10 V700 M220 -10 V700 M400 -10 V700 M0 200 L460 60"/>
+            <path class="route" d="M70 440 V300 H220 V110 H400"/>
+            <circle class="hub" cx="70" cy="440" r="7"/>
+            <circle class="pin-ring" cx="220" cy="300" r="16"/><circle class="pin" cx="220" cy="300" r="6"/>
+            <circle class="pin-ring" cx="400" cy="110" r="16"/><circle class="pin" cx="400" cy="110" r="6"/>
+            <circle class="pin-ring" cx="220" cy="110" r="16"/><circle class="pin" cx="220" cy="110" r="6"/>
+          </svg>
+        </div>
+        <div class="bs-top">
+          <span class="bs-chip">Alexandria DC</span>
+          <div class="bs-seg" role="group" aria-label="Sheet height">
+            <button type="button" data-snap="peek" aria-pressed="true">Peek</button>
+            <button type="button" data-snap="half" aria-pressed="false">Half</button>
+            <button type="button" data-snap="full" aria-pressed="false">Full</button>
+          </div>
+        </div>
+
+        <section class="bs-sheet" id="bsSheet" data-state="peek" aria-labelledby="bsTitle">
+          <button type="button" class="bs-handle" id="bsHandle" aria-expanded="false" aria-controls="bsContent">
+            <span class="bs-bar" aria-hidden="true"></span>
+            <span class="bs-hrow"><strong id="bsTitle">Returns inbound</strong><span id="bsMeta">12 parcels · peek</span></span>
+          </button>
+          <div class="bs-content" id="bsContent">
+            <div class="bs-sum">
+              <div><b>5</b><small>In transit</small></div>
+              <div><b>3</b><small>At depot</small></div>
+              <div><b>4</b><small>Arrived</small></div>
+            </div>
+            <ul class="bs-list" id="bsList"></ul>
+          </div>
+        </section>
+        <p class="sr-only" id="bsLive" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/07-drag-to-expand-and-collapse/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+/* Interaction JS for this demo only. Respect prefers-reduced-motion. */
+(function(){
+  const PARCELS = [
+    ['RT-20931','Linen shirt, M','Mei Lin C. · Newtown','a'],
+    ['RT-20928','Ceramic mug set','Oliver P. · Bondi','t'],
+    ['RT-20925','Running shoes, 42','Priya S. · Parramatta','d'],
+    ['RT-20919','Desk lamp','Tom W. · Glebe','t'],
+    ['RT-20917','Wool throw','Hana K. · Manly','a'],
+    ['RT-20912','Phone case','Jack L. · Redfern','t'],
+    ['RT-20908','Bath towels, 2','Sofia R. · Marrickville','d'],
+    ['RT-20903','Denim jacket, S','Ethan B. · Surry Hills','a'],
+    ['RT-20899','Cast iron pan','Aisha M. · Ryde','t'],
+    ['RT-20894','Kids raincoat','Lucas N. · Chatswood','d'],
+    ['RT-20890','Yoga mat','Grace T. · Coogee','t'],
+    ['RT-20886','Silk scarf','Noah H. · Balmain','a']
+  ];
+  const ST = {t:'In transit', d:'At depot', a:'Arrived'};
+  const BOX = '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2.5 5.5 9 2.5l6.5 3v7L9 15.5l-6.5-3z M2.5 5.5 9 8.5l6.5-3 M9 8.5v7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+  document.getElementById('bsList').innerHTML = PARCELS.map(p =>
+    '<li><span class="bs-ico">' + BOX + '</span><span><b>' + p[1] + '</b><small>' + p[0] + ' · ' + p[2] + '</small></span><span class="bs-st ' + p[3] + '">' + ST[p[3]] + '</span></li>').join('');
+
+  const stage = document.getElementById('bsStage');
+  const sheet = document.getElementById('bsSheet');
+  const handle = document.getElementById('bsHandle');
+  const content = document.getElementById('bsContent');
+  const meta = document.getElementById('bsMeta');
+  const live = document.getElementById('bsLive');
+  const segBtns = Array.from(document.querySelectorAll('[data-snap]'));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const ORDER = ['peek','half','full'];
+  const NAMES = {peek:'collapsed', half:'half open', full:'fully open'};
+
+  let H = 0, snaps = {}, state = 'peek', height = 0;
+
+  function measure(){
+    H = stage.clientHeight;
+    snaps = {peek: 96, half: Math.round(H * 0.52), full: H - 64};
+    sheet.style.height = snaps.full + 'px';
+  }
+  function setHeight(h, animate){
+    height = h;
+    sheet.classList.toggle('is-animating', !!animate && !reduce.matches);
+    sheet.style.transform = 'translate3d(0,' + (snaps.full - h) + 'px,0)';
+  }
+  function setState(next, animate, announce){
+    const changed = next !== state;
+    state = next;
+    sheet.dataset.state = next;
+    setHeight(snaps[next], animate);
+    handle.setAttribute('aria-expanded', String(next !== 'peek'));
+    handle.setAttribute('aria-label', 'Returns inbound, 12 parcels, ' + NAMES[next] + '. Activate to ' + (next === 'full' ? 'collapse' : 'expand') + '.');
+    meta.textContent = '12 parcels · ' + next;
+    segBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.snap === next)));
+    // Hidden content stays out of the tab order when the sheet is collapsed.
+    content.inert = next === 'peek';
+    if (next !== 'full') content.scrollTop = 0;
+    if (announce && changed) live.textContent = 'Returns sheet ' + NAMES[next] + '.';
+  }
+
+  /* ---------- Drag ---------- */
+  let drag = null;
+  function rubber(h){
+    const lo = snaps.peek, hi = snaps.full;
+    if (h > hi) return hi + (h - hi) * 0.25;
+    if (h < lo) return lo - (lo - h) * 0.25;
+    return h;
+  }
+  function dragStart(y){
+    drag = {startY: y, startH: height, samples: [{y, t: performance.now()}], moved: false};
+    sheet.classList.remove('is-animating');
+  }
+  function dragMove(y){
+    if (!drag) return;
+    const dy = drag.startY - y;              // upward = positive
+    if (Math.abs(dy) > 4) drag.moved = true;
+    const now = performance.now();
+    drag.samples.push({y, t: now});
+    while (drag.samples.length > 2 && now - drag.samples[0].t > 100) drag.samples.shift();
+    setHeight(rubber(drag.startH + dy), false);
+  }
+  function dragEnd(cancelled){
+    if (!drag) return;
+    const d = drag; drag = null;
+    if (cancelled){ setState(state, true, false); return d; }
+    const s = d.samples, a = s[0], b = s[s.length - 1];
+    const v = b.t > a.t ? (a.y - b.y) / (b.t - a.t) : 0;   // px/ms, upward positive
+    const projected = height + v * 220;
+    let best = 'peek';
+    ORDER.forEach(k => { if (Math.abs(snaps[k] - projected) < Math.abs(snaps[best] - projected)) best = k; });
+    // A clear flick always moves at least one step.
+    const i = ORDER.indexOf(state);
+    if (Math.abs(v) > 0.6 && best === state) best = ORDER[Math.max(0, Math.min(2, i + (v > 0 ? 1 : -1)))];
+    setState(best, true, true);
+    return d;
+  }
+
+  // Handle: pointer events (touch-action:none on the handle).
+  let suppressClick = false;
+  handle.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    handle.setPointerCapture(e.pointerId);
+    dragStart(e.clientY);
+  });
+  handle.addEventListener('pointermove', e => { if (drag && handle.hasPointerCapture(e.pointerId)) dragMove(e.clientY); });
+  handle.addEventListener('pointerup', e => { const d = dragEnd(false); suppressClick = !!(d && d.moved); if (suppressClick) setTimeout(() => { suppressClick = false; }, 0); });
+  handle.addEventListener('pointercancel', () => dragEnd(true));
+  handle.addEventListener('lostpointercapture', () => { if (drag) dragEnd(false); });
+
+  // Content: touch only, and only when not hijacking a scroll.
+  let tc = null;
+  content.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    tc = {y: e.touches[0].clientY, active: false, top: content.scrollTop};
+  }, {passive:true});
+  content.addEventListener('touchmove', e => {
+    if (!tc) return;
+    const y = e.touches[0].clientY, dy = y - tc.y;
+    if (!tc.active){
+      const canDrag = state !== 'full' || (content.scrollTop <= 0 && dy > 0);
+      if (!canDrag || Math.abs(dy) < 6){ if (Math.abs(dy) >= 6) tc = null; return; }
+      tc.active = true; dragStart(y);
+    }
+    e.preventDefault();
+    dragMove(y);
+  }, {passive:false});
+  content.addEventListener('touchend', () => { if (tc && tc.active) dragEnd(false); tc = null; });
+  content.addEventListener('touchcancel', () => { if (tc && tc.active) dragEnd(true); tc = null; });
+
+  /* ---------- Non-drag controls ---------- */
+  handle.addEventListener('click', () => {
+    if (suppressClick){ suppressClick = false; return; }
+    const i = ORDER.indexOf(state);
+    setState(i === 2 ? 'peek' : ORDER[i + 1], true, true);
+  });
+  segBtns.forEach(b => b.addEventListener('click', () => setState(b.dataset.snap, true, true)));
+  sheet.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && state !== 'peek'){
+      e.preventDefault();
+      if (drag) dragEnd(true);
+      setState('peek', true, true);
+      handle.focus();
+    }
+  });
+  sheet.addEventListener('transitionend', e => { if (e.target === sheet) sheet.classList.remove('is-animating'); });
+
+  // Orientation, viewport and content changes: re-measure and re-snap without animation.
+  const ro = new ResizeObserver(() => { const was = drag; if (was) dragEnd(true); measure(); setState(state, false, false); });
+  ro.observe(stage);
+
+  measure();
+  setState('peek', false, false);
+})();
+</script>
+</body>
+</html>

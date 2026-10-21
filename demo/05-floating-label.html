@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>05 · Floating Label</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Interaction CSS for this demo only. Use the tokens from assets/demo.css. */
+.rf{max-width:760px;margin-inline:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(18px,4vw,36px);box-shadow:0 20px 50px -30px rgba(10,20,40,.35)}
+.rf-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px 16px;margin-bottom:22px}
+.rf-head h2{font-size:clamp(20px,2.4vw,24px);font-weight:700}
+.rf-head p{color:var(--muted);font-size:15px;margin-top:4px}
+.rf-dir{font:500 13px/1 var(--f-mono);letter-spacing:.04em;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.rf-dir:hover{color:var(--ink)}
+.rf-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}
+.rf-grid .span{grid-column:1/-1}
+@media (max-width:620px){.rf-grid{grid-template-columns:1fr}}
+
+/* The floating label field */
+.fl{position:relative;min-width:0}
+.fl-box{position:relative}
+.fl-input{display:block;width:100%;min-height:58px;margin:0;padding:25px 14px 8px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:400 16px/1.4 var(--f-body);transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none}
+textarea.fl-input{min-height:112px;resize:vertical;padding-top:28px}
+select.fl-input{padding-inline-end:42px;cursor:pointer}
+.fl-input[type="date"]{min-height:58px}
+.fl-input:hover:not(:disabled):not([readonly]){border-color:color-mix(in srgb,var(--ink) 35%,transparent)}
+.fl-input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px color-mix(in srgb,var(--cyan) 28%,transparent)}
+.fl-input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+.fl-label{position:absolute;top:18px;inset-inline-start:15px;max-width:calc(100% - 30px);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--muted);font:500 16px/22px var(--f-body);pointer-events:none;transform-origin:left top;transition:transform .2s var(--ease),color .2s;will-change:transform}
+[dir="rtl"] .fl-label{transform-origin:right top}
+/* Floated: focused, filled (JS class, placeholder trick, autofill) or a control that always shows a value */
+.fl:focus-within .fl-label,
+.fl.is-filled .fl-label,
+.fl.is-static .fl-label,
+.fl-input:not(:placeholder-shown) ~ .fl-label,
+.fl-input:autofill ~ .fl-label{transform:translateY(-11px) scale(.76)}
+.fl:focus-within .fl-label{color:var(--cyan)}
+.fl-input::placeholder{color:transparent}
+/* Autofill detection hook for JS */
+@keyframes flAutofill{from{opacity:1}to{opacity:1}}
+.fl-input:-webkit-autofill{animation:flAutofill 1ms}
+
+/* Select chevron drawn with borders so it follows the theme */
+.fl.is-select .fl-box::after{content:"";position:absolute;inset-inline-end:18px;top:50%;width:8px;height:8px;margin-top:-6px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);pointer-events:none}
+
+.fl-help{display:flex;gap:6px;margin-top:6px;padding-inline:4px;color:var(--muted);font-size:13.5px;line-height:1.4}
+.fl-err{display:none;align-items:flex-start;gap:6px;margin-top:6px;padding-inline:4px;color:var(--err);font-size:13.5px;line-height:1.4;font-weight:600}
+.fl-err::before{content:"!";flex:none;display:inline-grid;place-items:center;width:16px;height:16px;margin-top:1px;border-radius:50%;background:var(--err);color:var(--surface);font:700 11px/1 var(--f-body)}
+.fl.is-error .fl-err{display:flex}
+.fl.is-error .fl-input{border-color:var(--err)}
+.fl.is-error .fl-input:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--err) 25%,transparent)}
+.fl.is-error .fl-label{color:var(--err)}
+.fl-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+.fl-input:disabled{background:color-mix(in srgb,var(--ink) 5%,var(--surface));color:var(--muted);cursor:not-allowed;border-style:dashed}
+.fl-input[readonly]{background:color-mix(in srgb,var(--ink) 3%,var(--surface));cursor:default}
+.fl-input[readonly]:focus{box-shadow:none;border-color:var(--line)}
+.fl:has([readonly]):focus-within .fl-label{color:var(--muted)}
+
+.rf-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;align-items:center}
+.rf-actions .btn{min-height:48px}
+.btn-primary:hover{opacity:.9}
+.rf-status{margin-top:16px;font-size:15px;min-height:1.5em}
+.rf-status.ok{color:var(--ok);font-weight:600}
+.rf-status.bad{color:var(--err);font-weight:600}
+
+@media (prefers-reduced-motion: reduce){.fl-label,.fl-input{transition:none}}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="04-animated-state-transition.html">Prev</a><a href="06-drag-to-reorder.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/05-floating-label/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">05 · Input &amp; Controls</p>
+    <h1>Floating Label</h1>
+    <p class="zh">浮動標籤</p>
+    <p class="lede">Click into a field and the label lifts above your answer. Submit empty to see errors, or fill a sample order to see labels float for values set by code.</p>
+    <div class="d-try"><span>Mouse</span><span>Touch</span><span>Keyboard: Tab between fields</span><span>RTL toggle</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame">
+      <form class="rf" id="rf" novalidate>
+        <div class="rf-head">
+          <div>
+            <h2>Start a return</h2>
+            <p>We'll email a prepaid label within a few minutes.</p>
+          </div>
+          <button type="button" class="rf-dir" id="dirBtn" aria-pressed="false">Direction: LTR</button>
+        </div>
+
+        <div class="rf-grid">
+          <div class="fl">
+            <div class="fl-box">
+              <input class="fl-input" id="f-name" name="name" type="text" autocomplete="name" placeholder=" " required aria-describedby="f-name-help f-name-err">
+              <label class="fl-label" for="f-name">Full name</label>
+            </div>
+            <p class="fl-help" id="f-name-help">Required</p>
+            <p class="fl-err" id="f-name-err" aria-live="polite"></p>
+          </div>
+
+          <div class="fl">
+            <div class="fl-box">
+              <input class="fl-input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder=" " required aria-describedby="f-email-help f-email-err">
+              <label class="fl-label" for="f-email">Email address</label>
+            </div>
+            <p class="fl-help" id="f-email-help">Required. Your return label goes here.</p>
+            <p class="fl-err" id="f-email-err" aria-live="polite"></p>
+          </div>
+
+          <div class="fl">
+            <div class="fl-box">
+              <input class="fl-input" id="f-order" name="order" type="text" autocomplete="off" placeholder=" " required pattern="^[Aa][Uu]-?\d{5}$" aria-describedby="f-order-help f-order-err" spellcheck="false">
+              <label class="fl-label" for="f-order">Order number</label>
+            </div>
+            <p class="fl-help" id="f-order-help">Required. Looks like AU-48213, on your packing slip.</p>
+            <p class="fl-err" id="f-order-err" aria-live="polite"></p>
+          </div>
+
+          <div class="fl is-select is-static">
+            <div class="fl-box">
+              <select class="fl-input" id="f-reason" name="reason" required aria-describedby="f-reason-help f-reason-err">
+                <option value="">Choose a reason</option>
+                <option>Wrong size</option>
+                <option>Arrived damaged</option>
+                <option>Not as described</option>
+                <option>Changed my mind</option>
+              </select>
+              <label class="fl-label" for="f-reason">Reason for return</label>
+            </div>
+            <p class="fl-help" id="f-reason-help">Required</p>
+            <p class="fl-err" id="f-reason-err" aria-live="polite"></p>
+          </div>
+
+          <div class="fl">
+            <div class="fl-box">
+              <input class="fl-input" id="f-qty" name="qty" type="number" inputmode="numeric" min="1" max="10" step="1" placeholder=" " required aria-describedby="f-qty-help f-qty-err">
+              <label class="fl-label" for="f-qty">Items to return</label>
+            </div>
+            <p class="fl-help" id="f-qty-help">Required. 1 to 10 items.</p>
+            <p class="fl-err" id="f-qty-err" aria-live="polite"></p>
+          </div>
+
+          <div class="fl is-static">
+            <div class="fl-box">
+              <input class="fl-input" id="f-date" name="date" type="date" aria-describedby="f-date-help f-date-err">
+              <label class="fl-label" for="f-date">Pickup date (optional)</label>
+            </div>
+            <p class="fl-help" id="f-date-help">Optional. Leave empty to drop it at a post office.</p>
+            <p class="fl-err" id="f-date-err" aria-live="polite"></p>
+          </div>
+
+          <div class="fl span">
+            <div class="fl-box">
+              <textarea class="fl-input" id="f-notes" name="notes" rows="3" maxlength="240" placeholder=" " aria-describedby="f-notes-help f-notes-err"></textarea>
+              <label class="fl-label" for="f-notes">Anything we should know? (optional)</label>
+            </div>
+            <p class="fl-help" id="f-notes-help"><span>Optional. <span id="f-notes-count">0</span>/240 characters.</span></p>
+            <p class="fl-err" id="f-notes-err" aria-live="polite"></p>
+          </div>
+
+          <div class="fl">
+            <div class="fl-box">
+              <input class="fl-input" id="f-wh" type="text" value="Alexandria DC, Sydney" disabled aria-describedby="f-wh-help">
+              <label class="fl-label" for="f-wh">Returns warehouse</label>
+            </div>
+            <p class="fl-help" id="f-wh-help">Disabled. Set by your carrier.</p>
+          </div>
+
+          <div class="fl">
+            <div class="fl-box">
+              <input class="fl-input" id="f-rid" type="text" value="RT-20931" readonly aria-describedby="f-rid-help">
+              <label class="fl-label" for="f-rid">Return ID</label>
+            </div>
+            <p class="fl-help" id="f-rid-help">Read only. Quote this if you contact us.</p>
+          </div>
+        </div>
+
+        <div class="rf-actions">
+          <button class="btn btn-primary" type="submit">Request return</button>
+          <button class="btn btn-ghost" type="button" id="fillBtn">Fill sample order</button>
+          <button class="btn btn-ghost" type="reset">Clear</button>
+        </div>
+        <p class="rf-status" id="rfStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/05-floating-label/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+/* Interaction JS for this demo only. Respect prefers-reduced-motion (handled in CSS: label moves without transition). */
+(function(){
+  const form = document.getElementById('rf');
+  const status = document.getElementById('rfStatus');
+  const fields = Array.from(form.querySelectorAll('.fl-input'));
+  const touched = new Set();
+
+  // Filled-state detection: covers typing, programmatic values, server values,
+  // autofill (animationstart hook) and values restored by back/forward cache.
+  function sync(el){
+    const fl = el.closest('.fl');
+    const filled = el.value !== '' || (el.matches && safeMatch(el, ':autofill'));
+    fl.classList.toggle('is-filled', filled);
+  }
+  function safeMatch(el, sel){ try { return el.matches(sel); } catch(e){ try { return el.matches(':-webkit-autofill'); } catch(_){ return false; } } }
+  function syncAll(){ fields.forEach(sync); }
+
+  function messageFor(el){
+    const v = el.validity;
+    const name = el.id;
+    if (v.valueMissing){
+      if (name === 'f-reason') return 'Choose a reason so we can route your return.';
+      return 'This field is required.';
+    }
+    if (name === 'f-email' && v.typeMismatch) return 'Enter an email like name@example.com.';
+    if (name === 'f-order' && v.patternMismatch) return 'Use the format AU-48213.';
+    if (name === 'f-qty' && (v.rangeUnderflow || v.rangeOverflow || v.badInput || v.stepMismatch)) return 'Enter a whole number from 1 to 10.';
+    if (name === 'f-date' && el.value){
+      const today = new Date(); today.setHours(0,0,0,0);
+      const picked = new Date(el.value + 'T00:00:00');
+      if (picked < today) return 'Pick today or a later date.';
+    }
+    return '';
+  }
+  function validate(el){
+    if (el.disabled || el.readOnly) return true;
+    const msg = messageFor(el);
+    const fl = el.closest('.fl');
+    const err = fl.querySelector('.fl-err');
+    if (msg){
+      fl.classList.add('is-error');
+      el.setAttribute('aria-invalid','true');
+      if (err.textContent !== msg) err.textContent = msg;
+    } else {
+      fl.classList.remove('is-error');
+      el.removeAttribute('aria-invalid');
+      if (err) err.textContent = '';
+    }
+    return !msg;
+  }
+
+  fields.forEach(el => {
+    el.addEventListener('input', () => { sync(el); if (touched.has(el)) validate(el); if (el.id==='f-notes') document.getElementById('f-notes-count').textContent = el.value.length; });
+    el.addEventListener('change', () => { sync(el); if (touched.has(el)) validate(el); });
+    el.addEventListener('blur', () => { sync(el); if (el.value !== '' || el.required) { touched.add(el); validate(el); } });
+    el.addEventListener('animationstart', e => { if (e.animationName === 'flAutofill') sync(el); });
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let firstBad = null;
+    fields.forEach(el => { touched.add(el); if (!validate(el) && !firstBad) firstBad = el; });
+    if (firstBad){
+      const n = form.querySelectorAll('[aria-invalid="true"]').length;
+      status.className = 'rf-status bad';
+      status.textContent = n === 1 ? '1 field needs attention.' : n + ' fields need attention.';
+      firstBad.focus();
+      return;
+    }
+    status.className = 'rf-status ok';
+    status.textContent = 'Return RT-20931 requested. Label sent to ' + form.elements['email'].value + '.';
+  });
+
+  form.addEventListener('reset', () => {
+    // Wait for the browser to clear values, then resync.
+    setTimeout(() => {
+      touched.clear();
+      fields.forEach(el => { const fl = el.closest('.fl'); fl.classList.remove('is-error'); el.removeAttribute('aria-invalid'); const er = fl.querySelector('.fl-err'); if (er) er.textContent=''; });
+      document.getElementById('f-notes-count').textContent = '0';
+      status.className = 'rf-status'; status.textContent = '';
+      syncAll();
+    });
+  });
+
+  // Programmatic values: the label must float even though no input event fires.
+  document.getElementById('fillBtn').addEventListener('click', () => {
+    const d = new Date(); d.setDate(d.getDate() + 2);
+    form.elements['name'].value = 'Mei Lin Chen';
+    form.elements['email'].value = 'meilin.chen@example.com';
+    form.elements['order'].value = 'AU-48213';
+    form.elements['reason'].value = 'Wrong size';
+    form.elements['qty'].value = '2';
+    form.elements['date'].value = d.toISOString().slice(0,10);
+    form.elements['notes'].value = 'Linen shirt in M. Please send size L instead.';
+    document.getElementById('f-notes-count').textContent = form.elements['notes'].value.length;
+    syncAll();
+    fields.forEach(el => { if (touched.has(el)) validate(el); });
+    status.className = 'rf-status'; status.textContent = 'Sample order filled in.';
+  });
+
+  // Right-to-left check
+  const dirBtn = document.getElementById('dirBtn');
+  dirBtn.addEventListener('click', () => {
+    const rtl = form.getAttribute('dir') !== 'rtl';
+    form.setAttribute('dir', rtl ? 'rtl' : 'ltr');
+    dirBtn.setAttribute('aria-pressed', String(rtl));
+    dirBtn.textContent = 'Direction: ' + (rtl ? 'RTL' : 'LTR');
+  });
+
+  syncAll();
+  window.addEventListener('pageshow', syncAll);       // back/forward restore
+  setTimeout(syncAll, 400);                            // late autofill without animation hook
+})();
+</script>
+</body>
+</html>
