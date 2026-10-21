@@ -1,0 +1,57 @@
+/* Shared shell for every demo page in ui-interaction-library.
+   Each demo page links this file for the frame (header, intro, stage, footer)
+   and keeps its own interaction CSS and JS inline, so the interaction itself
+   stays self-contained and easy to copy. */
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+:root{
+  --bg:#F3F6F8; --surface:#FFFFFF; --glass:rgba(255,255,255,.72); --ink:#13171C; --muted:#56626E; --line:rgba(19,23,28,.13);
+  --cyan:#0089A8; --cyan-soft:#DDF4F9; --violet:#5A40D4; --violet-soft:#ECE8FF; --kraft:#B4864F; --on-fill:#FFFFFF;
+  --ok:#2F7A45; --warn:#A86200; --err:#C2362F;
+  --f-display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",sans-serif;
+  --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r-lg:22px; --r-md:14px; --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B0E12; --surface:#141A21; --glass:rgba(20,26,33,.72); --ink:#ECF2F6; --muted:#98A5B1; --line:rgba(236,242,246,.13);
+  --cyan:#3DCFEA; --cyan-soft:#0E2C35; --violet:#A08CFF; --violet-soft:#211A42; --kraft:#C99A63;
+  --ok:#6CC283; --warn:#F0B35A; --err:#FF7B72; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0B0E12; --surface:#141A21; --glass:rgba(20,26,33,.72); --ink:#ECF2F6; --muted:#98A5B1; --line:rgba(236,242,246,.13);
+  --cyan:#3DCFEA; --cyan-soft:#0E2C35; --violet:#A08CFF; --violet-soft:#211A42; --kraft:#C99A63;
+  --ok:#6CC283; --warn:#F0B35A; --err:#FF7B72; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;overflow-x:clip}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;max-width:1120px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.d-top{position:sticky;top:0;z-index:50;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.d-top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:56px}
+.d-top a{color:inherit;text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.d-top a:hover{color:var(--violet)}
+.d-nav{display:flex;gap:18px}
+
+.d-intro{padding-block:clamp(36px,6vw,72px) clamp(24px,4vw,40px);display:grid;gap:14px}
+.d-num{font-family:var(--f-mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.d-intro h1{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(44px,8vw,96px);line-height:.92}
+.d-intro .zh{font-family:var(--f-body);font-weight:600;font-size:clamp(20px,2.4vw,26px);color:var(--muted)}
+.d-intro p.lede{max-width:60ch;color:var(--muted);font-size:clamp(17px,1.6vw,19px)}
+.d-try{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.d-try span{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+
+.d-stage{padding-bottom:clamp(48px,8vw,96px)}
+.d-stage .frame{position:relative;border-radius:28px;border:1px solid var(--line);background:linear-gradient(150deg,var(--cyan-soft),var(--violet-soft));padding:clamp(16px,4vw,48px);overflow:hidden;min-height:420px}
+
+.d-foot{border-top:1px solid var(--line);padding-block:28px 40px;color:var(--muted);font-size:14px}
+.d-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+.d-foot a{color:inherit}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font:600 16px/1 var(--f-body);border:1px solid transparent;cursor:pointer;text-decoration:none}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

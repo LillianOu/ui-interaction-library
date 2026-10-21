@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Returns Bench Showcase</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one long scroll in warehouse-signage type; each section is one interaction doing one selling job. */
+:root{
+  --bg:#F3F6F8; --surface:#FFFFFF; --glass:rgba(255,255,255,.72); --ink:#13171C; --muted:#56626E; --line:rgba(19,23,28,.13);
+  --cyan:#0089A8; --cyan-soft:#DDF4F9; --violet:#5A40D4; --violet-soft:#ECE8FF; --kraft:#B4864F;
+  --f-floor:#0A6B82; --f-tenant:#5A40D4; --f-manager:#2B333D; --f-owner:#85602F; --on-fill:#FFFFFF;
+  --st-in:#0089A8; --st-proc:#5A40D4; --st-closed:#3B7A4A;
+  --f-display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",sans-serif;
+  --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r-lg:22px; --r-md:14px; --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B0E12; --surface:#141A21; --glass:rgba(20,26,33,.72); --ink:#ECF2F6; --muted:#98A5B1; --line:rgba(236,242,246,.13);
+  --cyan:#3DCFEA; --cyan-soft:#0E2C35; --violet:#A08CFF; --violet-soft:#211A42; --kraft:#C99A63;
+  --st-in:#3DCFEA; --st-proc:#A08CFF; --st-closed:#6CC283; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0B0E12; --surface:#141A21; --glass:rgba(20,26,33,.72); --ink:#ECF2F6; --muted:#98A5B1; --line:rgba(236,242,246,.13);
+  --cyan:#3DCFEA; --cyan-soft:#0E2C35; --violet:#A08CFF; --violet-soft:#211A42; --kraft:#C99A63;
+  --st-in:#3DCFEA; --st-proc:#A08CFF; --st-closed:#6CC283; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;max-width:1180px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);font-weight:500}
+.h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(40px,7vw,84px);line-height:.92;letter-spacing:.005em}
+.lede{color:var(--muted);font-size:clamp(17px,1.6vw,20px);max-width:58ch}
+section{scroll-margin-top:72px}
+.sec{padding-block:clamp(72px,10vw,140px)}
+.sec-head{display:grid;gap:18px;margin-bottom:clamp(36px,5vw,64px)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:600 16px/1 var(--f-body);text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-primary:hover{background:var(--violet);color:var(--on-fill)}
+.btn-ghost{border-color:var(--line);background:var(--glass);color:var(--ink);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.btn-ghost:hover{border-color:var(--cyan)}
+
+/* Header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--glass);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.brand{white-space:nowrap;display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+.brand svg{width:28px;height:28px}
+.nav{display:flex;align-items:center;gap:26px}
+.nav a{text-decoration:none;font-weight:500;font-size:15px;color:var(--muted)}
+.nav a:hover{color:var(--ink)}
+.nav .btn{min-height:40px;padding:0 16px;font-size:15px;color:var(--bg)}
+.nav .btn:hover{color:var(--on-fill)}
+@media (max-width:760px){.nav a:not(.btn){display:none}.top .brand{font-size:20px}.nav .btn{white-space:nowrap}}
+
+/* 22 Knockout title */
+.ko{position:relative;height:260vh;margin-top:-61px}
+.ko-stick{position:sticky;top:0;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--bg)}
+.ko-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ko-top{position:absolute;left:0;right:0;top:80px;display:flex;justify-content:space-between;gap:16px;color:var(--muted)}
+.ko-copy{position:absolute;left:0;right:0;bottom:clamp(28px,6vh,64px);display:grid;gap:16px;will-change:opacity,transform}
+.ko-copy h1{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(34px,5vw,60px);line-height:.95}
+.ko-copy p{max-width:52ch;color:var(--muted);font-size:clamp(16px,1.5vw,19px)}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.ko-cap{position:absolute;left:0;right:0;bottom:clamp(40px,10vh,110px);opacity:0;pointer-events:none}
+.ko-cap p{font-family:var(--f-display);font-weight:800;text-transform:uppercase;color:#fff;font-size:clamp(36px,6vw,80px);line-height:.95;max-width:14ch;text-shadow:0 2px 30px rgba(0,0,0,.45)}
+.ko-cap span{display:block;margin-top:14px;color:rgba(255,255,255,.8)}
+.ko-static{display:none}
+
+/* 23 Inline image title */
+.inl h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(46px,8.4vw,112px);line-height:.94}
+.inl .w{display:inline-block}
+.pill{display:inline-block;vertical-align:-.04em;height:.74em;width:1.75em;border-radius:.22em;overflow:hidden;position:relative;border:0;padding:0;margin:0 .04em;cursor:zoom-in;background:var(--kraft);box-shadow:0 0 0 1px var(--line)}
+.pill img{width:100%;height:100%;object-fit:cover;display:block}
+.pill .pcap{position:absolute;left:16px;bottom:14px;right:16px;display:none;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#fff;font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-align:left;text-shadow:0 1px 10px rgba(0,0,0,.6)}
+.inl.open .pill{display:block;width:100%;height:auto;aspect-ratio:16/8;border-radius:var(--r-lg);margin:.14em 0 .1em;cursor:zoom-out}
+.inl.open .pill .pcap{display:flex}
+.inl-foot{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:baseline;margin-top:28px}
+.hint{color:var(--muted);font-size:15px}
+::view-transition-group(*){animation-duration:.55s;animation-timing-function:var(--ease)}
+::view-transition-old(pill),::view-transition-new(pill){height:100%;width:100%;object-fit:cover}
+
+/* 26 Sticky rail */
+.day{display:grid;grid-template-columns:minmax(92px,26%) 1fr;gap:0 clamp(16px,3vw,40px);border-top:1px solid var(--line);min-height:240px}
+.rail{position:relative}
+.rail-in{position:sticky;top:84px;padding-block:22px 18px}
+.rail .num{font-family:var(--f-display);font-weight:900;font-size:clamp(72px,12vw,150px);line-height:.82;font-variant-numeric:tabular-nums;display:block;color:var(--ink);transition:color .3s}
+.rail .lbl{display:block;margin-top:12px;font-family:var(--f-mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.rail .bar{display:block;width:56px;height:4px;border-radius:4px;background:var(--line);margin-top:14px;transition:background .3s,width .3s}
+.day.active .bar{background:linear-gradient(90deg,var(--cyan),var(--violet));width:96px}
+.day:not(.active) .num{color:var(--muted)}
+.items{display:grid;gap:14px;padding-block:22px 34px;min-width:0}
+.item{background:var(--glass);border:1px solid var(--line);border-radius:var(--r-md);padding:20px 22px;display:grid;gap:6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.item h3{font-size:clamp(19px,2vw,23px);font-weight:600;line-height:1.25}
+.item p{color:var(--muted);font-size:16px}
+.chip{justify-self:start;display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid currentColor}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.st-in{color:var(--st-in)} .st-proc{color:var(--st-proc)} .st-closed{color:var(--st-closed)}
+
+/* 24 Expanding grid */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;grid-auto-flow:row}
+.tile{position:relative;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden;min-width:0}
+.tile>button{all:unset;box-sizing:border-box;display:grid;gap:10px;width:100%;padding:24px 24px 26px;cursor:pointer;align-content:start}
+.tile>button:focus-visible{outline:3px solid var(--cyan);outline-offset:-3px;border-radius:var(--r-lg)}
+.tile .t-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--cyan-soft);color:var(--cyan)}
+.tile.v .t-ic{background:var(--violet-soft);color:var(--violet)}
+.tile .t-ic svg{width:22px;height:22px}
+.tile h3{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(28px,3.2vw,38px);line-height:.95}
+.tile .t-short{color:var(--muted);font-size:16px}
+.tile .t-plus{position:absolute;top:20px;right:20px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:transform .4s var(--ease)}
+.tile .t-plus svg{width:14px;height:14px}
+.tile .t-more{display:none;padding:0 24px 26px}
+.tile.open{grid-column:1/-1;background:linear-gradient(140deg,var(--cyan-soft),var(--violet-soft))}
+.tile.open .t-more{display:grid;gap:18px}
+.tile.open .t-plus{transform:rotate(45deg)}
+.t-more p{max-width:60ch;font-size:17px}
+.mini-dash{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:560px}
+.mini-dash div{background:var(--surface);border-radius:12px;padding:14px;border:1px solid var(--line)}
+.mini-dash b{display:block;font-family:var(--f-display);font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.ex{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:560px){.grid{grid-template-columns:minmax(0,1fr)}}
+
+/* 25 Offset columns */
+.gal-wrap{position:relative;overflow:clip}
+.gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2vw,24px);align-items:start;max-width:880px;margin-inline:auto}
+.col{display:grid;gap:clamp(12px,2vw,24px);will-change:transform}
+.shot{position:relative;border-radius:26px;background:var(--surface);border:1px solid var(--line);padding:16px;overflow:hidden;display:flex;flex-direction:column;gap:12px;font-size:13px;line-height:1.35}
+.shot.tall{aspect-ratio:9/15.5}
+.shot.short{aspect-ratio:9/12.5}
+.badge{position:absolute;top:12px;right:12px;font-family:var(--f-mono);font-size:11px;padding:3px 8px;border-radius:999px;background:var(--ink);color:var(--bg);z-index:2}
+.s-title{font-weight:700;font-size:15px}
+.s-sub{color:var(--muted);font-size:12px}
+.s-field{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;color:var(--muted)}
+.s-field b{color:var(--ink);font-family:var(--f-mono)}
+.s-btn{border-radius:12px;padding:12px;text-align:center;font-weight:600;background:linear-gradient(100deg,var(--cyan),var(--violet));color:var(--on-fill)}
+.s-stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.s-stat div{border-radius:10px;padding:8px;background:var(--bg)}
+.s-stat b{display:block;font-family:var(--f-display);font-size:30px;line-height:1}
+.s-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line);min-width:0}
+.s-row span:first-child{font-family:var(--f-mono);font-size:11px}
+.s-row .chip{margin-left:auto;font-size:9px;padding:2px 6px;flex:none}
+.s-cam{position:relative;flex:1;border-radius:14px;overflow:hidden;background:#111}
+.s-cam img{width:100%;height:100%;object-fit:cover;display:block}
+.s-cam .reticle{position:absolute;inset:26% 14%;border:2px solid #3DCFEA;border-radius:10px;box-shadow:0 0 0 999px rgba(0,0,0,.35)}
+.s-cam .det{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;font-family:var(--f-mono);font-size:11px;padding:5px 9px;border-radius:999px;white-space:nowrap}
+.s-thumbs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.s-thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}
+.s-chips{display:flex;flex-wrap:wrap;gap:6px}
+.s-chips span{border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:11px}
+.s-chips span.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.s-mail{display:grid;gap:6px}
+.s-mail div{border-bottom:1px solid var(--line);padding-bottom:6px;overflow-wrap:anywhere}
+.s-att{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.s-att img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block}
+.s-bars{display:flex;align-items:flex-end;gap:5px;height:70px}
+.s-bars i{flex:1;border-radius:4px 4px 2px 2px;background:linear-gradient(180deg,var(--cyan),var(--violet))}
+@media (max-width:420px){.shot{padding:11px;border-radius:18px;font-size:11px}.s-stat b{font-size:22px}}
+
+/* 27 Folder tabs */
+.binder{display:grid;max-width:900px}
+.folder{grid-area:1/1;position:relative;padding-top:50px;transition:transform .45s var(--ease),filter .45s var(--ease);transform-origin:50% 100%}
+.ftab{position:absolute;top:0;height:58px;width:calc((100% - 30px)/4);border:0;border-radius:16px 16px 0 0;color:var(--on-fill);font:600 clamp(14px,1.7vw,18px)/1.1 var(--f-body);cursor:pointer;padding:0 10px 8px;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--fc)}
+.ftab[aria-selected="true"]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.fbody{position:relative;background:var(--fc);color:var(--on-fill);border-radius:0 18px 22px 22px;padding:clamp(24px,4vw,44px);min-height:330px;box-shadow:0 -10px 30px -18px rgba(0,0,0,.4)}
+.folder:not(:first-child) .fbody{border-radius:18px 18px 22px 22px}
+.fbody h3{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(34px,5vw,58px);line-height:.95;margin-bottom:22px}
+.fbody ul{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:52ch}
+.fbody li{padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.14);font-size:17px}
+
+/* 28 Bubble picker */
+.pick{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.bubbles{position:relative;width:100%;border-radius:var(--r-lg);background:linear-gradient(150deg,var(--cyan-soft),var(--violet-soft));border:1px solid var(--line);overflow:hidden;margin:0;padding:0;min-width:0}
+.bubbles legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.bub{position:absolute;left:0;top:0;border-radius:50%;border:1.5px solid var(--line);background:var(--glass);color:var(--ink);font:600 13px/1.15 var(--f-body);display:grid;place-items:center;text-align:center;padding:6px;cursor:pointer;transition:background .25s,color .25s,border-color .25s;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.bub[aria-pressed="true"]{background:var(--violet);color:var(--on-fill);border-color:transparent}
+.bub[aria-pressed="true"]::before{content:"✓";display:block;font-size:.8em;margin-bottom:-.6em}
+.bub span{display:block}
+.form{display:grid;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(20px,3vw,32px)}
+.form label{display:grid;gap:6px;font-weight:500;font-size:15px}
+.form input{font:inherit;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-height:48px}
+.count{font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.note{font-size:15px;color:var(--muted)}
+.note.ok{color:var(--ink);background:var(--cyan-soft);border-radius:12px;padding:12px 14px}
+@media (max-width:860px){.pick{grid-template-columns:minmax(0,1fr)}}
+
+.skill-tag{display:inline-flex;align-items:center;gap:6px;justify-self:start;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:6px 12px;border-radius:999px;background:var(--ink);color:var(--bg)}
+.skill-tag:hover{background:var(--violet);color:var(--on-fill)}
+.demo-bar{background:linear-gradient(100deg,var(--cyan),var(--violet));color:var(--on-fill);font-size:14px}
+.demo-bar .wrap{padding-block:8px;display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between}
+.demo-bar a{color:var(--on-fill)}
+/* 29 Split view */
+.sv{--top:50%;position:relative;height:min(600px,78vh);max-width:460px;display:grid;grid-template-rows:var(--top) 30px minmax(0,1fr);border-radius:28px;overflow:hidden;border:1px solid var(--line);background:var(--surface);touch-action:pan-y}
+.sv-top{position:relative;min-height:0;overflow:hidden}
+.sv-top img{width:100%;height:100%;object-fit:cover;display:block}
+.sv-top p{position:absolute;left:18px;bottom:14px;color:#fff;font:800 clamp(28px,6vw,40px)/1 var(--f-display);text-transform:uppercase;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+.sv-handle{display:grid;place-items:center;cursor:row-resize;background:var(--surface);border-block:1px solid var(--line);touch-action:none;outline-offset:-3px}
+.sv-handle span{width:56px;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.sv-bot{container-type:size;min-height:0;overflow:auto;padding:12px}
+.sv-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sv-list li{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;background:var(--bg);min-width:0}
+.sv-list img{width:52px;height:52px;border-radius:10px;object-fit:cover;flex:none}
+.sv-list b{display:block;font-family:var(--f-mono);font-size:13px}
+.sv-list .meta{color:var(--muted);font-size:13px}
+.sv-list .chip{margin-left:auto;font-size:10px;flex:none}
+@container (max-height:170px){.sv-list{display:flex;overflow-x:auto;gap:8px}.sv-list li{flex:none;padding:6px 12px 6px 6px}.sv-list img{width:34px;height:34px}.sv-list .meta,.sv-list .chip{display:none}}
+footer{border-top:1px solid var(--line);padding-block:44px 56px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:end}
+footer .brand{font-size:40px}
+footer p{color:var(--muted);font-size:15px}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .ko{height:auto;margin-top:0}
+  .ko-stick{position:relative;height:auto;min-height:0;padding-block:110px 40px}
+  .ko-svg{position:relative;inset:auto;height:44vh;min-height:260px}
+  .ko-top{top:24px}
+  .ko-copy{position:relative;bottom:auto}
+  .ko-cap{display:none}
+  .ko-static{display:block;position:relative;border-radius:var(--r-lg);overflow:hidden;margin-top:24px}
+  .ko-static img{width:100%;aspect-ratio:16/8;object-fit:cover;display:block}
+  .ko-static p{position:absolute;left:20px;bottom:18px;color:#fff;font:800 clamp(26px,4vw,48px)/1 var(--f-display);text-transform:uppercase}
+  .folder,.tile .t-plus,.rail .num,.rail .bar{transition:none}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Returns Bench home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DCFEA"/><stop offset="1" stop-color="#7A62FF"/></linearGradient></defs><rect x="3" y="7" width="26" height="20" rx="4" fill="url(#lg)"/><path d="M3 13h26" stroke="#fff" stroke-opacity=".55" stroke-width="2"/><path d="M11 19.5l3.2 3.2L21 16" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Returns Bench
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#screens">Screens</a>
+      <a href="#teams">Teams</a>
+      <a class="btn btn-primary" href="#demo">Book a demo</a>
+    </nav>
+  </div>
+</header>
+
+<div class="demo-bar"><div class="wrap"><span>Live demos of skills 22–29 from <b>ui-interaction-library</b>. Content is the Returns Bench homepage, with example data.</span><span><a href="./">← All demos</a> · <a href="https://github.com/LillianOu/ui-interaction-library" target="_blank" rel="noopener">Skills on GitHub</a></span></div></div>
+<main>
+<!-- 22 Knockout title -->
+<section class="ko" id="top" aria-labelledby="hero-h">
+  <div class="ko-stick" id="koStick">
+    <svg class="ko-svg" id="koSvg" aria-hidden="true">
+      <defs>
+        <mask id="koMask" maskUnits="userSpaceOnUse">
+          <rect id="koMaskBg" x="0" y="0" fill="#000"/>
+          <g id="koG"><text id="koWord" fill="#fff" text-anchor="middle" font-family="Big Shoulders Display, Arial Narrow, sans-serif" font-weight="900" letter-spacing="2">SORTED</text></g>
+          <rect id="koFill" x="0" y="0" fill="#fff" opacity="0"/>
+        </mask>
+      </defs>
+      <g mask="url(#koMask)"><image id="koImg" x="0" y="0" preserveAspectRatio="xMidYMid slice"/></g>
+      <g id="koG2"><text id="koWord2" fill="none" stroke="currentColor" stroke-opacity=".18" stroke-width="1.2" text-anchor="middle" font-family="Big Shoulders Display, Arial Narrow, sans-serif" font-weight="900" letter-spacing="2">SORTED</text></g>
+    </svg>
+    <div class="ko-top wrap mono"><span>Returns software for 3PL warehouses</span><a class="skill-tag" href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/22-knockout-title/SKILL.md" target="_blank" rel="noopener">22 · Knockout Title</a></div>
+    <div class="ko-copy wrap" id="koCopy">
+      <h1 id="hero-h">Every return, sorted.</h1>
+      <p>Scan the job, photograph the stock and send the tenant everything they need to decide. Returns Bench keeps every return in one place, from the dock to closed.</p>
+      <div class="ctas"><a class="btn btn-primary" href="#demo">Book a demo</a><a class="btn btn-ghost" href="#how">See how it works</a></div>
+      <figure class="ko-static" aria-hidden="true"><img id="koStaticImg" alt=""><p>Built on a working warehouse floor.</p></figure>
+    </div>
+    <div class="ko-cap wrap" id="koCap" aria-hidden="true"><p>Built on a working warehouse floor.<span class="mono">Sydney · 3PL returns bench</span></p></div>
+  </div>
+</section>
+
+<!-- 23 Inline image title -->
+<section class="sec inl" id="inl" aria-labelledby="inl-h">
+  <div class="wrap">
+    <p style="margin-bottom:18px"><a class="skill-tag" href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/23-inline-image-title/SKILL.md" target="_blank" rel="noopener">23 · Inline Image Title</a></p><p class="eyebrow" style="margin-bottom:22px">One job, one record</p>
+    <h2 id="inl-h"><span class="w" style="view-transition-name:w1">Inspect,</span> <span class="w" style="view-transition-name:w2">photograph</span> <button class="pill" id="pill" type="button" aria-expanded="false" aria-label="Show inspection photo for job RTN-24817" style="view-transition-name:pill"><img id="pillImg" alt=""><span class="pcap" aria-hidden="true"><span>RTN-24817 · Northbound Outdoor</span><span>4 photos attached</span></span></button> <span class="w" style="view-transition-name:w3">and</span> <span class="w" style="view-transition-name:w4">send</span> <span class="w" style="view-transition-name:w5">it</span> <span class="w" style="view-transition-name:w6">to</span> <span class="w" style="view-transition-name:w7">the</span> <span class="w" style="view-transition-name:w8">tenant</span> <span class="w" style="view-transition-name:w9">in</span> <span class="w" style="view-transition-name:w10">one</span> <span class="w" style="view-transition-name:w11">go.</span></h2>
+    <div class="inl-foot">
+      <p class="lede">Every photo is filed against the job number the moment you take it. When you email the tenant, all of them go with it, with the job number in the subject line.</p>
+      <p class="hint" id="pillHint">Tap the photo to open it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 26 Sticky rail -->
+<section class="sec" id="how" aria-labelledby="how-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><a class="skill-tag" href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/26-sticky-date-rail/SKILL.md" target="_blank" rel="noopener">26 · Sticky Date Rail</a><p class="eyebrow">How it works</p><h2 class="h2" id="how-h">From the dock to closed</h2><p class="lede">Four steps, and the status on the job always matches the stage on the dashboard.</p></div>
+    <div class="days">
+      <section class="day" aria-labelledby="d1"><div class="rail"><div class="rail-in"><span class="num" aria-hidden="true">01</span><span class="lbl" aria-hidden="true">Receive</span><span class="bar"></span></div></div>
+        <div class="items"><h3 id="d1" class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Step 1: Receive</h3>
+          <article class="item"><span class="chip st-in">In</span><h3>Photograph the job number, or say it</h3><p>The camera picks up the number when it sees a hash or the words job number. In a noisy aisle, press the mic and read it out.</p></article>
+          <article class="item"><span class="chip st-in">In</span><h3>Pick the tenant</h3><p>Each tenant has its own SKU list, loaded from a CSV, so the right products come up.</p></article></div></section>
+      <section class="day" aria-labelledby="d2"><div class="rail"><div class="rail-in"><span class="num" aria-hidden="true">02</span><span class="lbl" aria-hidden="true">Inspect</span><span class="bar"></span></div></div>
+        <div class="items"><h3 id="d2" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Step 2: Inspect</h3>
+          <article class="item"><span class="chip st-proc">In process</span><h3>Check the condition</h3><p>Great condition, damaged or wrong item. One tap each, no typing.</p></article>
+          <article class="item"><span class="chip st-proc">In process</span><h3>Take as many photos as it needs</h3><p>They stay with the job, not lost in someone's camera roll.</p></article></div></section>
+      <section class="day" aria-labelledby="d3"><div class="rail"><div class="rail-in"><span class="num" aria-hidden="true">03</span><span class="lbl" aria-hidden="true">Report</span><span class="bar"></span></div></div>
+        <div class="items"><h3 id="d3" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Step 3: Report</h3>
+          <article class="item"><span class="chip st-proc">In process</span><h3>Email the tenant in one tap</h3><p>From your returns address to the tenant's, with every photo attached.</p></article>
+          <article class="item"><span class="chip st-proc">In process</span><h3>Keep a record of what was sent</h3><p>Anyone can see what the tenant was told, and when.</p></article></div></section>
+      <section class="day" aria-labelledby="d4"><div class="rail"><div class="rail-in"><span class="num" aria-hidden="true">04</span><span class="lbl" aria-hidden="true">Close</span><span class="bar"></span></div></div>
+        <div class="items"><h3 id="d4" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Step 4: Close</h3>
+          <article class="item"><span class="chip st-closed">Closed</span><h3>Log the tenant's decision</h3><p>Back on the shelf, or disposed of and then refunded or resent. The tenant decides; you record it.</p></article>
+          <article class="item"><span class="chip st-closed">Closed</span><h3>Close the job</h3><p>It moves to Closed on the dashboard and into your reports.</p></article></div></section>
+    </div>
+  </div>
+</section>
+
+<!-- 24 Expanding grid -->
+<section class="sec" id="features" aria-labelledby="feat-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><a class="skill-tag" href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/24-expanding-grid/SKILL.md" target="_blank" rel="noopener">24 · Expanding Grid</a><p class="eyebrow">Features</p><h2 class="h2" id="feat-h">Everything the bench needs</h2><p class="lede">Tap a card to see more.</p></div>
+    <div class="grid" id="grid">
+      <article class="tile" style="view-transition-name:c1"><button type="button" aria-expanded="false" aria-controls="m1"><span class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><h3>Live dashboard</h3><span class="t-short">See what's In, In process and Closed at a glance.</span></button><span class="t-plus" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span>
+        <div class="t-more" id="m1"><div class="mini-dash"><div><span class="chip st-in">In</span><b>12</b></div><div><span class="chip st-proc">In process</span><b>7</b></div><div><span class="chip st-closed">Closed</span><b>41</b></div></div><p class="ex">Example numbers</p><p>Each stage on the dashboard uses the same name as the status on the job, so nobody has to translate between screens.</p></div></article>
+      <article class="tile v" style="view-transition-name:c2"><button type="button" aria-expanded="false" aria-controls="m2"><span class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V4h3M21 7V4h-3M3 17v3h3M21 17v3h-3M7 8v8M11 8v8M14 8v8M17 8v8"/></svg></span><h3>Scan or say it</h3><span class="t-short">Read the job number from a photo, or say it out loud.</span></button><span class="t-plus" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span>
+        <div class="t-more" id="m2"><p>Point the camera at the label and Returns Bench looks for a hash, "job number" or "order number". If the label is torn or the light is bad, press the mic and read the number instead.</p></div></article>
+      <article class="tile v" style="view-transition-name:c3"><button type="button" aria-expanded="false" aria-controls="m3"><span class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg></span><h3>Photo evidence</h3><span class="t-short">Photos are filed against the job as you take them.</span></button><span class="t-plus" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span>
+        <div class="t-more" id="m3"><p>No more camera rolls full of unlabelled boxes. Open any job, from any day, and its photos are right there, in the order they were taken.</p></div></article>
+      <article class="tile" style="view-transition-name:c4"><button type="button" aria-expanded="false" aria-controls="m4"><span class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><h3>Tenant email</h3><span class="t-short">One tap sends every photo and the job number.</span></button><span class="t-plus" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span>
+        <div class="t-more" id="m4"><p>The email goes from your returns address to the contact each tenant set up, with the job number or a description in the subject. The tenant replies with a decision and you log it on the job.</p></div></article>
+      <article class="tile" style="view-transition-name:c5"><button type="button" aria-expanded="false" aria-controls="m5"><span class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg></span><h3>PDF reports</h3><span class="t-short">Pick a date range and a tenant, get a PDF.</span></button><span class="t-plus" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span>
+        <div class="t-more" id="m5"><p>Month-end reporting in a few taps. Search any return by date, tenant or order number, and hand tenants a clean record of every job you handled for them.</p></div></article>
+      <article class="tile v" style="view-transition-name:c6"><button type="button" aria-expanded="false" aria-controls="m6"><span class="t-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></span><h3>Your brand</h3><span class="t-short">Your logo, your tenants, your SKU list.</span></button><span class="t-plus" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2"/></svg></span>
+        <div class="t-more" id="m6"><p>Upload your logo and a CSV of SKUs, and set up each tenant's email. Every warehouse runs its own separate copy, so your data never mixes with anyone else's. Light and dark mode included.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- 25 Offset columns -->
+<section class="sec" id="screens" aria-labelledby="scr-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><a class="skill-tag" href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/25-offset-columns/SKILL.md" target="_blank" rel="noopener">25 · Offset Columns</a><p class="eyebrow">The app</p><h2 class="h2" id="scr-h">Big buttons, few words</h2><p class="lede">Made for quick taps on a busy floor. Here are six screens, with example tenants and jobs.</p></div>
+    <div class="gal-wrap" id="galWrap">
+      <div class="gal">
+        <div class="col" id="colL">
+          <div class="shot tall"><span class="badge">01</span><div class="s-title">Sign in</div><div class="s-sub">Fulfilment team</div><div style="flex:1"></div><div class="s-field">Initials <b>LO</b></div><div class="s-field">Password <b>••••••</b></div><div class="s-btn">Sign in</div><div style="flex:.4"></div></div>
+          <div class="shot tall"><span class="badge">03</span><div class="s-title">Scan job</div><div class="s-cam"><img data-gen="label" alt=""><div class="reticle"></div><div class="det"># RTN-24817 found</div></div><div class="s-btn">Use RTN-24817</div><div class="s-field">Or say it <b>🎙 Hold</b></div></div>
+          <div class="shot tall"><span class="badge">05</span><div class="s-title">Email tenant</div><div class="s-mail"><div><span class="s-sub">From</span><br>returns@yourwarehouse</div><div><span class="s-sub">To</span><br>ops@northbound.example</div><div><span class="s-sub">Subject</span><br>Return RTN-24817 · inspected</div></div><div class="s-att"><img data-gen="t1" alt=""><img data-gen="t2" alt=""><img data-gen="t3" alt=""><img data-gen="t4" alt=""></div><div style="flex:1"></div><div class="s-btn">Send with 4 photos</div></div>
+        </div>
+        <div class="col" id="colR">
+          <div class="shot short"><span class="badge">02</span><div class="s-title">Today</div><div class="s-stat"><div><span class="s-sub">In</span><b>12</b></div><div><span class="s-sub">In process</span><b>7</b></div><div><span class="s-sub">Closed</span><b>41</b></div></div><div class="s-row"><span>RTN-24817</span><span class="chip st-proc">In process</span></div><div class="s-row"><span>RTN-24809</span><span class="chip st-in">In</span></div><div class="s-row"><span>RTN-24790</span><span class="chip st-closed">Closed</span></div></div>
+          <div class="shot short"><span class="badge">04</span><div class="s-title">Inspect · RTN-24817</div><div class="s-thumbs"><img data-gen="t1" alt=""><img data-gen="t2" alt=""><img data-gen="t3" alt=""><img data-gen="t4" alt=""></div><div class="s-chips"><span class="on">Great condition</span><span>Damaged</span><span>Wrong item</span></div></div>
+          <div class="shot short"><span class="badge">06</span><div class="s-title">Report</div><div class="s-field">Tenant <b>Lumen Skin</b></div><div class="s-field">Dates <b>1–31 Oct</b></div><div class="s-bars" aria-hidden="true"><i style="height:40%"></i><i style="height:65%"></i><i style="height:52%"></i><i style="height:88%"></i><i style="height:60%"></i><i style="height:74%"></i></div><div class="s-btn">Download PDF</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 27 Folder tabs -->
+<section class="sec" id="teams" aria-labelledby="teams-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><a class="skill-tag" href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/27-folder-tabs/SKILL.md" target="_blank" rel="noopener">27 · Folder Tabs</a><p class="eyebrow">Teams</p><h2 class="h2" id="teams-h">For everyone who touches a return</h2></div>
+    <div class="binder" id="binder">
+      <div role="tablist" aria-label="Who it's for" aria-owns="tab0 tab1 tab2 tab3"></div>
+      <div class="folder" style="--fc:var(--f-floor)"><button class="ftab" role="tab" id="tab0" aria-controls="fp0" style="left:0">Floor staff</button>
+        <div class="fbody" role="tabpanel" id="fp0" aria-labelledby="tab0"><h3>Scan, snap, send</h3><ul><li>Sign in with your initials.</li><li>Big buttons and few words, on the phone in your pocket.</li><li>No forms to fill. The job number does the filing.</li></ul></div></div>
+      <div class="folder" style="--fc:var(--f-tenant)"><button class="ftab" role="tab" id="tab1" aria-controls="fp1" style="left:calc((100% - 30px)/4 + 10px)">Tenants</button>
+        <div class="fbody" role="tabpanel" id="fp1" aria-labelledby="tab1"><h3>Photos, not guesses</h3><ul><li>Every email has the job number in the subject.</li><li>See the stock for yourself before you decide.</li><li>Your call: back on the shelf, or replace and refund.</li></ul></div></div>
+      <div class="folder" style="--fc:var(--f-manager)"><button class="ftab" role="tab" id="tab2" aria-controls="fp2" style="left:calc(2 * (100% - 30px)/4 + 20px)">Managers</button>
+        <div class="fbody" role="tabpanel" id="fp2" aria-labelledby="tab2"><h3>Every stage at a glance</h3><ul><li>Know how many returns are waiting, right now.</li><li>Search by date, tenant or order number.</li><li>Month-end PDFs in a few taps.</li></ul></div></div>
+      <div class="folder" style="--fc:var(--f-owner)"><button class="ftab" role="tab" id="tab3" aria-controls="fp3" style="left:calc(3 * (100% - 30px)/4 + 30px)">3PL owners</button>
+        <div class="fbody" role="tabpanel" id="fp3" aria-labelledby="tab3"><h3>Your brand, your data</h3><ul><li>Your logo on every screen your team sees.</li><li>Each warehouse's data kept in its own copy.</li><li>Runs on its own. Start without touching your WMS.</li></ul></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 28 Bubble picker -->
+<section class="sec" id="demo" aria-labelledby="demo-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><a class="skill-tag" href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/28-bubble-picker/SKILL.md" target="_blank" rel="noopener">28 · Bubble Picker</a><p class="eyebrow">Book a demo</p><h2 class="h2" id="demo-h">What slows your returns down?</h2><p class="lede">Pick a few. We'll show you how Returns Bench handles each one in your demo.</p></div>
+    <div class="pick">
+      <fieldset class="bubbles" id="bubbles"><legend>What slows your returns down? Choose any that apply.</legend></fieldset>
+      <form class="form" id="form" novalidate>
+        <p class="count" id="count" aria-live="polite">Nothing picked yet</p>
+        <label for="fName">Your name<input id="fName" name="name" autocomplete="name" required></label>
+        <label for="fWh">Warehouse<input id="fWh" name="warehouse" autocomplete="organization"></label>
+        <label for="fEmail">Work email<input id="fEmail" name="email" type="email" autocomplete="email" required></label>
+        <button class="btn btn-primary" type="submit" style="justify-content:center">Book a demo</button>
+        <p class="note" id="formNote">We'll reply within one business day.</p>
+      </form>
+    </div>
+  </div>
+</section>
+<section class="sec" id="split" aria-labelledby="split-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><a class="skill-tag" href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/29-split-view/SKILL.md" target="_blank" rel="noopener">29 · Split View</a><p class="eyebrow">In the app</p><h2 class="h2" id="split-h">Drag to resize</h2><p class="lede">Drag the bar, tap it, or use the arrow keys. It snaps to 25, 50 or 75 percent, and the list turns into compact chips when it gets short.</p></div>
+    <div class="sv" id="sv">
+      <div class="sv-top"><img data-gen="scene" alt=""><p>Today's returns</p></div>
+      <div class="sv-handle" id="svHandle" role="separator" tabindex="0" aria-orientation="horizontal" aria-label="Resize photo and job list" aria-valuemin="25" aria-valuemax="75" aria-valuenow="50" aria-valuetext="Photo 50%, list 50%"><span></span></div>
+      <div class="sv-bot"><ul class="sv-list">
+        <li><img data-gen="t1" alt=""><div><b>RTN-24817</b><span class="meta">Northbound Outdoor · 4 photos</span></div><span class="chip st-proc">In process</span></li>
+        <li><img data-gen="t2" alt=""><div><b>RTN-24809</b><span class="meta">Lumen Skin · 2 photos</span></div><span class="chip st-in">In</span></li>
+        <li><img data-gen="t3" alt=""><div><b>RTN-24803</b><span class="meta">Harbour &amp; Co · 3 photos</span></div><span class="chip st-proc">In process</span></li>
+        <li><img data-gen="t4" alt=""><div><b>RTN-24790</b><span class="meta">Northbound Outdoor · 5 photos</span></div><span class="chip st-closed">Closed</span></li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><a class="brand" href="#top">Returns Bench</a><p>Every return, sorted.</p></div>
+    <p>Demo for ui-interaction-library · Lilian O. · 2026</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const rng = s => () => (s = (s * 16807) % 2147483647, (s - 1) / 2147483646);
+
+/* ---------- generated imagery: warehouse racks and cartons ---------- */
+const KRAFT = ['#B88A56', '#A97C4B', '#C79A66', '#9E7444', '#BF9160'];
+function carton(ctx, x, y, w, h, r, labelText) {
+  const g = ctx.createLinearGradient(x, y, x, y + h);
+  const c = KRAFT[Math.floor(r() * KRAFT.length)];
+  g.addColorStop(0, c); g.addColorStop(1, shade(c, -18));
+  ctx.fillStyle = g; ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fillRect(x, y, w, h * .12);
+  ctx.fillStyle = 'rgba(222,196,150,.75)'; ctx.fillRect(x + w * .46, y, w * .08, h);
+  if (w > 40 && r() > .25) {
+    const lw = Math.min(w * .34, 90), lh = Math.min(h * .28, 46), lx = x + w * .1, ly = y + h * .5;
+    ctx.fillStyle = '#F4F2EC'; ctx.fillRect(lx, ly, lw, lh);
+    ctx.fillStyle = '#1B1F24';
+    for (let i = 0; i < 9; i++) ctx.fillRect(lx + lw * .1 + i * lw * .085, ly + lh * .45, Math.max(1, lw * (r() > .5 ? .03 : .015)), lh * .4);
+    if (labelText) { ctx.font = `600 ${Math.round(lh * .28)}px "IBM Plex Mono", monospace`; ctx.fillText(labelText, lx + lw * .1, ly + lh * .33); }
+  }
+}
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  const f = v => clamp(v + amt, 0, 255);
+  return `rgb(${f(n >> 16)},${f((n >> 8) & 255)},${f(n & 255)})`;
+}
+function scene(W, H) {
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d'), r = rng(42), u = W / 1600;
+  const bg = ctx.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#1C2733'); bg.addColorStop(1, '#0F151C');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  const floorY = H * .84, levels = 4, top = H * .06, lvlH = (floorY - top) / levels;
+  const bayW = 520 * u;
+  for (let bx = -bayW * .3; bx < W; bx += bayW) {
+    for (let l = 0; l < levels; l++) {
+      const shelfY = top + (l + 1) * lvlH;
+      let x = bx + 18 * u;
+      while (x < bx + bayW - 30 * u) {
+        const w = (70 + r() * 110) * u, h = lvlH * (.45 + r() * .4);
+        if (x + w > bx + bayW - 14 * u) break;
+        carton(ctx, x, shelfY - h - 10 * u, w, h, r);
+        x += w + (4 + r() * 10) * u;
+      }
+      ctx.fillStyle = '#5A40D4'; ctx.fillRect(bx, shelfY - 10 * u, bayW, 12 * u);
+      ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(bx, shelfY - 10 * u, bayW, 2 * u);
+    }
+    ctx.fillStyle = '#3A5266'; ctx.fillRect(bx, top - 20 * u, 16 * u, floorY - top + 20 * u); ctx.fillRect(bx + bayW - 16 * u, top - 20 * u, 16 * u, floorY - top + 20 * u);
+  }
+  ctx.fillStyle = '#0D1218'; ctx.fillRect(0, floorY, W, H - floorY);
+  ctx.fillStyle = '#3DCFEA'; ctx.fillRect(0, floorY + 24 * u, W, 6 * u);
+  ctx.globalCompositeOperation = 'lighter';
+  let g = ctx.createRadialGradient(W * .18, H * .05, 0, W * .18, H * .05, W * .7); g.addColorStop(0, 'rgba(61,207,234,.32)'); g.addColorStop(1, 'rgba(61,207,234,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  g = ctx.createRadialGradient(W * .88, H * .35, 0, W * .88, H * .35, W * .6); g.addColorStop(0, 'rgba(122,98,255,.3)'); g.addColorStop(1, 'rgba(122,98,255,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'source-over';
+  return cv.toDataURL('image/jpeg', .86);
+}
+function closeup(W, H, seed, label) {
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d'), r = rng(seed);
+  const bg = ctx.createLinearGradient(0, 0, W, H); bg.addColorStop(0, '#26313D'); bg.addColorStop(1, '#151B22');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(255,255,255,.05)'; ctx.lineWidth = 1;
+  for (let i = 0; i < W; i += W / 24) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke(); }
+  const ox = W * (.12 + r() * .1), oy = H * (.14 + r() * .08), bw = W * (.62 + r() * .16), bh = H * (.7 + r() * .1);
+  ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(ox + 14, oy + 18, bw, bh);
+  carton(ctx, ox, oy, bw, bh, () => .99);
+  const c = ctx.createLinearGradient(ox, oy, ox + bw, oy + bh); c.addColorStop(0, '#C79A66'); c.addColorStop(1, '#9A6F42');
+  ctx.fillStyle = c; ctx.fillRect(ox, oy, bw, bh);
+  ctx.fillStyle = 'rgba(225,200,155,.8)'; ctx.fillRect(ox, oy + bh * .1, bw, bh * .1);
+  const lw = bw * .42, lh = bh * .3, lx = ox + bw * .1, ly = oy + bh * .42;
+  ctx.fillStyle = '#F5F3EE'; ctx.fillRect(lx, ly, lw, lh);
+  ctx.fillStyle = '#16191D'; ctx.font = `600 ${Math.round(lh * .2)}px "IBM Plex Mono", monospace`; ctx.fillText(label, lx + lw * .08, ly + lh * .3);
+  for (let i = 0; i < 22; i++) ctx.fillRect(lx + lw * .08 + i * lw * .038, ly + lh * .45, Math.max(1.5, lw * (r() > .5 ? .018 : .008)), lh * .42);
+  if (seed % 3 === 0) { ctx.strokeStyle = '#E8554B'; ctx.lineWidth = W * .006; ctx.beginPath(); ctx.moveTo(ox + bw * .7, oy + bh * .65); ctx.lineTo(ox + bw * .82, oy + bh * .78); ctx.lineTo(ox + bw * .76, oy + bh * .9); ctx.stroke(); }
+  ctx.globalCompositeOperation = 'lighter';
+  const g = ctx.createRadialGradient(W * .1, 0, 0, W * .1, 0, W * .8); g.addColorStop(0, 'rgba(61,207,234,.28)'); g.addColorStop(1, 'rgba(61,207,234,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'source-over';
+  return cv.toDataURL('image/jpeg', .85);
+}
+
+function paintImages() {
+  const sceneURL = scene(1600, 1000);
+  document.getElementById('koImg').setAttribute('href', sceneURL);
+  document.getElementById('koStaticImg').src = sceneURL;
+  document.getElementById('pillImg').src = closeup(1200, 600, 7, 'RTN-24817');
+  const urls = { label: closeup(600, 800, 11, '# RTN-24817'), t1: closeup(300, 300, 3, 'RTN-24817'), t2: closeup(300, 300, 5, 'RTN-24817'), t3: closeup(300, 300, 9, 'RTN-24817'), t4: closeup(300, 300, 13, 'RTN-24817') };
+  urls.scene = sceneURL;
+  document.querySelectorAll('img[data-gen]').forEach(img => { img.src = urls[img.dataset.gen]; });
+}
+
+/* ---------- 22 Knockout title ---------- */
+const ko = { sec: document.getElementById('top'), stick: document.getElementById('koStick'), svg: document.getElementById('koSvg'),
+  word: document.getElementById('koWord'), word2: document.getElementById('koWord2'), g: document.getElementById('koG'), g2: document.getElementById('koG2'),
+  img: document.getElementById('koImg'), fill: document.getElementById('koFill'), bgr: document.getElementById('koMaskBg'),
+  copy: document.getElementById('koCopy'), cap: document.getElementById('koCap'), top: document.querySelector('.ko-top'), ox: 0, oy: 0, S: 1, w: 0, h: 0 };
+function layoutKo() {
+  const w = ko.svg.clientWidth, h = ko.svg.clientHeight; if (!w || !h) return;
+  ko.w = w; ko.h = h;
+  ko.svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  for (const el of [ko.bgr, ko.fill, ko.img]) { el.setAttribute('width', w); el.setAttribute('height', h); }
+  const mask = document.getElementById('koMask'); mask.setAttribute('width', w); mask.setAttribute('height', h);
+  ko.word.setAttribute('font-size', 100);
+  const len = ko.word.getComputedTextLength() || 300;
+  let topB, botB;
+  if (reduced) { topB = h * .04; botB = h * .96; }
+  else { topB = ko.top.offsetTop + ko.top.offsetHeight + 18; botB = ko.copy.offsetTop - 18; }
+  const cap = .74;
+  const fs = Math.max(40, Math.min(100 * (w * .9) / len, (botB - topB) / cap));
+  const base = topB + (botB - topB) / 2 + fs * cap / 2;
+  for (const t of [ko.word, ko.word2]) { t.setAttribute('font-size', fs.toFixed(1)); t.setAttribute('x', w / 2); t.setAttribute('y', base.toFixed(1)); }
+  let ext; try { ext = ko.word.getExtentOfChar(1); } catch (e) { ext = null; }
+  ko.ox = ext ? ext.x + ext.width / 2 : w / 2;
+  ko.oy = base - fs * cap / 2;
+  ko.S = Math.max(w, h) / (fs * .045);
+  updateKo();
+}
+function updateKo() {
+  if (reduced || !ko.w) return;
+  const range = ko.sec.offsetHeight - ko.stick.offsetHeight;
+  const p = clamp(-ko.sec.getBoundingClientRect().top / Math.max(1, range));
+  const e = clamp((p - .04) / .8);
+  const s = Math.pow(ko.S, Math.pow(e, 1.7));
+  const tf = `translate(${ko.ox} ${ko.oy}) scale(${s}) translate(${-ko.ox} ${-ko.oy})`;
+  ko.g.setAttribute('transform', tf); ko.g2.setAttribute('transform', tf);
+  ko.g2.style.opacity = 1 - clamp(e / .3);
+  ko.fill.setAttribute('opacity', clamp((p - .68) / .2));
+  const is = 1.12 - .12 * p;
+  ko.img.setAttribute('transform', `translate(${ko.w / 2} ${ko.h / 2}) scale(${is}) translate(${-ko.w / 2} ${-ko.h / 2})`);
+  const fade = 1 - clamp(p / .18);
+  ko.copy.style.opacity = fade; ko.copy.style.transform = `translateY(${(1 - fade) * 30}px)`;
+  ko.copy.style.visibility = fade < .02 ? 'hidden' : 'visible';
+  ko.top.style.opacity = fade;
+  ko.cap.style.opacity = clamp((p - .82) / .12);
+}
+
+/* ---------- 23 Inline image title ---------- */
+const inl = document.getElementById('inl'), pill = document.getElementById('pill'), hint = document.getElementById('pillHint');
+function togglePill(force) {
+  const open = force ?? !inl.classList.contains('open');
+  if (open === inl.classList.contains('open')) return;
+  const apply = () => { inl.classList.toggle('open', open); pill.setAttribute('aria-expanded', String(open)); hint.textContent = open ? 'Tap the photo to put it back.' : 'Tap the photo to open it.'; };
+  if (document.startViewTransition && !reduced) document.startViewTransition(apply); else apply();
+}
+pill.addEventListener('click', () => togglePill());
+pill.addEventListener('keydown', e => { if (e.key === 'Escape') togglePill(false); });
+
+/* ---------- 26 Sticky rail: mark the active day ---------- */
+const days = [...document.querySelectorAll('.day')];
+function updateDays() {
+  const line = 84 + 40; let active = null;
+  for (const d of days) { const r = d.getBoundingClientRect(); if (r.top <= line && r.bottom > line) active = d; }
+  if (!active && days[0].getBoundingClientRect().top > line) active = days[0];
+  days.forEach(d => d.classList.toggle('active', d === active));
+}
+
+/* ---------- 24 Expanding grid ---------- */
+const tiles = [...document.querySelectorAll('.tile')];
+function setTile(target) {
+  const apply = () => tiles.forEach(t => { const on = t === target; t.classList.toggle('open', on); t.querySelector('button').setAttribute('aria-expanded', String(on)); t.querySelector('.t-more').hidden = !on; });
+  if (document.startViewTransition && !reduced) document.startViewTransition(apply); else apply();
+}
+tiles.forEach(t => {
+  t.querySelector('.t-more').hidden = true;
+  t.querySelector('.t-more').style.display = '';
+  const b = t.querySelector('button');
+  b.addEventListener('click', () => setTile(t.classList.contains('open') ? null : t));
+  b.addEventListener('keydown', e => { if (e.key === 'Escape' && t.classList.contains('open')) setTile(null); });
+});
+const vtCss = tiles.map((_, i) => `::view-transition-old(c${i + 1}),::view-transition-new(c${i + 1}){height:100%;width:auto;object-fit:none;object-position:left top}::view-transition-new(c${i + 1}){animation-duration:.28s}::view-transition-image-pair(c${i + 1}){overflow:clip;border-radius:22px}`).join('');
+document.head.insertAdjacentHTML('beforeend', `<style>${vtCss}</style>`);
+
+/* ---------- 25 Offset columns ---------- */
+const gal = { wrap: document.getElementById('galWrap'), L: document.getElementById('colL'), R: document.getElementById('colR'), extra: 0 };
+function layoutGal() {
+  gal.L.style.transform = ''; gal.wrap.style.height = '';
+  if (reduced) return;
+  const hL = gal.L.offsetHeight, hR = gal.R.offsetHeight;
+  gal.extra = Math.max(0, hL - hR);
+  gal.wrap.style.height = gal.extra ? (gal.wrap.offsetHeight - gal.extra) + 'px' : '';
+  updateGal();
+}
+function updateGal() {
+  if (reduced || !gal.extra) return;
+  const r = gal.wrap.getBoundingClientRect(), vh = innerHeight;
+  const p = clamp((vh - r.top) / Math.max(1, r.height));
+  gal.L.style.transform = `translate3d(0,${(-gal.extra * p).toFixed(1)}px,0)`;
+}
+
+/* ---------- 27 Folder tabs ---------- */
+const folders = [...document.querySelectorAll('.folder')];
+const ftabs = folders.map(f => f.querySelector('.ftab'));
+let order = folders.map((_, i) => i);
+function renderFolders() {
+  folders.forEach((f, i) => {
+    const d = order.indexOf(i), front = d === 0;
+    f.style.zIndex = 10 - d;
+    f.style.transform = `translateY(${-d * 12}px) scale(${1 - d * .018})`;
+    f.style.filter = `brightness(${1 - d * .07})`;
+    ftabs[i].setAttribute('aria-selected', String(front));
+    ftabs[i].tabIndex = front ? 0 : -1;
+    const body = f.querySelector('.fbody');
+    body.inert = !front; front ? body.removeAttribute('aria-hidden') : body.setAttribute('aria-hidden', 'true');
+  });
+}
+function selectFolder(i, focus) {
+  order = [i, ...order.filter(k => k !== i)];
+  if (!reduced) { const f = folders[i]; f.animate([{ translate: '0 0' }, { translate: '0 -18px' }, { translate: '0 0' }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)' }); }
+  renderFolders();
+  if (focus) ftabs[i].focus();
+  try { history.replaceState(null, '', '#' + ['floor', 'tenants', 'managers', 'owners'][i]); } catch (e) {}
+}
+ftabs.forEach((t, i) => {
+  t.addEventListener('click', () => selectFolder(i));
+  t.addEventListener('keydown', e => {
+    const n = ftabs.length; let j = null;
+    if (e.key === 'ArrowRight') j = (i + 1) % n; else if (e.key === 'ArrowLeft') j = (i - 1 + n) % n; else if (e.key === 'Home') j = 0; else if (e.key === 'End') j = n - 1;
+    if (j !== null) { e.preventDefault(); selectFolder(j, true); }
+  });
+});
+const hashMap = { floor: 0, tenants: 1, managers: 2, owners: 3 };
+if (location.hash.slice(1) in hashMap) order = [hashMap[location.hash.slice(1)], ...order.filter(k => k !== hashMap[location.hash.slice(1)])];
+renderFolders();
+
+/* ---------- 28 Bubble picker ---------- */
+const OPTS = [['Unlabelled photos', 1.25], ['Chasing tenants', 1.15], ['Lost job numbers', 1.05], ['Spreadsheets', .9], ['Long email threads', 1], ['Who decided?', .82], ['Month-end reports', 1.05], ['Training new staff', .9], ['Many tenants', .88], ['Paper notes', .78]];
+const box = document.getElementById('bubbles'), countEl = document.getElementById('count');
+let B = [], cw = 0, ch = 0, running = false, still = 0;
+function buildBubbles() {
+  OPTS.forEach(([label, wgt], i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'bub'; b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = `<span>${label}</span>`;
+    box.appendChild(b);
+    const o = { el: b, label, wgt, x: 0, y: 0, vx: 0, vy: 0, r: 0, tr: 0, sel: false };
+    b.addEventListener('click', () => toggleBubble(o));
+    b.addEventListener('keydown', e => {
+      const k = ['ArrowRight', 'ArrowDown'].includes(e.key) ? 1 : ['ArrowLeft', 'ArrowUp'].includes(e.key) ? -1 : 0;
+      if (k) { e.preventDefault(); B[(i + k + B.length) % B.length].el.focus(); }
+    });
+    B.push(o);
+  });
+}
+function sizeBubbles(initial) {
+  cw = box.clientWidth;
+  const base = clamp(cw / 11.5, 30, 62);
+  B.forEach(o => { o.base = Math.max(26, base * o.wgt); o.tr = o.base * (o.sel ? 1.3 : 1); if (initial || !o.r) o.r = o.tr; });
+  const area = B.reduce((s, o) => s + Math.PI * (o.base * 1.3) ** 2, 0);
+  ch = clamp(area * 1.45 / cw, 340, 620);
+  box.style.height = ch + 'px';
+  if (initial) {
+    const r = rng(7);
+    B.forEach((o, i) => { const a = i * 2.4, d = 14 * Math.sqrt(i) * (cw / 400); o.x = cw / 2 + Math.cos(a) * d * 3 + r(); o.y = ch / 2 + Math.sin(a) * d * 2.2 + r(); });
+  }
+  if (reduced) { for (let k = 0; k < 400; k++) step(1); render(); } else kick();
+}
+function step(dt) {
+  let move = 0;
+  for (const o of B) {
+    o.r += (o.tr - o.r) * .18;
+    o.vx += (cw / 2 - o.x) * .0025; o.vy += (ch / 2 - o.y) * .004;
+  }
+  for (let it = 0; it < 3; it++) for (let i = 0; i < B.length; i++) for (let j = i + 1; j < B.length; j++) {
+    const a = B[i], b = B[j]; let dx = b.x - a.x, dy = b.y - a.y; let d = Math.hypot(dx, dy) || .01;
+    const min = a.r + b.r + 4;
+    if (d < min) { const push = (min - d) / 2, nx = dx / d, ny = dy / d; a.x -= nx * push; a.y -= ny * push; b.x += nx * push; b.y += ny * push; a.vx -= nx * push * .1; a.vy -= ny * push * .1; b.vx += nx * push * .1; b.vy += ny * push * .1; }
+  }
+  for (const o of B) {
+    o.vx *= .78; o.vy *= .78;
+    const nx = clamp(o.x + o.vx, o.r + 6, cw - o.r - 6), ny = clamp(o.y + o.vy, o.r + 6, ch - o.r - 6);
+    move = Math.max(move, Math.abs(nx - o.x) + Math.abs(ny - o.y) + Math.abs(o.tr - o.r));
+    o.x = nx; o.y = ny;
+  }
+  return move;
+}
+function render() {
+  for (const o of B) {
+    const s = o.el.style; s.width = s.height = (o.r * 2).toFixed(1) + 'px';
+    s.transform = `translate(${(o.x - o.r).toFixed(1)}px,${(o.y - o.r).toFixed(1)}px)`;
+    s.fontSize = clamp(o.r * .27, 11, 17).toFixed(1) + 'px';
+  }
+}
+function loop() {
+  const m = step(1); render();
+  still = m < .08 ? still + 1 : 0;
+  if (still > 30) { running = false; return; }
+  requestAnimationFrame(loop);
+}
+function kick() { still = 0; if (!running) { running = true; requestAnimationFrame(loop); } }
+function toggleBubble(o) {
+  o.sel = !o.sel; o.tr = o.base * (o.sel ? 1.3 : 1);
+  o.el.setAttribute('aria-pressed', String(o.sel));
+  const n = B.filter(b => b.sel).length;
+  countEl.textContent = n ? `${n} picked` : 'Nothing picked yet';
+  if (reduced) { o.r = o.tr; for (let k = 0; k < 300; k++) step(1); render(); } else kick();
+}
+buildBubbles();
+
+/* form: preview page, nothing is sent */
+document.getElementById('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const note = document.getElementById('formNote'), name = document.getElementById('fName'), email = document.getElementById('fEmail');
+  if (!name.value.trim() || !email.validity.valid || !email.value) { note.className = 'note'; note.textContent = 'Add your name and a work email so we can reply.'; (name.value.trim() ? email : name).focus(); return; }
+  const picks = B.filter(b => b.sel).map(b => b.label.toLowerCase());
+  note.className = 'note ok';
+  note.textContent = `Thanks, ${name.value.trim()}. This is a preview of the site, so nothing was sent yet.` + (picks.length ? ` Your demo would cover: ${picks.join(', ')}.` : '');
+});
+
+/* ---------- 29 Split view ---------- */
+(function(){
+  const sv=document.getElementById('sv'), h=document.getElementById('svHandle'), SN=[25,50,75];
+  let pct=50, drag=null, anim=0, moved=false;
+  const set=v=>{pct=v; sv.style.setProperty('--top',v+'%'); const r=Math.round(v); h.setAttribute('aria-valuenow',r); h.setAttribute('aria-valuetext',`Photo ${r}%, list ${100-r}%`);};
+  const to=t=>{cancelAnimationFrame(anim); if(reduced){set(t);return;} let v=0; const tick=()=>{v+=(t-pct)*.18; v*=.62; set(pct+v); if(Math.abs(t-pct)<.05&&Math.abs(v)<.05){set(t);return;} anim=requestAnimationFrame(tick);}; tick();};
+  const nearest=v=>SN.reduce((a,b)=>Math.abs(b-v)<Math.abs(a-v)?b:a);
+  h.addEventListener('pointerdown',e=>{h.setPointerCapture(e.pointerId); cancelAnimationFrame(anim); const r=sv.getBoundingClientRect(); drag={r,y:e.clientY,t:performance.now(),v:0}; moved=false;});
+  h.addEventListener('pointermove',e=>{ if(!drag) return; const now=performance.now(); let raw=(e.clientY-drag.r.top-15)/drag.r.height*100;
+    if(Math.abs(e.clientY-drag.y)>3) moved=true;
+    drag.v=(e.clientY-drag.y)/Math.max(1,now-drag.t); drag.y=e.clientY; drag.t=now;
+    if(raw<25) raw=25-(25-raw)*.35; if(raw>75) raw=75+(raw-75)*.35; set(Math.max(12,Math.min(88,raw)));});
+  const end=()=>{ if(!drag) return; const v=drag.v; drag=null;
+    if(!moved){ const i=SN.indexOf(nearest(pct)); to(SN[(i+1)%SN.length]); return; }
+    to(nearest(pct+v*120)); };
+  h.addEventListener('pointerup',end); h.addEventListener('pointercancel',end); h.addEventListener('lostpointercapture',end);
+  h.addEventListener('keydown',e=>{ const i=SN.indexOf(nearest(pct)); let t=null;
+    if(e.key==='ArrowUp') t=SN[Math.max(0,i-1)]; else if(e.key==='ArrowDown') t=SN[Math.min(SN.length-1,i+1)]; else if(e.key==='Home') t=SN[0]; else if(e.key==='End') t=SN[SN.length-1]; else if(e.key==='Enter'||e.key===' ') t=SN[(i+1)%SN.length];
+    if(t!==null){ e.preventDefault(); to(t);} });
+  set(50);
+})();
+
+/* ---------- wiring ---------- */
+let ticking = false;
+function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(() => { ticking = false; updateKo(); updateGal(); updateDays(); }); }
+addEventListener('scroll', onScroll, { passive: true });
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { layoutKo(); layoutGal(); sizeBubbles(false); updateDays(); }, 120); });
+
+paintImages();
+sizeBubbles(true);
+updateDays();
+const ready = document.fonts ? Promise.race([document.fonts.load('900 100px "Big Shoulders Display"'), new Promise(r => setTimeout(r, 1500))]) : Promise.resolve();
+layoutKo(); layoutGal();
+ready.then(() => { layoutKo(); layoutGal(); sizeBubbles(false); });
+addEventListener('load', () => { layoutGal(); });
+})();
+</script>
+
+</body>
+</html>

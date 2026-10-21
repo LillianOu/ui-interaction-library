@@ -6,7 +6,8 @@
 4. Write `description` as one sentence that starts with "Use when…", so AI tools know when to pick the skill.
 5. Give the title both names: `# 14 — 中文名稱 / English Name`.
 6. Choose one category (below) and fill in every section of the template.
-7. Add a row to the matching category table in `README.md`, update "Next number", and add a line to `CHANGELOG.md`, all in the same change.
+7. Build a demo: copy `demo/_template.html` to `demo/<NN>-<name>.html` (same name as the skill folder), build the interaction in it using the tokens in `demo/assets/demo.css`, fix the prev/next links of its neighbours, and add a card for it in `demo/index.html`. Check it at 375px and with reduced motion.
+8. Add a row to the matching category table in `README.md`, update "Next number", and add a line to `CHANGELOG.md`, all in the same change.
 
 Keep commits small and descriptive. Do not add private client, employer, health, account or analytics data.
 

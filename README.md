@@ -72,7 +72,7 @@ Next number: **30** (14 is reserved for the planned cursor-driven hero).
 
 ## Live demo
 
-`demo/index.html` shows skills 22–29 working on one page (the Returns Bench homepage with example data). Open it in a browser, or deploy the repo on Vercel: `vercel.json` sends the site root to `/demo/`.
+Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit skills (15–21) are guides, so they have no demo.
 
 ## How to use
 
@@ -94,7 +94,7 @@ templates/SKILL-TEMPLATE.md   starting point for a new interaction skill
 templates/TOOLKIT-SKILL-TEMPLATE.md   starting point for a new Design Toolkit crew member
 CONTRIBUTING.md               how to add a skill and pick its category
 CHANGELOG.md                  what changed and when
-demo/index.html               live demo of skills 22–29
+demo/                         live demos: index.html gallery, one page per skill, shared assets/demo.css, _template.html
 vercel.json                   Vercel config (root redirects to /demo/)
 LICENSE-DECISION.md           licence status
 ```
