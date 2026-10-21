@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>12 · Scroll-driven Vortex Transit</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Scroll-driven vortex: a tall scroll track with a sticky full-bleed scene.
+   Canvas 2D draws the particle tunnel; CSS 3D transforms fly the type through it. */
+.vx-stage{padding-bottom:0}
+.vx{position:relative;height:520vh}
+.vx-sticky{position:sticky;top:56px;height:calc(100vh - 56px);height:calc(100svh - 56px);overflow:hidden;
+  border-block:1px solid var(--line);
+  background:
+    radial-gradient(circle at 50% 50%, var(--bg) 0%, color-mix(in srgb,var(--bg) 70%,var(--cyan-soft)) 22%, var(--cyan-soft) 48%, var(--violet-soft) 100%);
+}
+.vx-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vx-veil{position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse 46% 40% at 50% 50%, color-mix(in srgb,var(--bg) 82%,transparent) 0%, color-mix(in srgb,var(--bg) 55%,transparent) 45%, transparent 100%)}
+.vx-scene{position:absolute;inset:0;perspective:900px;perspective-origin:50% 50%;pointer-events:none}
+.vx-panel{position:absolute;left:50%;top:50%;width:min(92vw,880px);text-align:center;
+  transform:translate(-50%,-50%);opacity:0;will-change:transform,opacity;backface-visibility:hidden}
+.vx-panel .k{font-family:var(--f-mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.vx-panel h2{font-family:var(--f-display);font-weight:900;text-transform:uppercase;line-height:.84;
+  font-size:clamp(64px,15vw,210px);letter-spacing:-.01em;color:var(--ink)}
+.vx-panel h2 em{font-style:normal;color:var(--violet)}
+.vx-panel p.l{margin:14px auto 0;max-width:40ch;color:var(--muted);font-size:clamp(16px,1.7vw,19px)}
+.vx-panel.is-live{pointer-events:auto}
+.vx-panel .btn{margin-top:22px}
+
+.vx-hud{position:absolute;left:0;right:0;bottom:max(18px,env(safe-area-inset-bottom,0px));display:flex;justify-content:center;pointer-events:none}
+.vx-hud-inner{pointer-events:auto;display:flex;align-items:center;gap:6px;padding:6px;border-radius:999px;background:var(--glass);border:1px solid var(--line);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.vx-chip{appearance:none;border:0;background:transparent;color:var(--muted);font:500 12px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;
+  min-height:36px;padding:0 12px;border-radius:999px;cursor:pointer}
+.vx-chip:hover{color:var(--ink)}
+.vx-chip[aria-current="step"]{background:var(--ink);color:var(--bg)}
+.vx-bar{position:absolute;left:0;top:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.vx-hint{position:absolute;left:50%;top:16px;transform:translateX(-50%);font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);transition:opacity .4s}
+.vx-hint.gone{opacity:0}
+
+.vx-notes{padding-block:clamp(48px,8vw,96px)}
+.vx-notes h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(34px,5vw,56px);line-height:.95;margin-bottom:20px}
+.vx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.vx-grid div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px}
+.vx-grid b{display:block;font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px;font-weight:500}
+.vx-grid span{color:var(--muted);font-size:15px}
+
+@media (max-width:560px){
+  .vx{height:440vh}
+  .vx-chip{padding:0 9px;font-size:11px;letter-spacing:.06em}
+}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="11-immersive-float.html">Prev</a><a href="13-hover-door-bloom.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/12-scroll-vortex-transit/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">12 · Motion Effects</p>
+    <h1>Scroll-driven Vortex Transit</h1>
+    <p class="zh">滾動漩渦轉場</p>
+    <p class="lede">Scroll down and the camera dives through a spinning tunnel. Each headline rushes past you and the next one spirals in from the dark. Scroll faster and the vortex speeds up.</p>
+    <div class="d-try"><span>Mouse: scroll</span><span>Touch: swipe</span><span>Keyboard: Space / arrows, or Tab to the stop buttons</span></div>
+  </section>
+
+  <section class="d-stage vx-stage" aria-label="Demo">
+    <div class="vx" id="vx">
+      <div class="vx-sticky">
+        <canvas class="vx-canvas" aria-hidden="true"></canvas>
+        <div class="vx-veil" aria-hidden="true"></div>
+        <div class="vx-bar" aria-hidden="true"></div>
+        <p class="vx-hint" aria-hidden="true">Scroll to travel ↓</p>
+        <div class="vx-scene">
+          <article class="vx-panel" id="vx-p0">
+            <p class="k">01 · Depart</p>
+            <h2>Leave the <em>surface</em></h2>
+            <p class="l">Scroll progress drives the scene. Nothing plays on its own, so you set the pace.</p>
+          </article>
+          <article class="vx-panel" id="vx-p1">
+            <p class="k">02 · Spiral</p>
+            <h2>Into the <em>spin</em></h2>
+            <p class="l">The tunnel twists harder the deeper you go. Headlines orbit and grow as they reach the camera.</p>
+          </article>
+          <article class="vx-panel" id="vx-p2">
+            <p class="k">03 · Threshold</p>
+            <h2>Faster <em>than light</em></h2>
+            <p class="l">Scroll speed feeds the particle speed, so a quick flick turns dots into long streaks.</p>
+          </article>
+          <article class="vx-panel" id="vx-p3">
+            <p class="k">04 · Arrive</p>
+            <h2>New <em>world</em></h2>
+            <p class="l">The vortex settles and the last panel stays put, so the page keeps scrolling normally.</p>
+            <a class="btn btn-primary" href="13-hover-door-bloom.html">Next: Door Bloom</a>
+          </article>
+        </div>
+        <div class="vx-hud">
+          <div class="vx-hud-inner" role="group" aria-label="Jump to a stop">
+            <button class="vx-chip" type="button" data-step="0" aria-controls="vx-p0">Depart</button>
+            <button class="vx-chip" type="button" data-step="1" aria-controls="vx-p1">Spiral</button>
+            <button class="vx-chip" type="button" data-step="2" aria-controls="vx-p2">Threshold</button>
+            <button class="vx-chip" type="button" data-step="3" aria-controls="vx-p3">Arrive</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="vx-notes wrap" aria-labelledby="vx-tune">
+    <h2 id="vx-tune">Tune it</h2>
+    <div class="vx-grid">
+      <div><b>speed</b><span>Base cruise speed is 0.12 depth units a second. Scroll velocity adds up to about 20 times that.</span></div>
+      <div><b>twist</b><span>Spin goes from 0.35 to 1.1 rad/s with progress. Particles near the camera spin faster.</span></div>
+      <div><b>count</b><span>720 particles on wide screens and 360 under 600px. They are batched into eight strokes a frame.</span></div>
+      <div><b>colours</b><span>Read from the <code>--cyan</code> and <code>--violet</code> tokens, and re-read when the colour scheme changes.</span></div>
+      <div><b>performance</b><span>DPR is capped at 2. The loop stops when the scene is off-screen or the tab is hidden, and everything is removed on pagehide.</span></div>
+      <div><b>reduced motion</b><span>The tunnel is drawn once, without moving. Panels crossfade in place with the same text, and nothing flies or spins.</span></div>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/12-scroll-vortex-transit/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  'use strict';
+  // ---- Editable parameters ----
+  const CFG = {
+    baseSpeed: 0.12,      // depth units / second while idle
+    velBoost: 2.4,        // how much scroll velocity adds to speed
+    maxSpeed: 2.6,
+    twistMin: 0.35, twistMax: 1.1,   // rad/s, mapped over progress
+    countWide: 720, countNarrow: 360,
+    tunnelRadius: 0.12,   // of min(w,h), at far depth
+    rings: 9,
+    panelDepth: 1500,     // px of Z travel between panels
+    panelSpin: 80,        // deg of Z rotation between panels
+    dwell: 0.2            // share of each segment (at both ends) where a panel holds still
+  };
+
+  const root = document.getElementById('vx');
+  const sticky = root.querySelector('.vx-sticky');
+  const canvas = root.querySelector('.vx-canvas');
+  const ctx = canvas.getContext('2d');
+  const panels = [...root.querySelectorAll('.vx-panel')];
+  const chips = [...root.querySelectorAll('.vx-chip')];
+  const bar = root.querySelector('.vx-bar');
+  const hint = root.querySelector('.vx-hint');
+  const veil = root.querySelector('.vx-veil');
+  const N = panels.length;
+
+  const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const mqDark = matchMedia('(prefers-color-scheme: dark)');
+  let reduced = mqReduce.matches;
+
+  let W = 0, H = 0, dpr = 1;
+  let colors = { cyan: '#0089A8', violet: '#5A40D4', dark: false };
+  let parts = [];
+  let progress = 0, shownP = -1, vel = 0, lastP = 0;
+  let travel = 0, spin = 0;
+  let raf = 0, lastT = 0, inView = false, docVisible = !document.hidden;
+
+  function readColors() {
+    const cs = getComputedStyle(document.documentElement);
+    const bg = cs.getPropertyValue('--bg').trim();
+    colors.cyan = cs.getPropertyValue('--cyan').trim() || colors.cyan;
+    colors.violet = cs.getPropertyValue('--violet').trim() || colors.violet;
+    // dark if the background is dark (works for data-theme overrides too)
+    const m = bg.match(/^#?([0-9a-f]{6})$/i);
+    if (m) { const n = parseInt(m[1], 16); colors.dark = ((n >> 16) + ((n >> 8) & 255) + (n & 255)) / 3 < 100; }
+  }
+
+  function makeParticles() {
+    const count = W < 600 ? CFG.countNarrow : CFG.countWide;
+    parts = new Array(count);
+    for (let i = 0; i < count; i++) parts[i] = spawn({}, Math.random());
+  }
+  function spawn(p, z) {
+    p.a = Math.random() * Math.PI * 2;
+    p.r = 0.55 + Math.pow(Math.random(), 0.6) * 0.9;  // ring radius factor
+    p.z = z;
+    p.c = Math.random() < 0.55 ? 0 : 1;
+    p.glyph = Math.random() < 0.06;                   // orbiting "objects"
+    return p;
+  }
+
+  function resize() {
+    const r = sticky.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const nw = Math.round(r.width), nh = Math.round(r.height);
+    const countChanged = (nw < 600) !== (W < 600) || parts.length === 0;
+    W = nw; H = nh;
+    canvas.width = Math.max(1, Math.round(W * dpr));
+    canvas.height = Math.max(1, Math.round(H * dpr));
+    if (countChanged) makeParticles();
+    measure();
+    if (reduced || !raf) drawFrame(0);
+  }
+
+  // Scroll progress 0..1 across the tall track
+  function measure() {
+    const r = root.getBoundingClientRect();
+    const range = r.height - sticky.offsetHeight;
+    progress = range > 0 ? Math.min(1, Math.max(0, -r.top / range)) : 0;
+  }
+
+  const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+  const ease = t => t * t * (3 - 2 * t);
+
+  function updatePanels(p) {
+    if (p === shownP) return;
+    shownP = p;
+    // each panel dwells (holds still) for part of its segment, then the camera dives
+    const raw = p * (N - 1);
+    const seg = Math.min(N - 2, Math.floor(raw));
+    const f = clamp((raw - seg - CFG.dwell) / (1 - 2 * CFG.dwell), 0, 1);
+    const pos = seg + ease(f);
+    let active = Math.round(pos), focus = 0;
+    for (let i = 0; i < N; i++) {
+      const d = i - pos;             // >0: ahead of camera, <0: already passed
+      const el = panels[i];
+      let o, tf;
+      if (reduced) {
+        o = clamp(1 - Math.abs(d), 0, 1);
+        if (i === N - 1 && d <= 0) o = 1;
+        tf = 'translate(-50%,-50%)';
+      } else {
+        if (i === N - 1 && d < 0) { o = 1; tf = 'translate(-50%,-50%)'; }
+        else {
+          const z = -d * CFG.panelDepth;
+          const rot = d * CFG.panelSpin;
+          o = d >= 0 ? clamp(1 - d * 1.05, 0, 1) : clamp(1 + d * 3.2, 0, 1);
+          // keep anything that would cross the camera plane hidden
+          if (z > 700) o = 0;
+          tf = `translate(-50%,-50%) translate3d(0,0,${Math.min(z, 700).toFixed(1)}px) rotateZ(${rot.toFixed(2)}deg)`;
+        }
+      }
+      if (o > focus) focus = o;
+      el.style.opacity = o.toFixed(3);
+      el.style.transform = tf;
+      el.style.visibility = o < 0.01 ? 'hidden' : 'visible';
+      el.classList.toggle('is-live', o > 0.6);
+    }
+    chips.forEach((c, i) => c.setAttribute('aria-current', i === active ? 'step' : 'false'));
+    veil.style.opacity = focus.toFixed(3);
+    bar.style.transform = `scaleX(${p.toFixed(4)})`;
+    hint.classList.toggle('gone', p > 0.02);
+  }
+
+  // ---- Tunnel renderer ----
+  const BUCKETS = 4;
+  function drawFrame(dt) {
+    const p = progress;
+    const speed = reduced ? 0 : clamp(CFG.baseSpeed + vel * CFG.velBoost, 0, CFG.maxSpeed);
+    const twist = CFG.twistMin + (CFG.twistMax - CFG.twistMin) * ease(p);
+    travel += speed * dt;
+    spin += twist * dt;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = colors.dark ? 'lighter' : 'source-over';
+
+    const m = Math.min(W, H);
+    const R = m * CFG.tunnelRadius;
+    // camera direction: the vortex eye drifts as you travel
+    const cx = W / 2 + Math.sin(p * Math.PI * 2) * W * 0.06;
+    const cy = H / 2 + Math.cos(p * Math.PI * 1.5) * H * 0.04 - H * 0.02;
+
+    // tunnel rings
+    ctx.lineCap = 'round';
+    for (let k = 0; k < CFG.rings; k++) {
+      let z = ((k / CFG.rings) - travel * 0.5) % 1; if (z < 0) z += 1;
+      z = 0.06 + z * 0.94;
+      const rad = (R * 1.7) / z;
+      if (rad > m * 2.2) continue;
+      const a = (1 - z) * (colors.dark ? 0.22 : 0.3);
+      ctx.strokeStyle = k % 2 ? colors.violet : colors.cyan;
+      ctx.globalAlpha = a;
+      ctx.lineWidth = 0.6 + (1 - z) * 1.6;
+      const rot = spin * (1.2 - z) + k;
+      ctx.beginPath();
+      for (let s = 0; s < 5; s++) {
+        const a0 = rot + s * (Math.PI * 2 / 5);
+        ctx.moveTo(cx + Math.cos(a0) * rad, cy + Math.sin(a0) * rad);
+        ctx.arc(cx, cy, rad, a0, a0 + Math.PI * 2 / 5 * 0.62);
+      }
+      ctx.stroke();
+    }
+
+    // particles: batch into colour x depth buckets
+    const paths = [];
+    for (let i = 0; i < 2 * BUCKETS; i++) paths.push(new Path2D());
+    const glyphs = [];
+    const streak = 0.025 + speed * 0.09;
+    for (let i = 0; i < parts.length; i++) {
+      const q = parts[i];
+      if (!reduced) {
+        q.z -= speed * dt;
+        q.a += twist * dt * (0.5 + (1 - q.z) * 1.6);
+        if (q.z <= 0.03) spawn(q, 1);
+      }
+      const z = q.z, rr = R * q.r;
+      const x = cx + Math.cos(q.a) * rr / z, y = cy + Math.sin(q.a) * rr / z;
+      if (x < -50 || x > W + 50 || y < -50 || y > H + 50) continue;
+      if (q.glyph) { glyphs.push(q, x, y); continue; }
+      const z2 = Math.min(1, z + streak), a2 = q.a - twist * 0.12;
+      const x2 = cx + Math.cos(a2) * rr / z2, y2 = cy + Math.sin(a2) * rr / z2;
+      const b = Math.min(BUCKETS - 1, Math.floor((1 - z) * BUCKETS));
+      const path = paths[q.c * BUCKETS + b];
+      path.moveTo(x2, y2);
+      path.lineTo(x + 0.01, y);
+    }
+    for (let c = 0; c < 2; c++) {
+      ctx.strokeStyle = c ? colors.violet : colors.cyan;
+      for (let b = 0; b < BUCKETS; b++) {
+        const t = (b + 1) / BUCKETS;
+        ctx.globalAlpha = (colors.dark ? 0.25 : 0.32) + t * 0.6;
+        ctx.lineWidth = 0.6 + t * t * 2.6;
+        ctx.stroke(paths[c * BUCKETS + b]);
+      }
+    }
+    // orbiting objects: small diamonds with a code label
+    ctx.font = '500 10px "IBM Plex Mono", ui-monospace, monospace';
+    for (let i = 0; i < glyphs.length; i += 3) {
+      const q = glyphs[i], x = glyphs[i + 1], y = glyphs[i + 2];
+      const s = clamp(3 / q.z, 3, 26);
+      ctx.globalAlpha = clamp((1 - q.z) * 1.1, 0, 0.9);
+      ctx.strokeStyle = q.c ? colors.violet : colors.cyan;
+      ctx.lineWidth = 1.2;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(q.a + spin);
+      ctx.strokeRect(-s / 2, -s / 2, s, s);
+      ctx.restore();
+      if (q.z < 0.5 && s > 8) { ctx.fillStyle = ctx.strokeStyle; ctx.fillText('VX-' + ((i / 3) % 90 + 10 | 0), x + s * 0.7, y - s * 0.7); }
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function tick(t) {
+    raf = 0;
+    if (!inView || !docVisible || reduced) return;
+    const dt = Math.min(0.05, lastT ? (t - lastT) / 1000 : 0.016);
+    lastT = t;
+    measure();
+    const dp = Math.abs(progress - lastP) / Math.max(dt, 0.001);
+    lastP = progress;
+    vel += (dp - vel) * Math.min(1, dt * 6);   // smoothed scroll velocity
+    updatePanels(progress);
+    drawFrame(dt);
+    raf = requestAnimationFrame(tick);
+  }
+  function start() { if (!raf && inView && docVisible && !reduced) { lastT = 0; raf = requestAnimationFrame(tick); } }
+  function stop() { if (raf) cancelAnimationFrame(raf); raf = 0; }
+
+  // Reduced motion: update on scroll only, no loop
+  let pending = 0;
+  function onScroll() {
+    if (!reduced || pending) return;
+    pending = requestAnimationFrame(() => { pending = 0; measure(); updatePanels(progress); });
+  }
+
+  function jump(i) {
+    const r = root.getBoundingClientRect();
+    const range = r.height - sticky.offsetHeight;
+    const top = window.scrollY + r.top + range * (i / (N - 1)) + 1;
+    window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
+  }
+  const chipHandlers = chips.map((c, i) => { const h = () => jump(i); c.addEventListener('click', h); return h; });
+
+  function onReduceChange() {
+    reduced = mqReduce.matches; shownP = -1;
+    stop(); measure(); updatePanels(progress); drawFrame(0); start();
+  }
+  function onSchemeChange() { readColors(); if (!raf) drawFrame(0); }
+  function onVisibility() { docVisible = !document.hidden; docVisible ? start() : stop(); }
+
+  const io = new IntersectionObserver(es => { inView = es[0].isIntersecting; inView ? start() : stop(); }, { rootMargin: '100px 0px' });
+  const ro = new ResizeObserver(resize);
+
+  readColors();
+  resize();
+  updatePanels(progress);
+  io.observe(sticky);
+  ro.observe(sticky);
+  addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('visibilitychange', onVisibility);
+  mqReduce.addEventListener('change', onReduceChange);
+  mqDark.addEventListener('change', onSchemeChange);
+
+  addEventListener('pagehide', function cleanup(e) {
+    if (e.persisted) { stop(); return; }   // bfcache: just pause
+    stop(); io.disconnect(); ro.disconnect();
+    if (pending) cancelAnimationFrame(pending);
+    removeEventListener('scroll', onScroll);
+    document.removeEventListener('visibilitychange', onVisibility);
+    mqReduce.removeEventListener('change', onReduceChange);
+    mqDark.removeEventListener('change', onSchemeChange);
+    chips.forEach((c, i) => c.removeEventListener('click', chipHandlers[i]));
+    parts = [];
+  });
+  addEventListener('pageshow', e => { if (e.persisted) start(); });
+})();
+</script>
+</body>
+</html>

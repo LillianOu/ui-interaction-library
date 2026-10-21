@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>13 · Hover-triggered Door Bloom</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Door bloom: two leaves swing open on a hinge (perspective + transform-origin),
+   while a canvas bloom of petals and pollen expands behind them. The room content
+   is real DOM, always in the tab order, animated independently of the leaves. */
+.db-frame{padding:clamp(20px,4vw,56px) clamp(16px,4vw,56px) clamp(28px,5vw,64px)}
+.db-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 20px;margin-bottom:clamp(20px,3vw,36px)}
+.db-head h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(30px,4.4vw,52px);line-height:.95}
+.db-status{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);min-height:1.5em}
+.db-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,40px)}
+@media (max-width:820px){.db-row{grid-template-columns:minmax(0,1fr);max-width:400px;margin-inline:auto}}
+
+.door{--open:0;position:relative;aspect-ratio:3/4.4;perspective:1300px;perspective-origin:50% 40%}
+@media (max-width:820px){.door{aspect-ratio:3/4}}
+/* the doorway: arch-shaped aperture that holds the bloom and the room */
+.door-way{position:absolute;inset:0;border-radius:50% 50% 14px 14px / 30% 30% 14px 14px;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 35%, var(--surface) 0%, var(--cyan-soft) 55%, var(--violet-soft) 100%);
+  box-shadow:inset 0 0 0 1px var(--line), inset 0 -30px 60px -30px color-mix(in srgb,var(--violet) 30%,transparent)}
+.door-way canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.room{position:absolute;left:10%;right:10%;bottom:9%;padding:16px 16px 14px;border-radius:var(--r-md);background:var(--glass);border:1px solid var(--line);
+  opacity:0;transform:translateY(16px) scale(.97);transition:opacity .45s var(--ease) .18s, transform .6s var(--ease) .18s}
+.door.is-open .room{opacity:1;transform:none}
+.door:not(.is-open) .room{transition-delay:0s;transition-duration:.25s}
+.room .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+.room h3{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(26px,2.6vw,32px);line-height:1;margin:4px 0 6px}
+.room p{color:var(--muted);font-size:14px;line-height:1.45}
+.room .pick{margin-top:12px;min-height:44px;width:100%;font-size:15px}
+.room .pick[aria-pressed="true"]{background:var(--violet);color:var(--on-fill)}
+
+/* the two leaves */
+.leaf{position:absolute;top:0;bottom:0;width:50%;transform-style:preserve-3d;pointer-events:auto;cursor:pointer;
+  transition:transform .9s cubic-bezier(.2,.85,.25,1.04), opacity .5s var(--ease);
+  background:
+    linear-gradient(180deg, color-mix(in srgb,var(--surface) 92%,var(--cyan)) 0%, var(--surface) 46%, color-mix(in srgb,var(--surface) 88%,var(--violet)) 100%);
+  border:1px solid var(--line);box-shadow:0 1px 0 color-mix(in srgb,var(--ink) 6%,transparent)}
+.leaf::before{content:"";position:absolute;inset:13% 15% 9%;border:1px solid var(--line);border-radius:inherit;
+  background:linear-gradient(160deg, color-mix(in srgb,var(--cyan) 10%,transparent), color-mix(in srgb,var(--violet) 14%,transparent))}
+.leaf::after{content:"";position:absolute;top:56%;width:8px;height:34px;border-radius:6px;background:linear-gradient(var(--cyan),var(--violet))}
+.leaf-l{left:0;transform-origin:0 50%;border-radius:100% 0 0 14px / 30% 0 0 14px;border-right-width:.5px}
+.leaf-r{right:0;transform-origin:100% 50%;border-radius:0 100% 14px 0 / 0 30% 14px 0;border-left-width:.5px}
+.leaf-l::before{border-radius:100% 4px 4px 4px / 26% 4px 4px 4px}
+.leaf-r::before{border-radius:4px 100% 4px 4px / 4px 26% 4px 4px}
+.leaf-l::after{right:10px}
+.leaf-r::after{left:10px}
+.door.is-open .leaf{pointer-events:none}
+.door.is-open .leaf-l{transform:rotateY(-98deg)}
+.door.is-open .leaf-r{transform:rotateY(98deg)}
+.door:not(.is-open) .leaf{transition-duration:.65s;transition-timing-function:cubic-bezier(.5,0,.3,1)}
+/* glow seam that leaks light before the door opens (hover intent) */
+.seam{position:absolute;left:50%;top:14%;bottom:4%;width:2px;transform:translateX(-50%);pointer-events:none;
+  background:linear-gradient(transparent,var(--cyan),var(--violet),transparent);opacity:.35;transition:opacity .3s}
+.door.is-open .seam{opacity:0}
+
+.door-label{position:absolute;left:0;right:0;top:calc(100% + 10px);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.door-label .n{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.door-toggle{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 14px/1 var(--f-body);
+  min-height:40px;padding:0 16px;border-radius:999px;cursor:pointer}
+.door-toggle:hover{border-color:var(--violet);color:var(--violet)}
+.door-toggle[aria-expanded="true"]{background:var(--ink);color:var(--bg);border-color:transparent}
+.door-wrap{padding-bottom:58px}
+
+.db-notes{margin-top:8px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.db-notes div{background:var(--glass);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;font-size:14px;color:var(--muted)}
+.db-notes b{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);font-weight:500;margin-bottom:4px}
+
+/* Reduced motion: no swing, no scale. Leaves crossfade out and the bloom is drawn once. */
+@media (prefers-reduced-motion: reduce){
+  .leaf,.room,.seam{transition:opacity .3s linear !important}
+  .door.is-open .leaf-l,.door.is-open .leaf-r{transform:none;opacity:0}
+  .room{transform:none}
+}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="12-scroll-vortex-transit.html">Prev</a><a href="returns-bench.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/13-hover-door-bloom/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">13 · Motion Effects</p>
+    <h1>Hover-triggered Door Bloom</h1>
+    <p class="zh">滑過開門綻放</p>
+    <p class="lede">Point at a door and it swings open on its hinges. A bloom of petals and pollen opens up behind it and the room inside slides into view. Move away and the door closes again.</p>
+    <div class="d-try"><span>Mouse: hover, or click Open / Close</span><span>Touch: tap to open or close</span><span>Keyboard: Tab opens, Enter toggles, Esc closes</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame db-frame">
+      <div class="db-head">
+        <h2>Three rooms</h2>
+        <p class="db-status" role="status" aria-live="polite">No room picked yet</p>
+      </div>
+      <div class="db-row">
+        <div class="door-wrap">
+          <div class="door" data-hue="0" data-name="Studio">
+            <div class="door-way">
+              <canvas aria-hidden="true"></canvas>
+              <div class="room" id="room-1">
+                <p class="k">Room 01</p>
+                <h3>Studio</h3>
+                <p>A bright workspace for sketches and first drafts.</p>
+                <button class="btn btn-ghost pick" type="button" aria-pressed="false">Pick Studio</button>
+              </div>
+            </div>
+            <div class="seam" aria-hidden="true"></div>
+            <div class="leaf leaf-l" aria-hidden="true"></div>
+            <div class="leaf leaf-r" aria-hidden="true"></div>
+            <div class="door-label">
+              <span class="n">01 · Studio</span>
+              <button class="door-toggle" type="button" aria-expanded="false" aria-controls="room-1">Open</button>
+            </div>
+          </div>
+        </div>
+        <div class="door-wrap">
+          <div class="door" data-hue="1" data-name="Atelier">
+            <div class="door-way">
+              <canvas aria-hidden="true"></canvas>
+              <div class="room" id="room-2">
+                <p class="k">Room 02</p>
+                <h3>Atelier</h3>
+                <p>A quiet room for material samples and colour studies.</p>
+                <button class="btn btn-ghost pick" type="button" aria-pressed="false">Pick Atelier</button>
+              </div>
+            </div>
+            <div class="seam" aria-hidden="true"></div>
+            <div class="leaf leaf-l" aria-hidden="true"></div>
+            <div class="leaf leaf-r" aria-hidden="true"></div>
+            <div class="door-label">
+              <span class="n">02 · Atelier</span>
+              <button class="door-toggle" type="button" aria-expanded="false" aria-controls="room-2">Open</button>
+            </div>
+          </div>
+        </div>
+        <div class="door-wrap">
+          <div class="door" data-hue="2" data-name="Archive">
+            <div class="door-way">
+              <canvas aria-hidden="true"></canvas>
+              <div class="room" id="room-3">
+                <p class="k">Room 03</p>
+                <h3>Archive</h3>
+                <p>Finished work, filed by year and ready to share.</p>
+                <button class="btn btn-ghost pick" type="button" aria-pressed="false">Pick Archive</button>
+              </div>
+            </div>
+            <div class="seam" aria-hidden="true"></div>
+            <div class="leaf leaf-l" aria-hidden="true"></div>
+            <div class="leaf leaf-r" aria-hidden="true"></div>
+            <div class="door-label">
+              <span class="n">03 · Archive</span>
+              <button class="door-toggle" type="button" aria-expanded="false" aria-controls="room-3">Open</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="db-notes">
+        <div><b>timing</b>Opens in 900 ms with a slight overshoot and closes in 650 ms. The room fades in 180 ms after the door starts to move.</div>
+        <div><b>bloom</b>Two rings of petals (8 and 13) and 40 pollen grains, drawn on a canvas inside the doorway in the cyan and violet tokens.</div>
+        <div><b>reachable</b>The room buttons stay in the tab order. Tabbing to one opens its door, and Esc closes the door and returns focus to its toggle.</div>
+        <div><b>reduced motion</b>Leaves fade out instead of swinging and the bloom appears fully open with no animation. The content is the same.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/13-hover-door-bloom/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  'use strict';
+  // ---- Editable parameters ----
+  const CFG = {
+    openRate: 1.6,      // bloom progress per second while opening
+    closeRate: 2.6,     // bloom progress per second while closing
+    petalsInner: 8, petalsOuter: 13,
+    pollen: 40,
+    bloomDelay: 0.12    // share of the bloom timeline before petals start
+  };
+
+  const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const mqDark = matchMedia('(prefers-color-scheme: dark)');
+  let reduced = mqReduce.matches;
+  const colors = { cyan: '#0089A8', violet: '#5A40D4', surface: '#fff', dark: false };
+  function readColors() {
+    const cs = getComputedStyle(document.documentElement);
+    colors.cyan = cs.getPropertyValue('--cyan').trim() || colors.cyan;
+    colors.violet = cs.getPropertyValue('--violet').trim() || colors.violet;
+    colors.surface = cs.getPropertyValue('--surface').trim() || colors.surface;
+    const m = cs.getPropertyValue('--bg').trim().match(/^#?([0-9a-f]{6})$/i);
+    if (m) { const n = parseInt(m[1], 16); colors.dark = ((n >> 16) + ((n >> 8) & 255) + (n & 255)) / 3 < 100; }
+  }
+  readColors();
+
+  const status = document.querySelector('.db-status');
+  const frame = document.querySelector('.db-frame');
+  const doors = [];
+  const cleanups = [];
+  const on = (el, ev, fn, opt) => { el.addEventListener(ev, fn, opt); cleanups.push(() => el.removeEventListener(ev, fn, opt)); };
+
+  let raf = 0, lastT = 0, inView = true, docVisible = !document.hidden;
+
+  document.querySelectorAll('.door').forEach((el, idx) => {
+    const d = {
+      el, idx,
+      name: el.dataset.name,
+      hue: +el.dataset.hue,
+      toggle: el.querySelector('.door-toggle'),
+      canvas: el.querySelector('canvas'),
+      open: false, hover: false, focus: false, pinned: false, suppress: false,
+      t: 0, target: 0, time: 0, w: 0, h: 0, dpr: 1, pollen: []
+    };
+    d.ctx = d.canvas.getContext('2d');
+    for (let i = 0; i < CFG.pollen; i++) d.pollen.push({ a: Math.random() * Math.PI * 2, s: 0.35 + Math.random() * 0.65, r: 0.8 + Math.random() * 2.2, c: Math.random() < 0.5 });
+    doors.push(d);
+
+    // hover (mouse / pen only: touch uses tap-to-toggle)
+    on(el, 'pointerenter', e => { if (e.pointerType === 'touch') return; d.hover = true; sync(d); });
+    on(el, 'pointerleave', e => { if (e.pointerType === 'touch') return; d.hover = false; d.suppress = false; sync(d); });
+    // focus anywhere in the door (toggle or room content) opens it
+    // (keyboard focus only: a tap also focuses the button, and that tap's click does the toggling)
+    on(el, 'focusin', e => {
+      let kb = true; try { kb = e.target.matches(':focus-visible'); } catch (_) {}
+      if (kb) { d.focus = true; sync(d); }
+    });
+    on(el, 'focusout', e => { if (!el.contains(e.relatedTarget)) { d.focus = false; d.suppress = false; sync(d); } });
+    // click / tap toggles: the toggle button and the closed leaves both work
+    const flip = () => {
+      if (d.open) { d.pinned = false; d.suppress = true; }   // close, even while hovered/focused
+      else { d.pinned = true; d.suppress = false; }
+      sync(d);
+    };
+    on(d.toggle, 'click', flip);
+    el.querySelectorAll('.leaf').forEach(l => on(l, 'click', flip));
+    // picking a room proves the content behind the door is reachable
+    const pick = el.querySelector('.pick');
+    on(pick, 'click', () => {
+      document.querySelectorAll('.pick').forEach(b => b.setAttribute('aria-pressed', String(b === pick)));
+      status.textContent = d.name + ' picked';
+    });
+  });
+
+  function sync(d) {
+    const want = !d.suppress && (d.pinned || d.hover || d.focus);
+    if (want === d.open) return;
+    d.open = want;
+    if (!want) d.pinned = false;
+    d.el.classList.toggle('is-open', want);
+    d.toggle.setAttribute('aria-expanded', String(want));
+    d.toggle.textContent = want ? 'Close' : 'Open';
+    d.target = want ? 1 : 0;
+    if (reduced) { d.t = d.target; draw(d); } else start();
+  }
+
+  // Escape closes the door that holds focus, or any door open under the pointer
+  on(document, 'keydown', e => {
+    if (e.key !== 'Escape') return;
+    doors.forEach(d => {
+      if (!d.open) return;
+      const hadFocus = d.el.contains(document.activeElement);
+      d.pinned = false; d.suppress = true; sync(d);
+      if (hadFocus && document.activeElement !== d.toggle) d.toggle.focus();
+    });
+  });
+
+  // ---- Bloom renderer ----
+  function size(d) {
+    const r = d.canvas.getBoundingClientRect();
+    d.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    d.w = r.width; d.h = r.height;
+    d.canvas.width = Math.max(1, Math.round(d.w * d.dpr));
+    d.canvas.height = Math.max(1, Math.round(d.h * d.dpr));
+    draw(d);
+  }
+  const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+  const outBack = t => { const c = 1.6; t -= 1; return 1 + (c + 1) * t * t * t + c * t * t; };
+  const outCubic = t => 1 - Math.pow(1 - t, 3);
+
+  function petal(ctx, len, wid) {
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(wid, -len * 0.25, wid * 0.8, -len * 0.8, 0, -len);
+    ctx.bezierCurveTo(-wid * 0.8, -len * 0.8, -wid, -len * 0.25, 0, 0);
+  }
+
+  function draw(d) {
+    const { ctx, w, h } = d;
+    if (!w) return;
+    ctx.setTransform(d.dpr, 0, 0, d.dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    const p = clamp((d.t - CFG.bloomDelay) / (1 - CFG.bloomDelay), 0, 1);
+    if (p <= 0) return;
+    const cx = w / 2, cy = h * 0.4;
+    const m = Math.min(w, h);
+    const g = outBack(p), e = outCubic(p);
+    const sway = reduced ? 0 : Math.sin(d.time * 0.8) * 0.04;
+    const A = d.hue % 2 ? colors.violet : colors.cyan;
+    const B = d.hue % 2 ? colors.cyan : colors.violet;
+    ctx.globalCompositeOperation = colors.dark ? 'lighter' : 'source-over';
+
+    // halo
+    const halo = ctx.createRadialGradient(cx, cy, 0, cx, cy, m * 0.75 * e);
+    halo.addColorStop(0, colors.dark ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.9)');
+    halo.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.globalAlpha = e;
+    ctx.fillStyle = halo;
+    ctx.fillRect(0, 0, w, h);
+
+    // outer petals
+    const rot0 = d.hue * 0.4 + (1 - e) * -1.2 + sway + d.time * (reduced ? 0 : 0.05);
+    ctx.save(); ctx.translate(cx, cy);
+    for (let i = 0; i < CFG.petalsOuter; i++) {
+      ctx.save();
+      ctx.rotate(rot0 + i * Math.PI * 2 / CFG.petalsOuter);
+      petal(ctx, m * 0.52 * g, m * 0.13 * g);
+      ctx.globalAlpha = 0.16 * e; ctx.fillStyle = B; ctx.fill();
+      ctx.globalAlpha = 0.55 * e; ctx.strokeStyle = B; ctx.lineWidth = 1; ctx.stroke();
+      ctx.restore();
+    }
+    // inner petals (delayed, counter-rotated)
+    const pi = clamp((p - 0.15) / 0.85, 0, 1), gi = outBack(pi), ei = outCubic(pi);
+    for (let i = 0; i < CFG.petalsInner; i++) {
+      ctx.save();
+      ctx.rotate(-rot0 * 0.7 + Math.PI / CFG.petalsInner + i * Math.PI * 2 / CFG.petalsInner);
+      petal(ctx, m * 0.34 * gi, m * 0.12 * gi);
+      ctx.globalAlpha = 0.26 * ei; ctx.fillStyle = A; ctx.fill();
+      ctx.globalAlpha = 0.8 * ei; ctx.strokeStyle = A; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.restore();
+    }
+    // core
+    ctx.globalAlpha = ei;
+    ctx.fillStyle = A;
+    ctx.beginPath(); ctx.arc(0, 0, m * 0.035 * gi, 0, Math.PI * 2); ctx.fill();
+    // pollen drifting outward
+    for (let i = 0; i < d.pollen.length; i++) {
+      const q = d.pollen[i];
+      const drift = reduced ? 0.5 : ((d.time * 0.12 * q.s + q.s) % 1);
+      const rad = m * (0.12 + 0.55 * drift) * e;
+      const a = q.a + (reduced ? 0 : d.time * 0.15 * (q.c ? 1 : -1));
+      ctx.globalAlpha = e * (1 - drift) * 0.9;
+      ctx.fillStyle = q.c ? A : B;
+      ctx.beginPath(); ctx.arc(Math.cos(a) * rad, Math.sin(a) * rad, q.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function tick(t) {
+    raf = 0;
+    if (!inView || !docVisible || reduced) return;
+    const dt = Math.min(0.05, lastT ? (t - lastT) / 1000 : 0.016);
+    lastT = t;
+    let busy = false;
+    for (const d of doors) {
+      if (d.t !== d.target) {
+        const rate = d.target > d.t ? CFG.openRate : CFG.closeRate;
+        d.t = d.target > d.t ? Math.min(d.target, d.t + rate * dt) : Math.max(d.target, d.t - rate * dt);
+      }
+      if (d.t > 0) { d.time += dt; draw(d); busy = true; }   // open doors keep a gentle idle sway
+      else if (d.drawn) { draw(d); }
+      d.drawn = d.t > 0;
+    }
+    if (busy) raf = requestAnimationFrame(tick);
+  }
+  function start() { if (!raf && inView && docVisible && !reduced) { lastT = 0; raf = requestAnimationFrame(tick); } }
+  function stop() { if (raf) cancelAnimationFrame(raf); raf = 0; }
+
+  const ro = new ResizeObserver(entries => entries.forEach(en => { const d = doors.find(x => x.canvas === en.target); if (d) size(d); }));
+  doors.forEach(d => ro.observe(d.canvas));
+  const io = new IntersectionObserver(es => { inView = es[0].isIntersecting; inView ? start() : stop(); });
+  io.observe(frame);
+
+  on(document, 'visibilitychange', () => { docVisible = !document.hidden; docVisible ? start() : stop(); });
+  const onReduce = () => { reduced = mqReduce.matches; stop(); doors.forEach(d => { d.t = d.target; draw(d); }); start(); };
+  const onScheme = () => { readColors(); doors.forEach(draw); };
+  mqReduce.addEventListener('change', onReduce);
+  mqDark.addEventListener('change', onScheme);
+
+  addEventListener('pagehide', e => {
+    stop();
+    if (e.persisted) return;   // kept in bfcache: just pause
+    ro.disconnect(); io.disconnect();
+    mqReduce.removeEventListener('change', onReduce);
+    mqDark.removeEventListener('change', onScheme);
+    cleanups.forEach(fn => fn());
+  });
+  addEventListener('pageshow', e => { if (e.persisted) start(); });
+})();
+</script>
+</body>
+</html>
