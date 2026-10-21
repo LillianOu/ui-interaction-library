@@ -39,6 +39,21 @@ Each skill is an implementation recipe, not finished code. It tells you, or an A
 | 12 | 滾動漩渦轉場 | Scroll-driven Vortex Transit | Scroll | [`12-scroll-vortex-transit`](skills/12-scroll-vortex-transit/SKILL.md) |
 | 13 | 滑過開門綻放 | Hover-triggered Door Bloom | Hover / focus | [`13-hover-door-bloom`](skills/13-hover-door-bloom/SKILL.md) |
 
+### 排版互動 / Layout Relationships
+
+Eight interactions where pieces of a layout respond to each other: type opens onto images, cards make room, columns drift and panels trade space. Design the layout relationship first, then let the interaction move it.
+
+| No. | 中文 | English | Trigger | Skill |
+| --- | --- | --- | --- | --- |
+| 22 | 鏤空大標題 | Knockout Title | Scroll | [`22-knockout-title`](skills/22-knockout-title/SKILL.md) |
+| 23 | 標題嵌小圖 | Inline Image Title | Tap / click | [`23-inline-image-title`](skills/23-inline-image-title/SKILL.md) |
+| 24 | 點一格撐成通欄 | Expanding Grid | Tap / click | [`24-expanding-grid`](skills/24-expanding-grid/SKILL.md) |
+| 25 | 兩列錯速滾動 | Offset Columns | Scroll | [`25-offset-columns`](skills/25-offset-columns/SKILL.md) |
+| 26 | 左欄日期吸頂 | Sticky Date Rail | Scroll | [`26-sticky-date-rail`](skills/26-sticky-date-rail/SKILL.md) |
+| 27 | 檔案夾標籤頁 | Folder Tabs | Tap / keyboard | [`27-folder-tabs`](skills/27-folder-tabs/SKILL.md) |
+| 28 | 圓泡堆疊選擇 | Bubble Picker | Tap / keyboard | [`28-bubble-picker`](skills/28-bubble-picker/SKILL.md) |
+| 29 | 拖動分屏比例 | Split View | Drag / keyboard | [`29-split-view`](skills/29-split-view/SKILL.md) |
+
 ### 設計工具組 / Design Toolkit
 
 A crew of characters, each one a guide to the best open-source design skills for one job. Numbered in workflow order: sketch the flow, map the system, set the taste, gather references, build, produce, then inspect. Each crew member explains when to call the original skills and how to install them; it does not copy them.
@@ -53,7 +68,7 @@ A crew of characters, each one a guide to the best open-source design skills for
 | 20 | 章魚工作室 | Octo Studio (Huashu + Baoyu) | Prototypes, decks and animations in one prompt | [`20-octo-studio-huashu-baoyu`](skills/20-octo-studio-huashu-baoyu/SKILL.md) |
 | 21 | 鷹眼質檢員 | Hawk Inspector (Quality Pack) | Standards, score, polish and motion check | [`21-hawk-inspector-quality-pack`](skills/21-hawk-inspector-quality-pack/SKILL.md) |
 
-Next number: **22** (14 is reserved for the planned cursor-driven hero).
+Next number: **30** (14 is reserved for the planned cursor-driven hero).
 
 ## How to use
 

@@ -2,6 +2,20 @@
 
 All notable updates to this library are recorded here.
 
+## [0.4.0] - 2026-10-21
+
+### Added
+
+- New category 排版互動 / Layout Relationships: eight interactions where layout pieces respond to each other, inspired by a short video on premium layout interactions for vibe coding (叨叨AI是我). Written in our own words with full interaction contracts.
+  - 22 Knockout Title: photo shows through giant type; scroll zooms it to full bleed and back.
+  - 23 Inline Image Title: a text-height image inside a headline expands in place.
+  - 24 Expanding Grid: one card spans the row while the rest reflow below.
+  - 25 Offset Columns: two columns scroll at different speeds and land aligned.
+  - 26 Sticky Date Rail: oversized dates stick and push each other out.
+  - 27 Folder Tabs: stacked folders, the chosen one comes to the front.
+  - 28 Bubble Picker: packed circles that grow and push neighbours when selected.
+  - 29 Split View: draggable divider with content re-layout and three snap points.
+
 ## [0.3.1] - 2026-10-20
 
 ### Changed
