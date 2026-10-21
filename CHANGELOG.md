@@ -2,6 +2,13 @@
 
 All notable updates to this library are recorded here.
 
+## [0.4.1] - 2026-10-22
+
+### Added
+
+- `demo/index.html`: one live page demonstrating skills 22–29, each section labelled with its skill number and linked to its `SKILL.md`.
+- `vercel.json` so the repo can be deployed on Vercel with the demo at the site root.
+
 ## [0.4.0] - 2026-10-21
 
 ### Added

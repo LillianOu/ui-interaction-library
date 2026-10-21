@@ -70,6 +70,10 @@ A crew of characters, each one a guide to the best open-source design skills for
 
 Next number: **30** (14 is reserved for the planned cursor-driven hero).
 
+## Live demo
+
+`demo/index.html` shows skills 22–29 working on one page (the Returns Bench homepage with example data). Open it in a browser, or deploy the repo on Vercel: `vercel.json` sends the site root to `/demo/`.
+
 ## How to use
 
 **With Claude Code:** copy the skill folders you want into your project's `.claude/skills/` folder (or `~/.claude/skills/` to use them in every project).
@@ -90,6 +94,8 @@ templates/SKILL-TEMPLATE.md   starting point for a new interaction skill
 templates/TOOLKIT-SKILL-TEMPLATE.md   starting point for a new Design Toolkit crew member
 CONTRIBUTING.md               how to add a skill and pick its category
 CHANGELOG.md                  what changed and when
+demo/index.html               live demo of skills 22–29
+vercel.json                   Vercel config (root redirects to /demo/)
 LICENSE-DECISION.md           licence status
 ```
 
