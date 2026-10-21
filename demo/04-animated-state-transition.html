@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>04 · Animated State Transition</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Interaction CSS for this demo only. Use the tokens from assets/demo.css. */
+.st-card{max-width:560px;margin-inline:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(18px,4vw,28px);display:grid;gap:20px}
+.st-ctx{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:500 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.st-card h2{font:600 22px/1.2 var(--f-body)}
+.st-card h2 + p{color:var(--muted);font-size:15px;margin-top:4px}
+
+/* Outcome picker */
+.seg{border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0}
+.seg legend{font-size:13px;color:var(--muted);padding:0;margin-bottom:8px}
+.seg-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
+.seg label{position:relative;display:grid;place-items:center;min-height:40px;border-radius:10px;font:600 13px/1.1 var(--f-body);color:var(--muted);cursor:pointer;text-align:center;padding:0 4px}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg label:has(input:checked){background:var(--surface);color:var(--ink);box-shadow:0 1px 0 var(--line),0 4px 14px -8px rgba(0,0,0,.35)}
+.seg label:has(input:focus-visible){outline:3px solid var(--cyan);outline-offset:2px}
+
+/* Morphing submit button: fixed size, layers swap in place */
+.sb{all:unset;box-sizing:border-box;position:relative;display:block;width:100%;height:56px;border-radius:999px;overflow:hidden;cursor:pointer;
+  background:var(--ink);color:var(--bg);font:600 16px/1 var(--f-body);transition:background-color .35s var(--ease)}
+.sb:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.sb[data-state="loading"]{background:color-mix(in srgb,var(--ink) 78%,var(--bg));cursor:progress}
+.sb[data-state="success"]{background:var(--ok)}
+.sb[data-state="error"]{background:var(--err)}
+.sb .lay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transform:translateY(70%);transition:opacity .22s ease,transform .4s var(--ease);pointer-events:none;white-space:nowrap}
+.sb[data-prev="idle"] .l-idle,.sb[data-prev="loading"] .l-loading,.sb[data-prev="success"] .l-success,.sb[data-prev="error"] .l-error{transform:translateY(-70%)}
+.sb[data-state="idle"] .l-idle,.sb[data-state="loading"] .l-loading,.sb[data-state="success"] .l-success,.sb[data-state="error"] .l-error{opacity:1;transform:none;transition-delay:.06s}
+.sb svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.spin{animation:spin .8s linear infinite}
+.spin circle:first-child{opacity:.3}
+@keyframes spin{to{transform:rotate(1turn)}}
+.check path{stroke-dasharray:24;stroke-dashoffset:24}
+.sb[data-state="success"] .check path{stroke-dashoffset:0;transition:stroke-dashoffset .45s .18s var(--ease)}
+.sb.shake{animation:shake .38s var(--ease)}
+@keyframes shake{20%{transform:translateX(-6px)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}}
+
+.st-note{min-height:72px;font-size:15px;display:grid;gap:6px;align-content:start}
+.st-note .ok{color:var(--ink)}
+.st-note .ok b{color:var(--ok)}
+.st-note .err{color:var(--ink)}
+.st-note .err b{color:var(--err)}
+.linkbtn{all:unset;cursor:pointer;color:var(--muted);text-decoration:underline;text-underline-offset:3px;font-size:14px;justify-self:start}
+.linkbtn:focus-visible{outline:3px solid var(--cyan);outline-offset:2px;border-radius:4px}
+.st-hr{height:1px;background:var(--line);border:0;margin:0}
+
+/* Switch with a real pending state */
+.tg-row{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.tg-row p{font-size:15px}
+.tg-row small{display:block;color:var(--muted);font-size:13px;min-height:1.3em}
+.tg{all:unset;box-sizing:border-box;flex:none;position:relative;width:60px;height:34px;border-radius:999px;background:color-mix(in srgb,var(--muted) 45%,transparent);cursor:pointer;transition:background-color .3s var(--ease)}
+.tg:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.tg[aria-checked="true"]{background:var(--violet)}
+.tg .knob{position:absolute;top:3px;left:3px;width:28px;height:28px;border-radius:50%;background:var(--on-fill);box-shadow:0 1px 4px rgba(0,0,0,.3);display:grid;place-items:center;transition:transform .35s var(--ease)}
+.tg[aria-checked="true"] .knob{transform:translateX(26px)}
+.tg[data-state="pending"]{cursor:progress}
+.tg[data-state="pending"] .knob{transform:translateX(13px)}
+.tg .knob svg{width:16px;height:16px;fill:none;stroke:var(--muted);stroke-width:2.6;stroke-linecap:round;opacity:0;transition:opacity .2s}
+.tg[data-state="pending"] .knob svg{opacity:1}
+
+@media (prefers-reduced-motion:reduce){
+  .sb,.sb .lay,.tg,.tg .knob{transition:opacity .12s linear,background-color .12s linear}
+  .sb .lay,.sb[data-prev] .lay{transform:none!important}
+  .sb[data-state] .lay{transition-delay:0s}
+  .spin{animation:none}
+  .sb.shake{animation:none}
+  .sb[data-state="success"] .check path{transition:none}
+}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="03-swipe-selection.html">Prev</a><a href="05-floating-label.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/04-animated-state-transition/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">04 · Feedback &amp; State</p>
+    <h1>Animated State Transition</h1>
+    <p class="zh">動態狀態切換</p>
+    <p class="lede">Book a courier for a return. The button changes in place from idle to loading to success or error, without the layout moving. Choose how the fake server answers first.</p>
+    <div class="d-try"><span>Mouse: click</span><span>Touch: tap</span><span>Keyboard: Tab, Enter or Space</span><span>Extra clicks while loading are ignored</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame">
+      <div class="st-card">
+        <div class="st-ctx"><span>RMA-2042 · Ceramic pour-over set</span><span>2 parcels · 3.4 kg</span></div>
+        <div><h2>Courier pickup</h2><p>Collect from Bench B, Alexandria warehouse.</p></div>
+
+        <fieldset class="seg">
+          <legend>Next server response</legend>
+          <div class="seg-row">
+            <label><input type="radio" name="outcome" value="ok" checked>Works</label>
+            <label><input type="radio" name="outcome" value="fail">Fails</label>
+            <label><input type="radio" name="outcome" value="slow">Times out</label>
+            <label><input type="radio" name="outcome" value="offline">Offline</label>
+          </div>
+        </fieldset>
+
+        <button class="sb" id="pickup" type="button" data-state="idle" aria-describedby="note">
+          <span class="lay l-idle"><span class="txt">Book pickup</span></span>
+          <span class="lay l-loading" aria-hidden="true"><svg class="spin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M21 12a9 9 0 0 0-9-9"/></svg>Booking…</span>
+          <span class="lay l-success" aria-hidden="true"><svg class="check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Pickup booked</span>
+          <span class="lay l-error" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 7v6M12 17h.01"/></svg>Couldn’t book · Retry</span>
+        </button>
+        <div class="st-note" id="note"></div>
+
+        <hr class="st-hr">
+        <div class="tg-row">
+          <p id="tgLabel">Email the return label to the customer<small id="tgMsg">Off</small></p>
+          <button class="tg" id="notify" type="button" role="switch" aria-checked="false" aria-labelledby="tgLabel" data-state="idle">
+            <span class="knob"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spin" style="transform-origin:12px 12px" d="M20 12a8 8 0 0 0-8-8"/></svg></span>
+          </button>
+        </div>
+      </div>
+      <p class="sr-only" aria-live="polite" id="live"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/04-animated-state-transition/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = id => document.getElementById(id);
+  const live = $('live'), note = $('note'), btn = $('pickup');
+  const say = t => { live.textContent = ''; setTimeout(() => live.textContent = t, 30); };
+  const outcome = () => document.querySelector('input[name=outcome]:checked').value;
+  const TIMEOUT = 5000;
+
+  // Fake API. 'slow' never answers in time, so the client timeout decides the outcome.
+  function request(kind){
+    return new Promise((resolve, reject) => {
+      if (kind === 'offline' || !navigator.onLine) return setTimeout(() => reject({code:'offline'}), 250);
+      const ms = kind === 'slow' ? 12000 : 1400;
+      setTimeout(() => kind === 'fail' ? reject({code:'rejected'}) : resolve({ref:'CP-' + (88200 + Math.floor(Math.random()*90)), window:'Fri 24 Oct, 10:00–12:00'}), ms);
+    });
+  }
+  function withTimeout(p, ms){
+    let t; return Promise.race([p, new Promise((_, rej) => { t = setTimeout(() => rej({code:'timeout'}), ms); })]).finally(() => clearTimeout(t));
+  }
+  const ERR = {
+    offline:['You’re offline.', 'Nothing was booked. Reconnect, then retry.'],
+    rejected:['No courier slots before 5 pm.', 'Nothing was booked. Retry, or try again after 5 pm for a Monday pickup.'],
+    timeout:['The courier didn’t answer in 5 seconds.', 'Nothing was booked on our side. Retry to check again.']
+  };
+
+  // ---------- state machine for the pickup button ----------
+  const MACHINE = {
+    idle:    {SUBMIT:'loading'},
+    loading: {RESOLVE:'success', REJECT:'error'},          // SUBMIT while loading is ignored
+    success: {RESET:'idle', SUBMIT:'loading'},
+    error:   {SUBMIT:'loading', DISMISS:'idle'}
+  };
+  let state = 'idle', resetT = 0, booked = null, run = 0;
+
+  function send(event, data){
+    const to = MACHINE[state][event];
+    if (!to) return false;                                   // invalid transition: ignore
+    btn.dataset.prev = state;
+    state = to; btn.dataset.state = to;
+    enter(to, data);
+    return true;
+  }
+
+  function enter(s, data){
+    clearTimeout(resetT);
+    const txt = btn.querySelector('.l-idle .txt');
+    if (s === 'loading'){
+      btn.setAttribute('aria-busy', 'true'); btn.setAttribute('aria-disabled', 'true');
+      btn.setAttribute('aria-label', 'Booking pickup, please wait');
+      note.innerHTML = '<span style="color:var(--muted)">Asking the courier for a slot…</span>';
+      const id = ++run;
+      withTimeout(request(outcome()), TIMEOUT).then(r => { if (id === run) send('RESOLVE', r); }, e => { if (id === run) send('REJECT', e); });
+    } else {
+      btn.removeAttribute('aria-busy'); btn.removeAttribute('aria-disabled');
+    }
+    if (s === 'success'){
+      booked = data;
+      btn.setAttribute('aria-label', 'Pickup booked');
+      note.innerHTML = `<span class="ok"><b>Booked.</b> ${data.window} · Ref ${data.ref}</span>`;
+      say(`Pickup booked for ${data.window}. Reference ${data.ref}.`);
+      // Safe to return to idle: the booking details stay visible in the note.
+      resetT = setTimeout(() => send('RESET'), 3200);
+    }
+    if (s === 'error'){
+      const [head, body] = ERR[data.code] || ERR.rejected;
+      btn.setAttribute('aria-label', 'Couldn’t book pickup. Retry');
+      note.innerHTML = `<span class="err"><b>${head}</b> ${body}</span><button class="linkbtn" type="button" id="dismiss">Dismiss</button>`;
+      $('dismiss').onclick = () => { send('DISMISS'); btn.focus(); };
+      say(`${head} ${body}`);
+      if (!reduce.matches){ btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake'); }
+    }
+    if (s === 'idle'){
+      txt.textContent = booked ? 'Book another pickup' : 'Book pickup';
+      btn.setAttribute('aria-label', txt.textContent);
+      if (!booked) note.innerHTML = '';
+      else note.innerHTML = `<span class="ok"><b>Booked.</b> ${booked.window} · Ref ${booked.ref}</span>`;
+    }
+  }
+  btn.addEventListener('click', () => { send('SUBMIT'); });
+  btn.addEventListener('animationend', () => btn.classList.remove('shake'));
+  btn.setAttribute('aria-label', 'Book pickup');
+
+  // ---------- switch: shows a pending state, commits only the confirmed result ----------
+  const tg = $('notify'), tgMsg = $('tgMsg');
+  let tgOn = false, tgBusy = false;
+  tg.addEventListener('click', () => {
+    if (tgBusy) return;                                      // ignore taps while saving
+    tgBusy = true;
+    const want = !tgOn;
+    tg.dataset.state = 'pending'; tg.setAttribute('aria-busy', 'true');
+    tgMsg.textContent = want ? 'Turning on…' : 'Turning off…';
+    withTimeout(request(outcome()), TIMEOUT).then(() => {
+      tgOn = want;
+      tgMsg.textContent = want ? 'On · label emails as soon as it’s ready' : 'Off';
+      say(want ? 'Label email turned on.' : 'Label email turned off.');
+    }, e => {
+      tgMsg.textContent = `${(ERR[e.code] || ERR.rejected)[0]} Still ${tgOn ? 'on' : 'off'}.`;
+      say(`Couldn’t change the setting. It is still ${tgOn ? 'on' : 'off'}.`);
+    }).finally(() => {
+      tgBusy = false;
+      tg.dataset.state = 'idle'; tg.removeAttribute('aria-busy');
+      tg.setAttribute('aria-checked', tgOn);
+    });
+  });
+})();
+</script>
+</body>
+</html>

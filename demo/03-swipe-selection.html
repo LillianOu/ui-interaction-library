@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>03 · Swipe Selection</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Interaction CSS for this demo only. Use the tokens from assets/demo.css. */
+.sw-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;max-width:880px;margin-inline:auto}
+.sw-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px 16px}
+.sw-head h2{font:600 18px/1.2 var(--f-body)}
+.sw-head p{font-size:14px;color:var(--muted)}
+.sw-state{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.sw-state select{min-height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px var(--f-body);padding:0 8px}
+.sw-state select:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+
+.sw{--iw:clamp(168px,48vw,220px);position:relative;margin-inline:calc(-1 * clamp(16px,4vw,48px))}
+.sw-track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;
+  padding:22px calc(50% - var(--iw) / 2) 18px;cursor:grab;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.sw-track::-webkit-scrollbar{display:none}
+.sw-track.dragging{scroll-snap-type:none;cursor:grabbing;-webkit-user-select:none;user-select:none}
+.sw-track:focus-visible{outline:none}
+.sw-item{--p:1;flex:0 0 var(--iw);scroll-snap-align:center;position:relative;display:grid;gap:6px;justify-items:center;text-align:center;padding:18px 14px 16px;border-radius:var(--r-lg);
+  background:var(--surface);border:1px solid var(--line);cursor:pointer;transform:scale(calc(1 - var(--p) * .12));opacity:calc(1 - var(--p) * .45);transition:border-color .2s,box-shadow .2s;will-change:transform}
+.sw-item:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+.sw-item[aria-checked="true"]{border:2px solid var(--ink);padding:17px 13px 15px;box-shadow:0 18px 40px -24px rgba(0,0,0,.5)}
+.sw-item svg{width:100%;height:110px}
+.sw-name{font:600 17px/1.2 var(--f-body)}
+.sw-dims{font:500 12px/1.2 var(--f-mono);color:var(--muted);letter-spacing:.04em}
+.sw-price{font:600 15px/1 var(--f-body)}
+.sw-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%) scale(.6);opacity:0;display:inline-flex;align-items:center;gap:5px;padding:5px 10px 5px 8px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 12px/1 var(--f-body);transition:opacity .2s,transform .25s var(--ease);white-space:nowrap}
+.sw-badge svg{width:12px;height:12px;stroke:currentColor;stroke-width:3;fill:none}
+.sw-item[aria-checked="true"] .sw-badge{opacity:1;transform:translateX(-50%) scale(1)}
+.sw-tag{font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:var(--violet);text-transform:uppercase}
+
+.sw-ctrl{display:flex;justify-content:center;align-items:center;gap:14px}
+.sw-btn{all:unset;box-sizing:border-box;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);cursor:pointer}
+.sw-btn svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sw-btn:hover{border-color:var(--ink)}
+.sw-btn:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.sw-btn:disabled{opacity:.35;cursor:not-allowed;border-color:var(--line)}
+.sw-pos{font:500 13px/1 var(--f-mono);color:var(--muted);min-width:7ch;text-align:center}
+.sw-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line)}
+.sw-foot p{font-size:15px}
+.sw-foot small{display:block;color:var(--muted);font-size:13px}
+.btn:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.sw-msg{display:grid;place-items:center;gap:12px;min-height:210px;text-align:center;color:var(--muted);padding:20px}
+.sw-skel{flex:0 0 var(--iw);height:218px;border-radius:var(--r-lg);background:var(--surface);opacity:.6;animation:pulse 1s ease-in-out infinite alternate}
+@keyframes pulse{to{opacity:.3}}
+@media (prefers-reduced-motion:reduce){.sw-item{transform:none;opacity:1}.sw-badge{transition:none}.sw-skel{animation:none}}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="02-elastic-value-adjustment.html">Prev</a><a href="04-animated-state-transition.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/03-swipe-selection/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">03 · Input &amp; Controls</p>
+    <h1>Swipe Selection</h1>
+    <p class="zh">滑動選擇</p>
+    <p class="lede">Pick a carton for order #40362. Swipe or drag the row; whichever box settles in the centre is selected. Tap a side box to bring it to the centre.</p>
+    <div class="d-try"><span>Mouse: drag or click</span><span>Touch: swipe</span><span>Keyboard: ← → Home End, Enter to confirm</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame">
+      <div class="sw-wrap">
+        <div class="sw-head">
+          <div><h2 id="swTitle">Carton size</h2><p>Trail runner, EU 42 · 1.1 kg</p></div>
+          <label class="sw-state">Preview <select id="swSet"><option value="all">7 sizes</option><option value="one">One size</option><option value="loading">Loading</option><option value="empty">Empty</option><option value="error">Error</option></select></label>
+        </div>
+        <div class="sw" id="sw"></div>
+        <div class="sw-ctrl">
+          <button class="sw-btn" type="button" id="swPrev" aria-label="Previous size"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <span class="sw-pos" id="swPos" aria-hidden="true"></span>
+          <button class="sw-btn" type="button" id="swNext" aria-label="Next size"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="sw-foot">
+          <p id="swResult" aria-live="polite">No carton confirmed yet.<small>Selection only counts once you confirm.</small></p>
+          <button class="btn btn-primary" type="button" id="swConfirm">Use this box</button>
+        </div>
+        <p class="sr-only" aria-live="polite" id="swLive"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/03-swipe-selection/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  const SIZES = [
+    {id:'mailer', name:'Mailer bag', dims:'A4 · flat', price:'$0.35', mailer:true},
+    {id:'xs', name:'Extra small', dims:'15 × 10 × 5 cm', price:'$0.60', d:[15,10,5]},
+    {id:'s', name:'Small', dims:'22 × 16 × 9 cm', price:'$0.85', d:[22,16,9]},
+    {id:'m', name:'Medium', dims:'30 × 22 × 14 cm', price:'$1.20', d:[30,22,14], tag:'Best fit'},
+    {id:'l', name:'Large', dims:'40 × 30 × 20 cm', price:'$1.75', d:[40,30,20]},
+    {id:'xl', name:'Extra large', dims:'50 × 40 × 30 cm', price:'$2.40', d:[50,40,30]},
+    {id:'dw', name:'Double wall', dims:'60 × 40 × 40 cm', price:'$3.90', d:[60,40,40]}
+  ];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = id => document.getElementById(id);
+  const sw = $('sw'), prev = $('swPrev'), next = $('swNext'), pos = $('swPos'), live = $('swLive'), result = $('swResult'), confirmBtn = $('swConfirm');
+  let items = [], track = null, selectedId = 'm', pending = -1, settleT = 0, ro = null;
+
+  function boxSVG(s){
+    if (s.mailer) return `<svg viewBox="0 0 160 110" aria-hidden="true"><g transform="translate(80 62) rotate(-8)">
+      <rect x="-46" y="-30" width="92" height="60" rx="6" fill="color-mix(in srgb, var(--muted) 28%, var(--surface))" stroke="var(--muted)" stroke-width="1.5"/>
+      <path d="M-46 -22 L0 6 L46 -22" fill="none" stroke="var(--muted)" stroke-width="1.5"/><rect x="-18" y="8" width="36" height="12" rx="2" fill="var(--surface)" stroke="var(--muted)"/></g></svg>`;
+    const k = 1.05, c = .866, [w, d, h] = s.d.map(v => v * k);
+    const P = (x, y, z) => [80 + (x - y) * c, 100 + (x + y) * .5 - z];
+    const pt = a => a.map(p => p.join(',')).join(' ');
+    const x0 = -w / 2, y0 = -d / 2, x1 = w / 2, y1 = d / 2;
+    const top = [P(x0,y0,h), P(x1,y0,h), P(x1,y1,h), P(x0,y1,h)];
+    const left = [P(x0,y1,0), P(x1,y1,0), P(x1,y1,h), P(x0,y1,h)];
+    const right = [P(x1,y0,0), P(x1,y1,0), P(x1,y1,h), P(x1,y0,h)];
+    const shift = 100 - (P(x1,y1,0)[1]) ;   // sit every box on the same floor line
+    const tape = [P(x0,0,h), P(x1,0,h)];
+    return `<svg viewBox="0 0 160 110" aria-hidden="true"><g transform="translate(0 ${shift})">
+      <ellipse cx="80" cy="${P(x1,y1,0)[1]+2}" rx="${w*.6+d*.3}" ry="5" fill="var(--ink)" opacity=".08"/>
+      <polygon points="${pt(left)}" fill="var(--kraft)"/>
+      <polygon points="${pt(right)}" fill="color-mix(in srgb, var(--kraft) 72%, #000)"/>
+      <polygon points="${pt(top)}" fill="color-mix(in srgb, var(--kraft) 62%, #fff)"/>
+      <polyline points="${pt(tape)}" stroke="color-mix(in srgb, var(--kraft) 40%, #fff)" stroke-width="${Math.max(3, w*.1)}" fill="none"/>
+    </g></svg>`;
+  }
+
+  // ---------- rendering & states ----------
+  function render(set){
+    clearTimeout(settleT); ro && ro.disconnect();
+    sw.removeAttribute('aria-busy');
+    const list = set === 'one' ? SIZES.filter(s => s.id === 'm') : set === 'all' ? SIZES : [];
+    if (set === 'loading'){
+      sw.setAttribute('aria-busy', 'true');
+      sw.innerHTML = '<div class="sw-track" aria-label="Loading carton sizes"><div class="sw-skel"></div><div class="sw-skel"></div><div class="sw-skel"></div></div>';
+      items = []; track = null; controls(); return;
+    }
+    if (set === 'error'){
+      sw.innerHTML = '<div class="sw-msg" role="alert"><p>Couldn’t load carton sizes from the warehouse system.</p><button class="btn btn-ghost" type="button" id="swRetry">Try again</button></div>';
+      $('swRetry').onclick = () => { $('swSet').value = 'all'; render('all'); };
+      items = []; track = null; controls(); return;
+    }
+    if (!list.length){
+      sw.innerHTML = '<div class="sw-msg"><p>No carton sizes are set up for this warehouse yet.</p></div>';
+      items = []; track = null; controls(); return;
+    }
+    sw.innerHTML = `<div class="sw-track" role="radiogroup" aria-labelledby="swTitle">${list.map((s, i) => `
+      <div class="sw-item" role="radio" data-id="${s.id}" aria-checked="false" tabindex="-1" aria-posinset="${i+1}" aria-setsize="${list.length}"
+        aria-label="${s.name}, ${s.dims}, ${s.price}${s.tag ? ', ' + s.tag : ''}">
+        <span class="sw-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Selected</span>
+        ${boxSVG(s)}<span class="sw-name">${s.name}</span><span class="sw-dims">${s.dims}</span><span class="sw-price">${s.price}</span>${s.tag ? `<span class="sw-tag">${s.tag}</span>` : ''}
+      </div>`).join('')}</div>`;
+    track = sw.firstElementChild;
+    items = [...track.children];
+    // Preserve the selection across re-renders; fall back to the middle item if it no longer exists.
+    let idx = items.findIndex(el => el.dataset.id === selectedId);
+    if (idx < 0) idx = Math.floor(items.length / 2);
+    bind();
+    centre(idx, false);
+    commit(idx, false);
+    ro = new ResizeObserver(() => { const i = selIndex(); if (i >= 0) centre(i, false); });
+    ro.observe(track);
+  }
+
+  const selIndex = () => items.findIndex(el => el.getAttribute('aria-checked') === 'true');
+  function centreLeft(i){ const el = items[i]; return el.offsetLeft + el.offsetWidth / 2 - track.clientWidth / 2; }
+  function nearest(){
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    let best = 0, bd = Infinity;
+    items.forEach((el, i) => { const d = Math.abs(el.offsetLeft + el.offsetWidth / 2 - mid); if (d < bd){ bd = d; best = i; } });
+    return best;
+  }
+  function centre(i, smooth = true){
+    if (!track) return;
+    i = Math.max(0, Math.min(items.length - 1, i));
+    pending = i;
+    track.scrollTo({left: centreLeft(i), behavior: smooth && !reduce.matches ? 'smooth' : 'auto'});
+    paintScale();
+    if (!smooth || reduce.matches) scheduleSettle(60);
+  }
+
+  // Scale/fade by distance from centre (skipped with reduced motion)
+  let rafS = 0;
+  function paintScale(){
+    if (!track) return;
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    items.forEach(el => {
+      const p = reduce.matches ? 0 : Math.min(1, Math.abs(el.offsetLeft + el.offsetWidth / 2 - mid) / (el.offsetWidth + 14));
+      el.style.setProperty('--p', p.toFixed(3));
+    });
+  }
+
+  // Commit only after the scroll settles, never on intermediate positions
+  function scheduleSettle(ms){ clearTimeout(settleT); settleT = setTimeout(settle, ms); }
+  function settle(){
+    if (!track || dragging) return;
+    const i = nearest();
+    if (Math.abs(track.scrollLeft - centreLeft(i)) > 2 && !reduce.matches && pending !== i){ centre(i); return; }
+    pending = -1;
+    commit(i, true);
+  }
+  function commit(i, announce){
+    const el = items[i];
+    const changed = el.getAttribute('aria-checked') !== 'true';
+    items.forEach((it, j) => { it.setAttribute('aria-checked', j === i ? 'true' : 'false'); it.tabIndex = j === i ? 0 : -1; });
+    selectedId = el.dataset.id;
+    if (sw.contains(document.activeElement) && document.activeElement !== el) el.focus({preventScroll:true});
+    controls();
+    if (announce && changed) live.textContent = `${SIZES.find(s => s.id === selectedId).name} box, ${i + 1} of ${items.length}`;
+  }
+  function controls(){
+    const i = track ? selIndex() : -1, n = items.length;
+    prev.disabled = !track || i <= 0; next.disabled = !track || i >= n - 1;
+    pos.textContent = track && i >= 0 ? `${i + 1} / ${n}` : '–';
+    confirmBtn.disabled = !track || i < 0;
+  }
+  function confirmSel(){
+    const s = SIZES.find(x => x.id === selectedId);
+    if (!track || !s) return;
+    result.innerHTML = `Packing slip updated: <strong>${s.mailer ? s.name : s.name + ' carton'}</strong>, ${s.price}.<small>${s.dims}</small>`;
+  }
+
+  // ---------- input ----------
+  let dragging = false;
+  function bind(){
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(rafS); rafS = requestAnimationFrame(paintScale);
+      scheduleSettle(140);
+    }, {passive:true});
+    if ('onscrollend' in window) track.addEventListener('scrollend', () => scheduleSettle(20));
+
+    // Mouse drag (touch and trackpad use native scrolling)
+    let start = null, moved = false;
+    track.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      start = {x:e.clientX, left:track.scrollLeft, id:e.pointerId}; moved = false;
+    });
+    track.addEventListener('pointermove', e => {
+      if (!start) return;
+      const dx = e.clientX - start.x;
+      if (!moved && Math.abs(dx) > 6){ moved = true; dragging = true; track.classList.add('dragging'); track.setPointerCapture(start.id); clearTimeout(settleT); }
+      if (moved) track.scrollLeft = start.left - dx;
+    });
+    const up = () => {
+      if (!start) return;
+      start = null;
+      if (moved){ dragging = false; track.classList.remove('dragging'); centre(nearest()); }
+    };
+    track.addEventListener('pointerup', up);
+    track.addEventListener('pointercancel', up);
+    track.addEventListener('lostpointercapture', up);
+    // A drag must not also count as a tap
+    track.addEventListener('click', e => {
+      if (moved){ e.stopPropagation(); e.preventDefault(); moved = false; return; }
+      const el = e.target.closest('.sw-item'); if (!el) return;
+      const i = items.indexOf(el);
+      if (i === selIndex() && pending < 0) el.focus({preventScroll:true});
+      else { el.focus({preventScroll:true}); centre(i); }
+    }, true);
+
+    track.addEventListener('keydown', e => {
+      const base = pending >= 0 ? pending : selIndex();
+      let to = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = base + 1;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') to = base - 1;
+      else if (e.key === 'Home') to = 0;
+      else if (e.key === 'End') to = items.length - 1;
+      else if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if (pending < 0) confirmSel(); return; }
+      if (to === null) return;
+      e.preventDefault();
+      to = Math.max(0, Math.min(items.length - 1, to));
+      items[to].focus({preventScroll:true});
+      centre(to);
+    });
+  }
+
+  prev.addEventListener('click', () => { const b = pending >= 0 ? pending : selIndex(); centre(b - 1); });
+  next.addEventListener('click', () => { const b = pending >= 0 ? pending : selIndex(); centre(b + 1); });
+  confirmBtn.addEventListener('click', confirmSel);
+  $('swSet').addEventListener('change', e => {
+    render(e.target.value);
+    if (e.target.value !== 'loading') return;
+    setTimeout(() => { if ($('swSet').value === 'loading'){ $('swSet').value = 'all'; render('all'); } }, 1600);
+  });
+  reduce.addEventListener?.('change', paintScale);
+  render('all');
+})();
+</script>
+</body>
+</html>

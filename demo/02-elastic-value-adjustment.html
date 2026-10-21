@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>02 · Elastic Value Adjustment</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Interaction CSS for this demo only. Use the tokens from assets/demo.css. */
+.ev-panel{max-width:560px;margin-inline:auto;display:grid;gap:14px}
+.ev-ctx{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ev{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 18px 16px;display:grid;gap:12px}
+.ev-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ev-label{font:600 15px/1.2 var(--f-body)}
+.ev-status{font:500 12px/1 var(--f-mono);letter-spacing:.06em;color:var(--muted);min-height:12px;text-align:right}
+.ev-status[data-tone="ok"]{color:var(--ok)}
+.ev-read{display:flex;align-items:baseline;gap:8px;justify-content:center;font-variant-numeric:tabular-nums}
+.ev-num{font:800 clamp(56px,14vw,80px)/.9 var(--f-display);letter-spacing:-.01em;display:inline-block;min-width:2.2ch;text-align:right}
+.ev-unit{font:600 16px/1 var(--f-body);color:var(--muted)}
+.ev-row{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:10px;align-items:center}
+.ev-step{all:unset;box-sizing:border-box;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.ev-step svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.ev-step:hover{border-color:var(--ink)}
+.ev-step:active{transform:scale(.94)}
+.ev-step:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.ev-step:disabled{opacity:.4;cursor:not-allowed;border-color:var(--line)}
+.ev-track{position:relative;height:72px;border-radius:16px;background:var(--bg);border:1px solid var(--line);overflow:hidden;cursor:grab;touch-action:pan-y;-webkit-user-select:none;user-select:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
+.ev-track:focus-visible{outline:none}
+.ev-track-wrap{border-radius:17px}
+.ev-track-wrap:has(.ev-track:focus-visible){outline:3px solid var(--cyan);outline-offset:3px}
+.ev.dragging .ev-track{cursor:grabbing}
+.ev-ruler{position:absolute;left:50%;top:0;bottom:0;will-change:transform}
+.ev-tick{position:absolute;bottom:14px;width:2px;margin-left:-1px;height:12px;border-radius:1px;background:var(--muted);opacity:.55}
+.ev-tick.major{height:22px;opacity:1;background:var(--ink)}
+.ev-tick b{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font:500 11px/1 var(--f-mono);color:var(--muted);white-space:nowrap}
+.ev-needle{position:absolute;left:50%;top:38px;bottom:8px;width:3px;margin-left:-1.5px;border-radius:2px;background:var(--violet);pointer-events:none}
+.ev-needle::before{content:"";position:absolute;top:-4px;left:50%;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:var(--violet)}
+.ev-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 14px;font-size:14px;color:var(--muted)}
+.ev-exact{display:flex;align-items:center;gap:8px}
+.ev-exact input{width:92px;min-height:40px;padding:0 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 15px/1 var(--f-mono)}
+.ev-exact input:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.ev-exact input[aria-invalid="true"]{border-color:var(--err)}
+.ev-msg{font-size:13px;color:var(--err);min-height:1em}
+.ev[data-readonly] .ev-track{cursor:not-allowed}
+.ev[data-readonly] .ev-num{color:var(--muted)}
+.ev-lock{display:flex;align-items:center;gap:10px;font-size:15px;justify-self:start;cursor:pointer}
+.ev-lock input{width:20px;height:20px;accent-color:var(--violet);margin:0}
+@media (prefers-reduced-motion:reduce){.ev-step:active{transform:none}}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="01-shared-element-expansion.html">Prev</a><a href="03-swipe-selection.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/02-elastic-value-adjustment/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">02 · Input &amp; Controls</p>
+    <h1>Elastic Value Adjustment</h1>
+    <p class="zh">彈性數值調節</p>
+    <p class="lede">Drag the ruler to set how many units go back on the shelf. Pull past zero or the maximum and it stretches, then settles on the nearest valid value. Press Esc mid-drag to undo.</p>
+    <div class="d-try"><span>Mouse: drag, wheel when focused</span><span>Touch: scrub</span><span>Keyboard: ↑ ↓ Shift PgUp PgDn Home End</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame">
+      <div class="ev-panel">
+        <div class="ev-ctx"><span>RMA-2043 · Trail runner EU 42</span><span>Bench A · 11</span></div>
+
+        <div class="ev" id="qty" data-min="0" data-max="48" data-step="1" data-big="10" data-value="12" data-unit="units" data-unit1="unit" data-major="5">
+          <div class="ev-top"><span class="ev-label" id="qtyL">Units to restock</span><span class="ev-status" aria-live="polite"></span></div>
+          <div class="ev-read" aria-hidden="true"><span class="ev-num"></span><span class="ev-unit"></span></div>
+          <div class="ev-row">
+            <button class="ev-step" type="button" data-dir="-1" aria-label="Fewer units"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <div class="ev-track-wrap"><div class="ev-track" role="spinbutton" tabindex="0" aria-labelledby="qtyL"><div class="ev-ruler"></div><span class="ev-needle"></span></div></div>
+            <button class="ev-step" type="button" data-dir="1" aria-label="More units"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+          <div class="ev-foot"><label class="ev-exact">Exact number <input type="number" inputmode="numeric" min="0" max="48" step="1"></label><span class="ev-msg" role="status"></span></div>
+        </div>
+
+        <div class="ev" id="wt" data-min="0.5" data-max="30" data-step="0.5" data-big="10" data-value="4.5" data-unit="kg" data-unit1="kg" data-major="4">
+          <div class="ev-top"><span class="ev-label" id="wtL">Parcel weight for the return label</span><span class="ev-status" aria-live="polite"></span></div>
+          <div class="ev-read" aria-hidden="true"><span class="ev-num"></span><span class="ev-unit"></span></div>
+          <div class="ev-row">
+            <button class="ev-step" type="button" data-dir="-1" aria-label="Lighter"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <div class="ev-track-wrap"><div class="ev-track" role="spinbutton" tabindex="0" aria-labelledby="wtL"><div class="ev-ruler"></div><span class="ev-needle"></span></div></div>
+            <button class="ev-step" type="button" data-dir="1" aria-label="Heavier"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+          <div class="ev-foot"><label class="ev-exact">Exact kg <input type="number" inputmode="decimal" min="0.5" max="30" step="0.5"></label><span class="ev-msg" role="status"></span></div>
+        </div>
+
+        <label class="ev-lock"><input type="checkbox" id="lock"> Lock this return (read-only)</label>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/02-elastic-value-adjustment/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const GAP = 12;                     // px between ticks
+  const controls = [];
+
+  function make(root){
+    const min = +root.dataset.min, max = +root.dataset.max, step = +root.dataset.step, big = +root.dataset.big * step, major = +root.dataset.major;
+    const unit = root.dataset.unit, unit1 = root.dataset.unit1;
+    const dec = (String(step).split('.')[1] || '').length;
+    const steps = Math.round((max - min) / step), maxOff = steps * GAP;
+    const track = root.querySelector('.ev-track'), ruler = root.querySelector('.ev-ruler'), num = root.querySelector('.ev-num'), unitEl = root.querySelector('.ev-unit');
+    const status = root.querySelector('.ev-status'), input = root.querySelector('input'), msg = root.querySelector('.ev-msg'), btns = root.querySelectorAll('.ev-step');
+    let value = +root.dataset.value, readonly = false;
+    let pos = toOff(value), vel = 0, target = pos, raf = 0, last = 0;
+    let drag = null, saveT = 0, savedT = 0;
+
+    // Ruler ticks
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i <= steps; i++){
+      const t = document.createElement('span');
+      const v = +(min + i * step).toFixed(dec), q = v / (major * step), isMajor = Math.abs(q - Math.round(q)) < 1e-6;
+      t.className = 'ev-tick' + (isMajor ? ' major' : '');
+      t.style.left = (i * GAP) + 'px';
+      if (isMajor) t.innerHTML = '<b>' + String(v) + '</b>';
+      frag.appendChild(t);
+    }
+    ruler.appendChild(frag);
+    track.setAttribute('aria-valuemin', min); track.setAttribute('aria-valuemax', max);
+
+    function fmt(v){ return v.toFixed(dec); }
+    function toOff(v){ return (v - min) / step * GAP; }
+    function snap(off){ const i = Math.min(steps, Math.max(0, Math.round(off / GAP))); return +(min + i * step).toFixed(dec); }
+    function rubber(off){
+      // Past either end the ruler keeps moving, but with growing resistance.
+      if (off < 0){ const e = -off; return -(e * .55) / (1 + e / 140); }
+      if (off > maxOff){ const e = off - maxOff; return maxOff + (e * .55) / (1 + e / 140); }
+      return off;
+    }
+
+    function paint(){ ruler.style.transform = `translate3d(${-pos}px,0,0)`; }
+    function tick(t){
+      const dt = Math.min(.032, (t - (last || t)) / 1000 || .016); last = t;
+      const k = 520, c = 2 * Math.sqrt(k) * .72;     // slightly under-damped: a soft give, one small overshoot
+      vel += (k * (target - pos) - c * vel) * dt;
+      pos += vel * dt;
+      paint();
+      if (Math.abs(target - pos) < .2 && Math.abs(vel) < 2 && !drag){ pos = target; vel = 0; paint(); raf = 0; last = 0; return; }
+      raf = requestAnimationFrame(tick);
+    }
+    function moveTo(off, kick = 0){
+      target = off;
+      if (reduce.matches){ pos = Math.min(maxOff, Math.max(0, off)); vel = 0; paint(); return; }
+      vel += kick;
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+
+    function show(v){
+      const changed = v !== +num.dataset.v;
+      num.textContent = fmt(v); num.dataset.v = v;
+      unitEl.textContent = v === 1 ? unit1 : unit;
+      track.setAttribute('aria-valuenow', v);
+      track.setAttribute('aria-valuetext', `${fmt(v)} ${v === 1 ? unit1 : unit}`);
+      if (document.activeElement !== input) input.value = fmt(v);
+      btns[0].disabled = readonly; btns[1].disabled = readonly;
+      if (changed && !reduce.matches && num.animate) num.animate([{transform:'translateY(-4px)', opacity:.6},{transform:'none', opacity:1}], {duration:140, easing:'ease-out'});
+    }
+    function set(v, {kick = 0, save = true} = {}){
+      if (readonly){ status.textContent = 'Locked'; return; }
+      const nv = +Math.min(max, Math.max(min, v)).toFixed(dec);
+      // Pushed against a bound: a small elastic bump instead of a dead stop.
+      if (nv === value && v !== value && !reduce.matches) kick = (v > value ? 1 : -1) * 260;
+      const changed = nv !== value;
+      value = nv; show(value); moveTo(toOff(value), kick);
+      if (changed && save) queueSave();
+    }
+    function queueSave(){
+      clearTimeout(saveT); clearTimeout(savedT);
+      status.dataset.tone = ''; status.textContent = 'Unsaved';
+      saveT = setTimeout(() => {           // debounce: one save after the user pauses
+        status.textContent = 'Saving…';
+        savedT = setTimeout(() => { status.dataset.tone = 'ok'; status.textContent = 'Saved ' + fmt(value) + ' ' + (value === 1 ? unit1 : unit); }, 450);
+      }, 600);
+    }
+
+    // Pointer drag
+    track.addEventListener('pointerdown', e => {
+      if (e.button !== 0 || readonly) { if (readonly) status.textContent = 'Locked'; return; }
+      track.focus({preventScroll:true});
+      drag = {id:e.pointerId, x:e.clientX, y:e.clientY, off:toOff(value), from:value, moved:false};
+      track.setPointerCapture(e.pointerId);
+      root.classList.add('dragging');
+    });
+    track.addEventListener('pointermove', e => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x;
+      if (!drag.moved && Math.abs(dx) < 3) return;
+      drag.moved = true;
+      const raw = drag.off - dx;      // drag left to increase, like moving a ruler under a fixed needle
+      const v = snap(raw);
+      if (v !== value){ value = v; show(value); }
+      moveTo(reduce.matches ? toOff(v) : rubber(raw));
+    });
+    const end = (commit) => {
+      if (!drag) return;
+      const d = drag; drag = null;
+      root.classList.remove('dragging');
+      if (track.hasPointerCapture?.(d.id)) track.releasePointerCapture(d.id);
+      if (!commit){ value = d.from; show(value); status.dataset.tone=''; status.textContent = 'Cancelled'; }
+      moveTo(toOff(value));
+      if (commit && value !== d.from) queueSave();
+    };
+    track.addEventListener('pointerup', () => end(true));
+    track.addEventListener('pointercancel', () => end(false));
+    track.addEventListener('lostpointercapture', () => end(false));   // capture lost mid-gesture: restore
+    window.addEventListener('blur', () => end(false));
+
+    // Keyboard
+    track.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && drag){ e.preventDefault(); end(false); return; }
+      const map = {ArrowUp:step, ArrowRight:step, ArrowDown:-step, ArrowLeft:-step, PageUp:big, PageDown:-big};
+      if (e.key in map){ e.preventDefault(); const d = map[e.key] * (e.shiftKey && e.key.startsWith('Arrow') ? big / step : 1); set(value + d); }
+      else if (e.key === 'Home'){ e.preventDefault(); set(min); }
+      else if (e.key === 'End'){ e.preventDefault(); set(max); }
+    });
+    // Wheel only while focused, so the page still scrolls normally
+    let acc = 0;
+    track.addEventListener('wheel', e => {
+      if (document.activeElement !== track || readonly) return;
+      e.preventDefault();
+      acc += Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : -e.deltaY;
+      if (Math.abs(acc) >= 40){ set(value + Math.sign(acc) * step); acc = 0; }
+    }, {passive:false});
+
+    // Buttons, with press-and-hold repeat
+    btns.forEach(b => {
+      let hold = 0, rep = 0;
+      const stop = () => { clearTimeout(hold); clearInterval(rep); };
+      b.addEventListener('pointerdown', e => { if (e.button !== 0 || b.disabled) return; const d = +b.dataset.dir * step; set(value + d); hold = setTimeout(() => { rep = setInterval(() => set(value + d), 70); }, 420); });
+      ['pointerup','pointerleave','pointercancel','blur'].forEach(t => b.addEventListener(t, stop));
+      b.addEventListener('click', e => { if (e.detail === 0) set(value + +b.dataset.dir * step); });   // keyboard activation
+    });
+
+    // Plain text fallback for an exact value
+    const commitInput = () => {
+      const raw = input.value.trim(), v = Number(raw);
+      const onStep = Math.abs((v - min) / step - Math.round((v - min) / step)) < 1e-6;
+      if (raw === '' || !isFinite(v) || v < min || v > max || !onStep){
+        input.setAttribute('aria-invalid', 'true');
+        msg.textContent = `Use ${fmt(min)} to ${fmt(max)}${step !== 1 ? ', in steps of ' + step : ', whole numbers'}.`;
+        return;
+      }
+      input.removeAttribute('aria-invalid'); msg.textContent = '';
+      set(v);
+    };
+    input.addEventListener('change', commitInput);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') commitInput(); if (e.key === 'Escape'){ input.value = fmt(value); input.removeAttribute('aria-invalid'); msg.textContent = ''; } });
+    input.addEventListener('blur', () => { if (input.getAttribute('aria-invalid') !== 'true') input.value = fmt(value); });
+
+    show(value); paint();
+    return {
+      setReadonly(on){
+        readonly = on; end(false);
+        on ? root.setAttribute('data-readonly', '') : root.removeAttribute('data-readonly');
+        track.setAttribute('aria-readonly', on); input.readOnly = on;
+        status.dataset.tone = ''; status.textContent = on ? 'Locked' : '';
+        show(value);
+      },
+      reflow(){ pos = target = toOff(value); paint(); }
+    };
+  }
+
+  document.querySelectorAll('.ev').forEach(el => controls.push(make(el)));
+  document.getElementById('lock').addEventListener('change', e => controls.forEach(c => c.setReadonly(e.target.checked)));
+  reduce.addEventListener?.('change', () => controls.forEach(c => c.reflow()));
+})();
+</script>
+</body>
+</html>

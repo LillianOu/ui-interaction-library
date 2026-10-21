@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>01 · Shared Element Expansion</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Interaction CSS for this demo only. Use the tokens from assets/demo.css. */
+.frame{scroll-margin-top:72px}
+.q-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}
+.q-head h2{font:600 18px/1.2 var(--f-body)}
+.q-head h2:focus{outline:none}
+.q-count{font:500 12px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.q-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:760px){.q-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}}
+.q-card{all:unset;box-sizing:border-box;display:grid;gap:10px;width:100%;padding:10px 10px 14px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.q-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px -18px rgba(0,0,0,.45)}
+.q-card:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.q-card[aria-expanded="true"]{transform:none;box-shadow:none}
+.thumb{aspect-ratio:1/1;border-radius:10px;display:grid;place-items:center;background:var(--tint)}
+.thumb svg{width:58%;height:58%;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.q-card .t{font:600 15px/1.25 var(--f-body);padding-inline:4px;transform-origin:0 0}
+.q-card .m{display:flex;flex-wrap:wrap;gap:6px;padding-inline:4px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.chip{padding:4px 7px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.is-hidden{visibility:hidden}
+.q-empty{display:grid;place-items:center;gap:14px;text-align:center;min-height:280px;color:var(--muted)}
+
+/* Detail panel: covers the frame, clip-path grows out of the source card */
+.dp{position:absolute;inset:0;z-index:5;background:var(--surface);overflow:auto;overscroll-behavior:contain}
+.dp[hidden]{display:none}
+.dp-in{display:grid;gap:20px;padding:clamp(16px,4vw,40px);min-height:100%;align-content:start}
+@media (min-width:760px){.dp-in{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-content:center}}
+.dp-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;grid-column:1/-1}
+.dp-back{all:unset;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;border-radius:999px;border:1px solid var(--line);font:600 15px/1 var(--f-body);cursor:pointer;background:var(--surface)}
+.dp-back:hover{border-color:var(--ink)}
+.dp-back:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.dp-rma{font:500 12px/1 var(--f-mono);letter-spacing:.1em;color:var(--muted)}
+.dp-hero{width:100%;max-width:220px;justify-self:start;transform-origin:0 0}
+@media (min-width:760px){.dp-hero{max-width:none}}
+.dp-copy{display:grid;gap:16px;align-content:start}
+.dp-title{font:600 clamp(24px,3vw,34px)/1.12 var(--f-body);transform-origin:0 0}
+.dp-body{display:grid;gap:16px}
+.dp-body[aria-busy="true"] .facts{display:none}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;margin:0;font-size:15px}
+.facts dt{color:var(--muted)}
+.facts dd{margin:0;font-weight:500}
+.skel{display:grid;gap:10px}
+.skel i{display:block;height:14px;border-radius:7px;background:var(--line);animation:pulse 1.1s ease-in-out infinite alternate}
+.skel i:nth-child(2){width:80%}.skel i:nth-child(3){width:60%}.skel i:nth-child(4){width:70%}
+@keyframes pulse{to{opacity:.4}}
+.dp-err{padding:14px 16px;border-radius:12px;border:1px solid var(--err);color:var(--ink);display:grid;gap:10px;justify-items:start;font-size:15px}
+.dp-err strong{color:var(--err)}
+.dp-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.q-note{margin-top:16px;font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.q-card,.q-card:hover{transition:none;transform:none}.skel i{animation:none}}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="./">Prev</a><a href="02-elastic-value-adjustment.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/01-shared-element-expansion/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">01 · Layout &amp; Navigation</p>
+    <h1>Shared Element Expansion</h1>
+    <p class="zh">共享元素展開</p>
+    <p class="lede">Open a return from the queue. The product tile and its name travel into the detail view, then fly back to the same spot when you close it.</p>
+    <div class="d-try"><span>Mouse: click a card</span><span>Touch: tap</span><span>Keyboard: Tab, Enter, Esc</span><span>Browser back closes</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame" id="frame">
+      <div class="q-head"><h2 id="qTitle" tabindex="-1">Returns queue</h2><span class="q-count" id="qCount"></span></div>
+      <ul class="q-grid" id="grid"></ul>
+      <p class="q-note">The beanie fails to load the first time, so you can see the error state. Restocking an item removes it, and the panel fades out instead of flying back.</p>
+
+      <div class="dp" id="dp" role="dialog" aria-modal="true" aria-labelledby="dpTitle" hidden>
+        <div class="dp-in">
+          <div class="dp-bar">
+            <button class="dp-back" id="dpBack" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back to queue</button>
+            <span class="dp-rma" id="dpRma"></span>
+          </div>
+          <div class="thumb dp-hero" id="dpHero" aria-hidden="true"></div>
+          <div class="dp-copy">
+            <h3 class="dp-title" id="dpTitle"></h3>
+            <div class="dp-body" id="dpBody" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <p class="sr-only" aria-live="polite" id="announce"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/01-shared-element-expansion/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  const ICONS = {
+    shirt:'<svg viewBox="0 0 64 64"><path d="M24 8l-12 6-6 14 9 4 3-6v30h28V26l3 6 9-4-6-14-12-6c-1 4-4 7-8 7s-7-3-8-7z"/><path d="M32 15v41M28 22h-2M28 30h-2"/></svg>',
+    pour:'<svg viewBox="0 0 64 64"><path d="M14 12h36l-12 20H26z"/><path d="M28 32h8v4h-8z"/><path d="M16 40h32v6a12 12 0 0 1-12 12h-8a12 12 0 0 1-12-12z"/><path d="M48 44h4a4 4 0 0 1 0 8h-5"/></svg>',
+    shoe:'<svg viewBox="0 0 64 64"><path d="M6 44c0-8 2-18 6-22l8 4c4 2 8 2 10-2l4 2c2 8 10 12 18 13 4 1 6 3 6 6v3H6z"/><path d="M6 48h52M20 30l4-4M25 33l4-4M30 36l4-4"/></svg>',
+    beanie:'<svg viewBox="0 0 64 64"><circle cx="32" cy="12" r="5"/><path d="M12 42c0-14 9-24 20-24s20 10 20 24"/><path d="M9 42h46v10H9z"/><path d="M17 42v10M25 42v10M33 42v10M41 42v10M49 42v10"/></svg>'
+  };
+  const ITEMS = [
+    {id:'rma-2041', rma:'RMA-2041', name:'Linen overshirt', variant:'Sand · M', icon:'shirt', tint:'var(--cyan-soft)', reason:'Too large', order:'#40318', cond:'Unworn, tags on', refund:'$89.00', bin:'Bench B · 04'},
+    {id:'rma-2042', rma:'RMA-2042', name:'Ceramic pour-over set', variant:'Ash glaze', icon:'pour', tint:'var(--violet-soft)', reason:'Arrived chipped', order:'#40355', cond:'Damaged in transit', refund:'$64.00', bin:'Claims shelf'},
+    {id:'rma-2043', rma:'RMA-2043', name:'Trail runner', variant:'EU 42 · Moss', icon:'shoe', tint:'color-mix(in srgb, var(--kraft) 24%, var(--surface))', reason:'Wrong size', order:'#40362', cond:'Tried on indoors', refund:'$159.00', bin:'Bench A · 11'},
+    {id:'rma-2044', rma:'RMA-2044', name:'Merino beanie', variant:'Charcoal', icon:'beanie', tint:'color-mix(in srgb, var(--ok) 18%, var(--surface))', reason:'Changed mind', order:'#40377', cond:'Unworn', refund:'$39.00', bin:'Bench B · 07', failOnce:true}
+  ];
+  let queue = ITEMS.map(i => ({...i}));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = id => document.getElementById(id);
+  const frame = $('frame'), grid = $('grid'), dp = $('dp'), dpHero = $('dpHero'), dpTitle = $('dpTitle'), dpBody = $('dpBody'), dpRma = $('dpRma'), back = $('dpBack'), announce = $('announce');
+  const DUR = 440, EASE = 'cubic-bezier(.2,.8,.2,1)';
+
+  let current = null;      // {item, card}
+  let anims = [];          // running Web Animations for the open transition
+  let loadTimer = 0, pushed = false, closing = false;
+
+  function renderGrid(){
+    grid.innerHTML = '';
+    $('qCount').textContent = queue.length + (queue.length === 1 ? ' item' : ' items');
+    if (!queue.length){
+      grid.innerHTML = '<li class="q-empty" style="grid-column:1/-1"><p>Queue clear. Nothing left to inspect.</p><button class="btn btn-ghost" type="button" id="reset">Reload sample returns</button></li>';
+      $('reset').onclick = () => { queue = ITEMS.map(i => ({...i})); renderGrid(); grid.querySelector('.q-card').focus(); };
+      return;
+    }
+    for (const it of queue){
+      const li = document.createElement('li');
+      li.innerHTML = `<button class="q-card" type="button" data-id="${it.id}" aria-haspopup="dialog" aria-expanded="false">
+        <span class="thumb" style="--tint:${it.tint}" aria-hidden="true">${ICONS[it.icon]}</span>
+        <span class="t">${it.name}</span>
+        <span class="m"><span>${it.rma}</span><span class="chip">${it.reason}</span></span></button>`;
+      li.firstElementChild.setAttribute('aria-label', `${it.name}, ${it.variant}. ${it.rma}, ${it.reason}. Open details`);
+      grid.appendChild(li);
+    }
+  }
+  renderGrid();
+
+  grid.addEventListener('click', e => {
+    const card = e.target.closest('.q-card');
+    if (!card || current) return;
+    open(card);
+  });
+
+  function rel(el){ const r = el.getBoundingClientRect(), f = frame.getBoundingClientRect(); return {x:r.left-f.left, y:r.top-f.top, w:r.width, h:r.height}; }
+
+  function fill(item){
+    dpHero.style.setProperty('--tint', item.tint);
+    dpHero.innerHTML = ICONS[item.icon];
+    dpTitle.textContent = item.name;
+    dpRma.textContent = item.rma;
+  }
+
+  function open(card){
+    const item = queue.find(i => i.id === card.dataset.id);
+    current = {item, card};
+    closing = false;
+    fill(item);
+    dp.hidden = false; dp.scrollTop = 0;
+    card.setAttribute('aria-expanded', 'true');
+    grid.inert = true;
+    load(item);
+    back.focus({preventScroll:true});
+    if (frame.getBoundingClientRect().top < 60) frame.scrollIntoView({block:'start', behavior: reduce.matches ? 'auto' : 'smooth'});
+    try { history.pushState({dp:item.id}, '', '#' + item.id); pushed = true; } catch(_) { pushed = false; }
+
+    const thumb = card.querySelector('.thumb'), title = card.querySelector('.t');
+    if (reduce.matches){
+      anims = [dp.animate({opacity:[0,1]}, {duration:140, easing:'linear', fill:'both'})];
+      return;
+    }
+    const c = rel(card), p = {x:0, y:0, w:frame.clientWidth, h:frame.clientHeight};
+    const s = rel(thumb), h = rel(dpHero), ts = rel(title), th = rel(dpTitle);
+    const fsS = parseFloat(getComputedStyle(title).fontSize), fsH = parseFloat(getComputedStyle(dpTitle).fontSize);
+    const clipFrom = `inset(${c.y}px ${p.w-c.x-c.w}px ${p.h-c.y-c.h}px ${c.x}px round 14px)`;
+    const opts = {duration:DUR, easing:EASE, fill:'both'};
+    thumb.classList.add('is-hidden'); title.classList.add('is-hidden');
+    anims = [
+      dp.animate({clipPath:[clipFrom, 'inset(0px 0px 0px 0px round 0px)']}, opts),
+      dpHero.animate({transform:[`translate(${s.x-h.x}px,${s.y-h.y}px) scale(${s.w/h.w})`, 'none']}, opts),
+      dpTitle.animate({transform:[`translate(${ts.x-th.x}px,${ts.y-th.y}px) scale(${fsS/fsH})`, 'none']}, opts),
+      ...[...dp.querySelectorAll('.dp-bar, .dp-body')].map(el => el.animate({opacity:[0,1], transform:['translateY(8px)','none']}, {...opts, delay:DUR*.45, duration:DUR*.6}))
+    ];
+  }
+
+  function load(item){
+    clearTimeout(loadTimer);
+    dpBody.setAttribute('aria-busy', 'true');
+    dpBody.innerHTML = '<div class="skel" aria-label="Loading return details"><i></i><i></i><i></i><i></i></div>';
+    loadTimer = setTimeout(() => {
+      if (!current || current.item !== item) return;
+      dpBody.removeAttribute('aria-busy');
+      if (item.failOnce){
+        item.failOnce = false;
+        dpBody.innerHTML = '<div class="dp-err" role="alert"><strong>Couldn’t load this return.</strong><span>The warehouse system timed out. Your place in the queue is kept.</span><button class="btn btn-ghost" type="button" id="retry">Try again</button></div>';
+        $('retry').onclick = () => { load(item); dpBody.focus?.(); };
+        return;
+      }
+      dpBody.innerHTML = `<p style="color:var(--muted)">${item.variant} · Order ${item.order}</p>
+        <dl class="facts"><dt>Reason</dt><dd>${item.reason}</dd><dt>Condition</dt><dd>${item.cond}</dd><dt>Refund</dt><dd>${item.refund}</dd><dt>Put-away</dt><dd>${item.bin}</dd></dl>
+        <div class="dp-actions"><button class="btn btn-primary" type="button" id="restock">Approve &amp; restock</button><button class="btn btn-ghost" type="button" id="later">Keep in queue</button></div>`;
+      $('restock').onclick = () => restock(item);
+      $('later').onclick = requestClose;
+    }, 750);
+  }
+
+  function restock(item){
+    queue = queue.filter(i => i !== item);
+    const li = current.card.closest('li');
+    li && li.remove();
+    $('qCount').textContent = queue.length + (queue.length === 1 ? ' item' : ' items');
+    announce.textContent = `${item.rma} approved and restocked. ${queue.length} left in the queue.`;
+    requestClose();
+  }
+
+  // Closing goes through history when we pushed a state, so the browser back button and the UI share one path.
+  function requestClose(){
+    if (!current || closing) return;
+    if (pushed){ pushed = false; history.back(); } else close();
+  }
+  addEventListener('popstate', () => { if (current){ pushed = false; close(); } });
+
+  function close(){
+    if (!current || closing) return;
+    closing = true;
+    clearTimeout(loadTimer);
+    const {card} = current;
+    const thumb = card.querySelector('.thumb'), title = card.querySelector('.t');
+    const sourceAlive = document.body.contains(card) && card.getClientRects().length > 0;
+    const running = anims.some(a => a.playState === 'running');
+
+    const finish = () => {
+      anims.forEach(a => a.cancel()); anims = [];
+      dp.hidden = true;
+      thumb.classList.remove('is-hidden'); title.classList.remove('is-hidden');
+      card.setAttribute('aria-expanded', 'false');
+      grid.inert = false;
+      current = null; closing = false;
+      if (sourceAlive) card.focus({preventScroll:true});
+      else { const next = grid.querySelector('.q-card, #reset'); (next || $('qTitle')).focus({preventScroll:true}); }
+    };
+
+    if (!sourceAlive || reduce.matches){
+      // Stable fallback: the source is gone (or motion is reduced), so fade instead of flying back.
+      anims.forEach(a => a.cancel());
+      anims = [dp.animate({opacity:[1,0], transform:['none', reduce.matches ? 'none' : 'scale(.985)']}, {duration:reduce.matches?120:220, easing:'ease-out', fill:'both'})];
+      anims[0].onfinish = finish;
+      return;
+    }
+    if (running){
+      // Interrupted mid-open: play the same motion backwards from wherever it is.
+      anims.forEach(a => a.reverse());
+      Promise.all(anims.map(a => a.finished)).then(finish, () => {});
+      return;
+    }
+    // Fresh measurements, in case the panel scrolled or the window resized.
+    anims.forEach(a => a.cancel());
+    dp.scrollTop = 0;
+    const c = rel(card), p = {x:0, y:0, w:frame.clientWidth, h:frame.clientHeight};
+    const s = rel(thumb), h = rel(dpHero), ts = rel(title), th = rel(dpTitle);
+    const fsS = parseFloat(getComputedStyle(title).fontSize), fsH = parseFloat(getComputedStyle(dpTitle).fontSize);
+    const opts = {duration:DUR*.85, easing:EASE, fill:'both'};
+    anims = [
+      dp.animate({clipPath:['inset(0px 0px 0px 0px round 0px)', `inset(${c.y}px ${p.w-c.x-c.w}px ${p.h-c.y-c.h}px ${c.x}px round 14px)`]}, opts),
+      dpHero.animate({transform:['none', `translate(${s.x-h.x}px,${s.y-h.y}px) scale(${s.w/h.w})`]}, opts),
+      dpTitle.animate({transform:['none', `translate(${ts.x-th.x}px,${ts.y-th.y}px) scale(${fsS/fsH})`]}, opts),
+      ...[...dp.querySelectorAll('.dp-bar, .dp-body')].map(el => el.animate({opacity:[1,0]}, {...opts, duration:DUR*.3}))
+    ];
+    Promise.all(anims.map(a => a.finished)).then(finish, () => {});
+  }
+
+  back.addEventListener('click', requestClose);
+  dp.addEventListener('keydown', e => {
+    if (e.key === 'Escape'){ e.preventDefault(); requestClose(); return; }
+    if (e.key !== 'Tab') return;
+    const f = [...dp.querySelectorAll('button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])')].filter(el => el.getClientRects().length);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length-1];
+    if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  });
+})();
+</script>
+</body>
+</html>
