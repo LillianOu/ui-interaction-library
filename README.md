@@ -13,6 +13,7 @@ Each skill is an implementation recipe, not finished code. It tells you, or an A
 | 01 | 共享元素展開 | Shared Element Expansion | [`01-shared-element-expansion`](skills/01-shared-element-expansion/SKILL.md) |
 | 06 | 拖曳排序 | Drag to Reorder | [`06-drag-to-reorder`](skills/06-drag-to-reorder/SKILL.md) |
 | 07 | 拖曳展開與收合 | Drag to Expand & Collapse | [`07-drag-to-expand-and-collapse`](skills/07-drag-to-expand-and-collapse/SKILL.md) |
+| 30 | 後台菜單六式 | Dashboard Nav Patterns (Transparent Nav · Right Rail · Expanding Tab · Title as Nav · Icon Rail · Quick Actions) | [`30-dashboard-nav-patterns`](skills/30-dashboard-nav-patterns/SKILL.md) |
 
 ### 輸入與控制 / Input & Controls
 
@@ -68,7 +69,7 @@ A crew of characters, each one a guide to the best open-source design skills for
 | 20 | 章魚工作室 | Octo Studio (Huashu + Baoyu) | Prototypes, decks and animations in one prompt | [`20-octo-studio-huashu-baoyu`](skills/20-octo-studio-huashu-baoyu/SKILL.md) |
 | 21 | 鷹眼質檢員 | Hawk Inspector (Quality Pack) | Standards, score, polish and motion check | [`21-hawk-inspector-quality-pack`](skills/21-hawk-inspector-quality-pack/SKILL.md) |
 
-Next number: **30** (14 is reserved for the planned cursor-driven hero).
+Next number: **31** (14 is reserved for the planned cursor-driven hero).
 
 ## Live demo
 

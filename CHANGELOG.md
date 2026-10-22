@@ -2,6 +2,13 @@
 
 All notable updates to this library are recorded here.
 
+## [0.6.0] - 2026-10-22
+
+### Added
+
+- 30 Dashboard Nav Patterns (後台菜單六式), in Layout & Navigation: six named dashboard menu patterns — Transparent Nav, Right Rail, Expanding Tab, Title as Nav, Icon Rail + Tooltip and Quick Actions — each with a key spec, interaction contract, and English and Chinese prompt terms. Inspired by a short video on premium dashboard menus (我叫-西瓜同学), written in our own words.
+- `demo/30-dashboard-nav-patterns.html`: one mini dashboard that switches between all six patterns, with a moving active pill, keyboard and long-press tooltips, in-place quick actions, a bottom-bar layout under 560px and a reduced-motion fallback.
+
 ## [0.5.0] - 2026-10-22
 
 ### Added
