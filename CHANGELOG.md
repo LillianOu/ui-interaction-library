@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.7.0] - 2026-10-25
+
+### Added
+
+- 31 Costume Chameleon (變色龍換裝師), in Design Toolkit: a guide to VoltAgent's awesome-design-md (MIT), a collection of 84 brand-inspired DESIGN.md design-system files. Routes by the feeling you want to a costume, installs it as one file in the project root, lints it with Google's `@google/design.md`, and covers making it your own (fonts, colours, trademarks). Written in our own words; none of the original files are copied.
+
 ## [0.6.0] - 2026-10-22
 
 ### Added

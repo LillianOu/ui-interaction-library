@@ -57,7 +57,7 @@ Eight interactions where pieces of a layout respond to each other: type opens on
 
 ### 設計工具組 / Design Toolkit
 
-A crew of characters, each one a guide to the best open-source design skills for one job. Numbered in workflow order: sketch the flow, map the system, set the taste, gather references, build, produce, then inspect. Each crew member explains when to call the original skills and how to install them; it does not copy them.
+A crew of characters, each one a guide to the best open-source design skills for one job. Numbered in workflow order: sketch the flow, map the system, set the taste, gather references, build, produce, then inspect. Later additions take the next free number; 31 sits between taste and references in the workflow. Each crew member explains when to call the original skills and how to install them; it does not copy them.
 
 | No. | 中文 | English (powered by) | Job | Skill |
 | --- | --- | --- | --- | --- |
@@ -68,12 +68,13 @@ A crew of characters, each one a guide to the best open-source design skills for
 | 19 | 螞蟻組件師 | Builder Ant (shadcn/ui) | Build with React components | [`19-builder-ant-shadcn`](skills/19-builder-ant-shadcn/SKILL.md) |
 | 20 | 章魚工作室 | Octo Studio (Huashu + Baoyu) | Prototypes, decks and animations in one prompt | [`20-octo-studio-huashu-baoyu`](skills/20-octo-studio-huashu-baoyu/SKILL.md) |
 | 21 | 鷹眼質檢員 | Hawk Inspector (Quality Pack) | Standards, score, polish and motion check | [`21-hawk-inspector-quality-pack`](skills/21-hawk-inspector-quality-pack/SKILL.md) |
+| 31 | 變色龍換裝師 | Costume Chameleon (Awesome DESIGN.md) | Borrow a proven brand's design system as a DESIGN.md, then make it your own | [`31-costume-chameleon-awesome-design-md`](skills/31-costume-chameleon-awesome-design-md/SKILL.md) |
 
-Next number: **31** (14 is reserved for the planned cursor-driven hero).
+Next number: **32** (14 is reserved for the planned cursor-driven hero).
 
 ## Live demo
 
-Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit skills (15–21) are guides, so they have no demo.
+Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit skills (15–21, 31) are guides, so they have no demo.
 
 ## How to use
 
@@ -85,7 +86,7 @@ Every interaction skill has a working demo in `demo/`. `demo/index.html` is the 
 
 **By hand:** open a `SKILL.md` and paste its copy-ready prompt into any AI coding tool.
 
-**Design Toolkit crew (15–21):** install the crew member as above, then install the original skills it names with the `npx skills add` commands in its `SKILL.md`. Call a character by name, for example "Ask Hawk Inspector to check this page."
+**Design Toolkit crew (15–21, 31):** install the crew member as above, then install the originals it names with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call a character by name, for example "Ask Hawk Inspector to check this page."
 
 ## Repository layout
 
