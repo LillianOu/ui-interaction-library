@@ -111,3 +111,7 @@ LICENSE-DECISION.md           licence status
 ## Licence
 
 No licence has been chosen yet. See [LICENSE-DECISION.md](LICENSE-DECISION.md).
+
+## Game UI References / 遊戲 UI 參考
+
+Curated game UI reference sites and licence-cleared asset sources: [`game-ui-references.md`](game-ui-references.md). Downloaded assets go in [`game-assets/`](game-assets/README.md).
