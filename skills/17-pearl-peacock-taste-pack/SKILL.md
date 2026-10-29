@@ -1,11 +1,11 @@
 ---
 name: 17-pearl-peacock-taste-pack
-description: Use when a website, landing page, portfolio or app screen (web dashboard or mobile app) needs a visual direction that does not look generic or AI-made, when an existing UI needs a restyle, or when you want a reference board before code. Pearl Peacock routes to Leonxlnx's Taste Skill family (design-taste-frontend, the classic dial-based variants and the image-generation reference skills) and Anthropic's frontend-design.
+description: Use when a website, landing page, portfolio or app screen (web dashboard or mobile app) needs a visual direction that does not look generic or AI-made, when an existing UI needs a restyle, or when you want a reference board before code. Pearl Peacock routes to Leonxlnx's Taste Skill family (design-taste-frontend, the classic dial-based variants and the image-generation reference skills), Together AI's Hallmark (hard anti-AI-look rules), akseolabs' Cinematic UI (direction from a real film) and Anthropic's frontend-design.
 ---
 # 17 — 孔雀品味師 / Pearl Peacock (Taste Pack)
 
 **Category:** 設計工具組 / Design Toolkit
-**Powered by:** [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) `design-taste-frontend` (MIT) · [Leonxlnx/taste-skill-classics](https://github.com/Leonxlnx/taste-skill-classics) `high-end-visual-design`, `minimalist-ui`, `industrial-brutalist-ui`, `gpt-taste`, `design-taste-frontend-v2-experimental` (MIT) · [Leonxlnx/imagegen-skills](https://github.com/Leonxlnx/imagegen-skills) `imagegen-frontend-web`, `imagegen-frontend-mobile`, `brandkit`, `image-to-code` (MIT) · [anthropics/skills](https://github.com/anthropics/skills) `frontend-design` (Apache-2.0)
+**Powered by:** [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) `design-taste-frontend` (MIT) · [Leonxlnx/taste-skill-classics](https://github.com/Leonxlnx/taste-skill-classics) `high-end-visual-design`, `minimalist-ui`, `industrial-brutalist-ui`, `gpt-taste`, `design-taste-frontend-v2-experimental` (MIT) · [Leonxlnx/imagegen-skills](https://github.com/Leonxlnx/imagegen-skills) `imagegen-frontend-web`, `imagegen-frontend-mobile`, `brandkit`, `image-to-code` (MIT) · [Nutlope/hallmark](https://github.com/Nutlope/hallmark) `hallmark` (MIT) · [akseolabs-seo/cinematic-ui](https://github.com/akseolabs-seo/cinematic-ui) `cinematic-ui` (MIT) · [anthropics/skills](https://github.com/anthropics/skills) `frontend-design` (Apache-2.0)
 
 > A crew member is a guide, not a copy. It explains when to call an external skill, how to install it and how to get good results. It contains none of the original skills' text; install the originals to use them.
 
@@ -41,6 +41,15 @@ Pick one direction per project. Installing several is fine; running more than on
 
 The classic skills (everything in `taste-skill-classics`) only run when you call them by name. They will not trigger on their own.
 
+### Strict rules or a film to follow
+
+| Job | Call | Notes |
+| --- | --- | --- |
+| Hard "never looks AI-made" rules with an automatic check | `hallmark` | A non-negotiable floor (tokens only, no purple-blue gradients, no nested cards, no emoji icons, no invented metrics, hero fits the first screen), then softer gates you may overrule with a reason. Offers three of its 50 themes, builds the hero first, then runs a linter at eight widths. Also has `redesign <path>` and `audit <path>` modes. |
+| Story-led page with the look and pacing of a real film | `cinematic-ui` | Picks a director and film from a library of 200, researches its colour, light, framing and rhythm, writes a decisions file and a storyboard you approve, then a spec, then builds. Triggers only when you ask for a film or director feel. Pair with 32 Swift Swallow for the scroll motion. |
+
+Hallmark and Taste Skill both claim the final say on look. Choose one as the lead for a project; Hallmark is the stricter, more checkable of the two, Taste Skill the more expressive.
+
 ### Reference board first, code second
 
 | Job | Call | Notes |
@@ -66,6 +75,12 @@ npx skills add https://github.com/Leonxlnx/imagegen-skills --skill imagegen-fron
 npx skills add https://github.com/Leonxlnx/imagegen-skills --skill imagegen-frontend-mobile
 npx skills add https://github.com/Leonxlnx/imagegen-skills --skill brandkit
 
+# Strict anti-AI-look rules (Node 18+; Chrome for the visual checks):
+npx skills add nutlope/hallmark
+
+# Film-directed pages (no npx installer listed; clone it):
+git clone https://github.com/akseolabs-seo/cinematic-ui ~/.claude/skills/cinematic-ui
+
 # frontend-design is already available in Claude apps; for other agents:
 npx skills add anthropics/skills --skill frontend-design
 ```
@@ -79,6 +94,8 @@ Requirements: `design-taste-frontend` runs its scripts with Node 22+ and an inst
 - "Pearl Peacock, app screen: design the dashboard for my 3PL returns app."
 - "Pearl Peacock, mobile board: six screens for a kids' learning app, then build screen one."
 - "Pearl Peacock, dials: variance 7, motion 3, density 2, for a minimal portfolio hero."
+- "Pearl Peacock, Hallmark: audit my portfolio home page and fix everything below the floor."
+- "Pearl Peacock, cinematic: an AARVO KIDS story page that feels like a Studio Ghibli film; show me the storyboard first."
 
 ## Watch-outs
 
@@ -87,16 +104,18 @@ Requirements: `design-taste-frontend` runs its scripts with Node 22+ and an inst
 - These skills are opinionated and will overrule your brand if you let them. Give them your brand colours, fonts and logo first, or run `brandkit` first.
 - Good taste still needs a good brief, the right references and your judgement. The skill does not make every output a masterpiece.
 - `high-end-visual-design` leans on heavy motion and layered cards; check performance on a mid-range phone.
+- Hallmark's floor bans some things you may want on purpose (small-caps eyebrow labels, gradient accents). Overrule it in the prompt with a reason, or choose Taste Skill as the lead instead.
+- Cinematic UI is a one-commit, one-author project with no updates since April 2026. The workflow is strong; check its output harder than the others'.
 - Taste is not usability. Always finish with 21 Hawk Inspector.
 
 ## Credit
 
-`design-taste-frontend` by Leonxlnx, MIT, checked at commit `63aba5f`. Classic skills by Leonxlnx, MIT, checked at `taste-skill-classics` commit `5e08c93`. Image-generation skills by Leonxlnx, MIT, checked at `imagegen-skills` commit `beb16b0`. `frontend-design` by Anthropic, Apache-2.0, checked at commit `dbd4588` on 2026-10-18. Taste Skill repos checked on 2026-10-20.
+`design-taste-frontend` by Leonxlnx, MIT, checked at commit `63aba5f`. Classic skills by Leonxlnx, MIT, checked at `taste-skill-classics` commit `5e08c93`. Image-generation skills by Leonxlnx, MIT, checked at `imagegen-skills` commit `beb16b0`. `frontend-design` by Anthropic, Apache-2.0, checked at commit `dbd4588` on 2026-10-18. `hallmark` by Together AI and contributors, MIT, checked at commit `8f6969f` (v2.0.0) on 2026-10-29. `cinematic-ui` by akseolabs, MIT, checked at commit `24a66c1` on 2026-10-29. Taste Skill repos checked on 2026-10-20.
 
 ## Copy-ready English prompt
 
 ```text
-Use the <design-taste-frontend | design-taste-frontend-v2-experimental | high-end-visual-design | minimalist-ui | imagegen-frontend-web | imagegen-frontend-mobile | brandkit> skill for <page or screen>.
+Use the <design-taste-frontend | design-taste-frontend-v2-experimental | high-end-visual-design | minimalist-ui | hallmark | cinematic-ui | imagegen-frontend-web | imagegen-frontend-mobile | brandkit> skill for <page or screen>.
 Type of work: <new page | restyle of an existing page | app screen | mobile flow | reference board>.
 Audience: <who>. Goal: <what the user should do>.
 Brand: <colours, fonts, logo, three tone words>.

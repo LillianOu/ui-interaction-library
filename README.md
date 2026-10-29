@@ -63,18 +63,21 @@ A crew of characters, each one a guide to the best open-source design skills for
 | --- | --- | --- | --- | --- |
 | 15 | 松鼠草圖師 | Sketch Squirrel (Wireframer) | Lo-fi clickable wireframes | [`15-sketch-squirrel-wireframer`](skills/15-sketch-squirrel-wireframer/SKILL.md) |
 | 16 | 河狸藍圖師 | Blueprint Beaver (draw.io) | Editable system and flow diagrams | [`16-blueprint-beaver-drawio`](skills/16-blueprint-beaver-drawio/SKILL.md) |
-| 17 | 孔雀品味師 | Pearl Peacock (Taste Pack) | Visual direction for web and app UI without AI slop; restyles; reference boards | [`17-pearl-peacock-taste-pack`](skills/17-pearl-peacock-taste-pack/SKILL.md) |
+| 17 | 孔雀品味師 | Pearl Peacock (Taste Pack + Hallmark + Cinematic UI) | Visual direction for web and app UI without AI slop; strict anti-AI-look rules; film-directed pages; restyles; reference boards | [`17-pearl-peacock-taste-pack`](skills/17-pearl-peacock-taste-pack/SKILL.md) |
 | 18 | 喜鵲靈感庫 | Magpie Muse (UI UX Pro Max + UIZZE) | Palettes, fonts and real-screen references | [`18-magpie-muse-ui-references`](skills/18-magpie-muse-ui-references/SKILL.md) |
 | 19 | 螞蟻組件師 | Builder Ant (shadcn/ui) | Build with React components | [`19-builder-ant-shadcn`](skills/19-builder-ant-shadcn/SKILL.md) |
-| 20 | 章魚工作室 | Octo Studio (Huashu + Baoyu) | Prototypes, decks and animations in one prompt | [`20-octo-studio-huashu-baoyu`](skills/20-octo-studio-huashu-baoyu/SKILL.md) |
+| 20 | 章魚工作室 | Octo Studio (Huashu + Baoyu + Open Design) | Prototypes, decks and animations in one prompt; a full local design workspace | [`20-octo-studio-huashu-baoyu`](skills/20-octo-studio-huashu-baoyu/SKILL.md) |
 | 21 | 鷹眼質檢員 | Hawk Inspector (Quality Pack) | Standards, score, polish and motion check | [`21-hawk-inspector-quality-pack`](skills/21-hawk-inspector-quality-pack/SKILL.md) |
-| 31 | 變色龍換裝師 | Costume Chameleon (Awesome DESIGN.md) | Borrow a proven brand's design system as a DESIGN.md, then make it your own | [`31-costume-chameleon-awesome-design-md`](skills/31-costume-chameleon-awesome-design-md/SKILL.md) |
+| 31 | 變色龍換裝師 | Costume Chameleon (Awesome DESIGN.md + design-md-chrome) | Borrow a proven brand's design system as a DESIGN.md, or extract one from any site, then make it your own |
+| 32 | 燕子動效師 | Swift Swallow (GSAP Skills) | Scroll animation and timeline choreography in code |
+| 33 | 鵜鶘畫板師 | Canvas Pelican (PencilPlaybook) | Token-consistent screens on a Pencil.dev canvas |
+| 34 | 蜜蜂轉化師 | Buzz Bee (Landing Page Generator) | Landing page copy and structure that converts | [`31-costume-chameleon-awesome-design-md`](skills/31-costume-chameleon-awesome-design-md/SKILL.md) |
 
-Next number: **32** (14 is reserved for the planned cursor-driven hero).
+Next number: **35** (14 is reserved for the planned cursor-driven hero).
 
 ## Live demo
 
-Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit skills (15–21, 31) are guides, so they have no demo.
+Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit skills (15–21, 31–34) are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the ten design skills they cover, showing which crew member carries each one.
 
 ## How to use
 
@@ -86,7 +89,7 @@ Every interaction skill has a working demo in `demo/`. `demo/index.html` is the 
 
 **By hand:** open a `SKILL.md` and paste its copy-ready prompt into any AI coding tool.
 
-**Design Toolkit crew (15–21, 31):** install the crew member as above, then install the originals it names with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call a character by name, for example "Ask Hawk Inspector to check this page."
+**Design Toolkit crew (15–21, 31–34):** install the crew member as above, then install the originals it names with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call a character by name, for example "Ask Hawk Inspector to check this page."
 
 ## Repository layout
 

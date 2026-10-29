@@ -2,6 +2,28 @@
 
 All notable updates to this library are recorded here.
 
+## [0.8.0] - 2026-10-29
+
+Reviewed the ten skills in 庫米工具's "UI 設計 10 大 skill 榜" post against their real repos. All guides are written in our own words; none of the original text is copied.
+
+### Added
+
+- 32 Swift Swallow (燕子動效師): guide to GreenSock's official gsap-skills (MIT) for scroll animation and timelines.
+- 33 Canvas Pelican (鵜鶘畫板師): guide to stevembarclay's PencilPlaybook (MIT) for designing on a Pencil.dev canvas.
+- 34 Buzz Bee (蜜蜂轉化師): guide to alirezarezvani's landing-page-generator (MIT) for conversion copy and structure.
+- `demo/design-toolkit.html`: a visual field guide to all ten skills, with a drawing of what each produces, the crew member that carries it and its install line.
+
+### Changed
+
+- 17 Pearl Peacock now routes to Hallmark (Nutlope/hallmark, MIT) for strict anti-AI-look rules and Cinematic UI (akseolabs-seo/cinematic-ui, MIT) for film-directed pages.
+- 20 Octo Studio now routes to Open Design (nexu-io/open-design, Apache-2.0), a local design workspace app with an MCP server, and explains why the community "Claude Design Skill" is not wrapped.
+- 31 Costume Chameleon now routes to design-md-chrome (bergside/design-md-chrome, MIT), a Chrome extension that extracts a DESIGN.md from any site.
+- UI/UX Pro Max and Taste Skill were already covered by 18 Magpie Muse and 17 Pearl Peacock.
+
+### Not added
+
+- jiji262/claude-design-skill: its README states the content is Anthropic's Claude Design system prompt, so it does not meet the open-licence rule. Use Claude Design in the Claude app.
+
 ## [0.7.0] - 2026-10-25
 
 ### Added

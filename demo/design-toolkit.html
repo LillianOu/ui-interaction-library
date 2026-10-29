@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Design Toolkit Ten</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one column field guide — summary strip, a "which one do I call" picker, then ten specimen cards in the post's order, each with a drawing of what the skill produces. Tokens match demo/assets/demo.css. */
+:root{
+  --bg:#F3F6F8; --surface:#FFFFFF; --sunk:#E8EEF2; --ink:#13171C; --muted:#56626E; --line:rgba(19,23,28,.13);
+  --cyan:#0089A8; --cyan-soft:#DDF4F9; --violet:#5A40D4; --violet-soft:#ECE8FF; --kraft:#B4864F; --kraft-soft:#F4EADC;
+  --ok:#2F7A45; --ok-soft:#E1F1E5; --warn:#A86200; --warn-soft:#FBEBD3; --err:#C2362F; --err-soft:#F9E1DF;
+  --f-display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",sans-serif;
+  --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r-lg:22px; --r-md:14px; --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B0E12; --surface:#141A21; --sunk:#1B232C; --ink:#ECF2F6; --muted:#98A5B1; --line:rgba(236,242,246,.13);
+  --cyan:#3DCFEA; --cyan-soft:#0E2C35; --violet:#A08CFF; --violet-soft:#211A42; --kraft:#C99A63; --kraft-soft:#2E2418;
+  --ok:#6CC283; --ok-soft:#14291A; --warn:#F0B35A; --warn-soft:#2E220F; --err:#FF7B72; --err-soft:#331614; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0B0E12; --surface:#141A21; --sunk:#1B232C; --ink:#ECF2F6; --muted:#98A5B1; --line:rgba(236,242,246,.13);
+  --cyan:#3DCFEA; --cyan-soft:#0E2C35; --violet:#A08CFF; --violet-soft:#211A42; --kraft:#C99A63; --kraft-soft:#2E2418;
+  --ok:#6CC283; --ok-soft:#14291A; --warn:#F0B35A; --warn-soft:#2E220F; --err:#FF7B72; --err-soft:#331614; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;overflow-x:clip}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--violet)}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1040px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+header.top{padding-block:clamp(32px,6vw,64px) 20px;display:grid;gap:12px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+h1{font-family:var(--f-display);font-weight:900;text-transform:uppercase;font-size:clamp(46px,9vw,104px);line-height:.88;letter-spacing:.005em}
+h1 .zh{display:block;font-family:var(--f-body);font-weight:600;text-transform:none;font-size:clamp(19px,2.4vw,24px);color:var(--muted);margin-top:10px;letter-spacing:0}
+.lede{max-width:62ch;color:var(--muted);font-size:clamp(16px,1.6vw,18px)}
+
+.tally{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:8px}
+.tally div{background:var(--surface);padding:12px 14px;display:grid;gap:2px}
+.tally b{font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.tally span{font-size:13px;color:var(--muted);line-height:1.3}
+.tally .new b{color:var(--violet)} .tally .add b{color:var(--cyan)} .tally .had b{color:var(--ok)} .tally .skip b{color:var(--err)}
+@media (max-width:560px){.tally{grid-template-columns:repeat(2,1fr)}}
+
+section.pick{padding-block:28px 8px}
+h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(28px,4vw,40px);line-height:1}
+h2 small{font-family:var(--f-body);font-weight:600;text-transform:none;font-size:16px;color:var(--muted);margin-left:8px}
+.picker{margin-top:14px;display:grid;gap:0;border-top:1px solid var(--line)}
+.picker a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
+.picker a:hover .who{color:var(--violet)}
+.picker .job{font-weight:600}
+.picker .job em{font-style:normal;display:block;font-weight:400;font-size:14px;color:var(--muted)}
+.picker .who{font-family:var(--f-mono);font-size:12.5px;text-align:right;color:var(--muted);white-space:nowrap}
+.picker .who b{display:block;font-family:var(--f-body);font-size:15px;color:var(--ink);font-weight:700}
+
+nav.filters{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);margin-top:28px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+nav.filters .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+nav.filters button{flex:none;font:600 14px var(--f-body);padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+nav.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+main{padding-block:20px 64px;display:grid;gap:14px}
+.spec{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.spec .art{background:var(--sunk);display:grid;place-items:center;padding:16px;border-right:1px solid var(--line);position:relative}
+.spec .art svg{width:100%;max-width:168px;height:auto;display:block}
+.spec .rank{position:absolute;top:10px;left:12px;font-family:var(--f-display);font-weight:900;font-size:30px;line-height:1;color:var(--muted);font-variant-numeric:tabular-nums}
+.spec .body{padding:18px 20px 18px;display:grid;gap:10px;min-width:0}
+.spec .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.spec h3{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:28px;line-height:1}
+.spec .zh{color:var(--muted);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.chip.st-new{background:var(--violet-soft);color:var(--violet);border-color:transparent}
+.chip.st-add{background:var(--cyan-soft);color:var(--cyan);border-color:transparent}
+.chip.st-had{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.chip.st-skip{background:var(--err-soft);color:var(--err);border-color:transparent}
+.what{font-size:16px}
+dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:15px}
+dt{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+dd{margin:0;min-width:0}
+dd a{font-weight:600;text-decoration:none}
+dd a:hover{text-decoration:underline}
+.install{display:flex;gap:8px;align-items:stretch;min-width:0}
+.install code{flex:1;min-width:0;font-family:var(--f-mono);font-size:12.5px;background:var(--sunk);border-radius:10px;padding:9px 11px;overflow-x:auto;white-space:nowrap;user-select:all}
+.install button{flex:none;font:600 13px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:0 12px;cursor:pointer}
+.install button.done{color:var(--ok);border-color:var(--ok)}
+.note{font-size:14px;color:var(--muted);border-left:3px solid var(--warn);padding-left:10px}
+.spec.skip .art{filter:grayscale(.7)}
+@media (max-width:640px){
+  .spec{grid-template-columns:1fr}
+  .spec .art{border-right:0;border-bottom:1px solid var(--line);padding:20px 16px 14px}
+  .spec .art svg{max-width:200px}
+}
+footer{padding-block:0 48px;color:var(--muted);font-size:14px}
+
+/* drawing helpers */
+.s-ink{fill:var(--ink)} .s-mut{fill:var(--muted)} .s-surf{fill:var(--surface)} .s-line{stroke:var(--line)} .s-cyan{fill:var(--cyan)} .s-vio{fill:var(--violet)} .s-kraft{fill:var(--kraft)} .s-err{stroke:var(--err)}
+.playhead{animation:sweep 3.2s var(--ease) infinite alternate}
+@keyframes sweep{from{transform:translateX(0)}to{transform:translateX(118px)}}
+@media (prefers-reduced-motion: reduce){.playhead{animation:none;transform:translateX(70px)}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">UI Interaction Library · Design Toolkit</div>
+    <h1>The ten design skills<span class="zh">UI 設計十大 skill · 哪個是哪個</span></h1>
+    <p class="lede">The ten skills from the 庫米工具 list, checked against their real repos on 29 Oct 2026. Each card shows what the skill makes, which crew member now carries it, and the one line to install it.</p>
+    <div class="tally" aria-label="Summary">
+      <div class="new"><b>3</b><span>New crew members</span></div>
+      <div class="add"><b>4</b><span>Added to an existing member</span></div>
+      <div class="had"><b>2</b><span>You already had</span></div>
+      <div class="skip"><b>1</b><span>Skipped</span></div>
+    </div>
+  </header>
+
+  <section class="pick" aria-labelledby="pick-h">
+    <h2 id="pick-h">Which one do I call?<small>按工作挑</small></h2>
+    <div class="picker" id="picker"></div>
+  </section>
+</div>
+
+<nav class="filters" aria-label="Filter skills">
+  <div class="wrap" id="filters"></div>
+</nav>
+
+<div class="wrap">
+  <main id="list"></main>
+  <footer>Crew members are guides: they link and credit the original skills and never copy them. Commits and licences recorded in each <code>SKILL.md</code>.</footer>
+</div>
+
+<script>
+const REPO="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/";
+const crew={
+  17:["Pearl Peacock","孔雀品味師","17-pearl-peacock-taste-pack"],
+  18:["Magpie Muse","喜鵲靈感庫","18-magpie-muse-ui-references"],
+  20:["Octo Studio","章魚工作室","20-octo-studio-huashu-baoyu"],
+  31:["Costume Chameleon","變色龍換裝師","31-costume-chameleon-awesome-design-md"],
+  32:["Swift Swallow","燕子動效師","32-swift-swallow-gsap"],
+  33:["Canvas Pelican","鵜鶘畫板師","33-canvas-pelican-pencilplaybook"],
+  34:["Buzz Bee","蜜蜂轉化師","34-buzz-bee-landing-page-generator"]
+};
+const ST={new:["New crew member","st-new"],add:["Added to crew","st-add"],had:["Already in crew","st-had"],skip:["Skipped","st-skip"]};
+
+/* small drawings of what each skill produces; all colours come from theme tokens */
+const A={
+hallmark:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  <rect x="4" y="14" width="74" height="92" rx="10" class="s-surf" stroke="var(--line)"/>
+  <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#3B82F6"/></linearGradient></defs>
+  <rect x="12" y="22" width="58" height="26" rx="6" fill="url(#g1)"/>
+  <rect x="12" y="54" width="26" height="22" rx="5" class="s-surf" stroke="var(--line)"/><rect x="44" y="54" width="26" height="22" rx="5" class="s-surf" stroke="var(--line)"/>
+  <circle cx="25" cy="65" r="5" fill="#F5B83D"/><circle cx="57" cy="65" r="5" fill="#F5B83D"/>
+  <rect x="12" y="84" width="58" height="6" rx="3" class="s-mut" opacity=".4"/>
+  <path d="M10 20 L72 100 M72 20 L10 100" class="s-err" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+  <rect x="90" y="14" width="74" height="92" rx="4" class="s-surf" stroke="var(--line)"/>
+  <rect x="98" y="24" width="44" height="9" class="s-ink"/><rect x="98" y="37" width="30" height="9" class="s-ink"/>
+  <rect x="98" y="54" width="58" height="3" class="s-mut" opacity=".5"/><rect x="98" y="61" width="48" height="3" class="s-mut" opacity=".5"/>
+  <rect x="98" y="74" width="28" height="12" rx="2" class="s-cyan"/>
+  <path d="M137 92 l5 5 l10 -12" stroke="var(--ok)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+open:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  <rect x="4" y="10" width="160" height="100" rx="10" class="s-surf" stroke="var(--line)"/>
+  <rect x="4" y="10" width="160" height="16" rx="10" fill="var(--sunk)"/><circle cx="14" cy="18" r="2.5" fill="var(--err)"/><circle cx="22" cy="18" r="2.5" fill="var(--warn)"/><circle cx="30" cy="18" r="2.5" fill="var(--ok)"/>
+  <rect x="10" y="32" width="34" height="72" rx="4" fill="var(--sunk)"/>
+  <rect x="14" y="38" width="26" height="4" rx="2" class="s-mut" opacity=".5"/><rect x="14" y="46" width="20" height="4" rx="2" class="s-vio"/><rect x="14" y="54" width="24" height="4" rx="2" class="s-mut" opacity=".5"/>
+  <rect x="50" y="32" width="68" height="72" rx="4" fill="var(--violet-soft)"/>
+  <rect x="58" y="40" width="38" height="6" rx="2" class="s-vio"/><rect x="58" y="52" width="52" height="24" rx="3" class="s-surf"/><rect x="58" y="82" width="22" height="14" rx="3" class="s-surf"/><rect x="86" y="82" width="24" height="14" rx="3" class="s-surf"/>
+  <rect x="124" y="32" width="34" height="72" rx="4" fill="var(--sunk)"/>
+  <circle cx="133" cy="42" r="3" class="s-cyan"/><circle cx="141" cy="42" r="3" class="s-vio"/><circle cx="149" cy="42" r="3" class="s-kraft"/>
+  <text x="141" y="64" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">DESIGN</text><text x="141" y="74" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">SYSTEM</text></svg>`,
+promax:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  <rect x="6" y="12" width="28" height="52" rx="6" fill="#1F4E79"/><rect x="38" y="12" width="28" height="52" rx="6" fill="#2E86AB"/><rect x="70" y="12" width="28" height="52" rx="6" fill="#F6AE2D"/><rect x="102" y="12" width="28" height="52" rx="6" fill="#F26419"/><rect x="134" y="12" width="28" height="52" rx="6" fill="#F7F7F2" stroke="var(--line)"/>
+  <text x="8" y="100" font-family="Big Shoulders Display,Arial Narrow,sans-serif" font-weight="900" font-size="36" class="s-ink">Aa</text>
+  <text x="58" y="100" font-family="Georgia,serif" font-size="34" class="s-mut">Aa</text>
+  <text x="108" y="88" font-family="IBM Plex Mono,monospace" font-size="8.5" class="s-mut">fintech</text><text x="108" y="100" font-family="IBM Plex Mono,monospace" font-size="8.5" class="s-mut">kids-edu</text><text x="108" y="112" font-family="IBM Plex Mono,monospace" font-size="8.5" class="s-mut">wellness</text></svg>`,
+taste:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  ${[["VARIANCE",7,22],["MOTION",3,60],["DENSITY",2,98]].map(([l,v,y])=>`<text x="6" y="${y}" font-family="IBM Plex Mono,monospace" font-size="9" letter-spacing="1" class="s-mut">${l}</text><text x="162" y="${y}" text-anchor="end" font-family="Big Shoulders Display,sans-serif" font-weight="800" font-size="14" class="s-ink">${v}</text><rect x="6" y="${y+7}" width="156" height="4" rx="2" fill="var(--line)"/><rect x="6" y="${y+7}" width="${v*15.6}" height="4" rx="2" class="s-vio"/><circle cx="${6+v*15.6}" cy="${y+9}" r="7" class="s-surf" stroke="var(--violet)" stroke-width="2.5"/>`).join("")}</svg>`,
+gsap:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  ${[0,1,2,3].map(i=>`<line x1="40" x2="164" y1="${22+i*22}" y2="${22+i*22}" stroke="var(--line)"/>`).join("")}
+  <text x="4" y="25" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">title</text><text x="4" y="47" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">image</text><text x="4" y="69" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">cards</text><text x="4" y="91" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">pin</text>
+  <rect x="44" y="16" width="40" height="12" rx="6" class="s-vio"/><rect x="70" y="38" width="48" height="12" rx="6" class="s-cyan"/>
+  <rect x="100" y="60" width="18" height="12" rx="6" class="s-kraft"/><rect x="112" y="60" width="18" height="12" rx="6" class="s-kraft" opacity=".75"/><rect x="124" y="60" width="18" height="12" rx="6" class="s-kraft" opacity=".5"/>
+  <rect x="44" y="82" width="118" height="12" rx="6" fill="var(--violet-soft)" stroke="var(--violet)" stroke-dasharray="3 3"/>
+  <g class="playhead"><line x1="44" x2="44" y1="8" y2="104" stroke="var(--ink)" stroke-width="2"/><path d="M38 4 h12 l-6 7z" class="s-ink"/></g>
+  <text x="44" y="116" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">scroll ↓ scrubs it</text></svg>`,
+pencil:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  <defs><pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="var(--muted)" opacity=".35"/></pattern></defs>
+  <rect x="2" y="2" width="164" height="116" rx="8" fill="url(#dots)"/>
+  <rect x="10" y="14" width="44" height="60" rx="4" class="s-surf" stroke="var(--line)"/><rect x="62" y="14" width="44" height="60" rx="4" class="s-surf" stroke="var(--line)"/><rect x="114" y="14" width="26" height="46" rx="5" class="s-surf" stroke="var(--line)"/>
+  <rect x="14" y="20" width="22" height="4" class="s-ink"/><rect x="14" y="30" width="36" height="16" rx="2" fill="var(--cyan-soft)"/><rect x="14" y="50" width="16" height="16" rx="2" fill="var(--sunk)"/><rect x="34" y="50" width="16" height="16" rx="2" fill="var(--sunk)"/>
+  <rect x="66" y="20" width="36" height="40" rx="2" fill="var(--sunk)"/><rect x="66" y="64" width="18" height="6" rx="2" class="s-cyan"/>
+  <rect x="117" y="20" width="20" height="4" class="s-ink"/><rect x="117" y="28" width="20" height="24" rx="2" fill="var(--violet-soft)"/>
+  <text x="10" y="88" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">.pen · tokens set</text>
+  <g transform="translate(118 74) rotate(35)"><rect x="0" y="0" width="8" height="38" rx="1" class="s-kraft"/><path d="M0 38 l4 9 l4 -9z" class="s-ink"/></g></svg>`,
+chrome:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  <rect x="4" y="14" width="88" height="80" rx="8" class="s-surf" stroke="var(--line)"/><rect x="4" y="14" width="88" height="14" rx="8" fill="var(--sunk)"/>
+  <rect x="12" y="18" width="60" height="6" rx="3" class="s-surf"/><circle cx="82" cy="21" r="4" class="s-cyan"/>
+  <rect x="12" y="36" width="40" height="8" class="s-ink"/><rect x="12" y="50" width="70" height="3" class="s-mut" opacity=".5"/><rect x="12" y="57" width="56" height="3" class="s-mut" opacity=".5"/>
+  <rect x="12" y="68" width="24" height="10" rx="5" class="s-vio"/><rect x="40" y="68" width="24" height="10" rx="5" fill="none" stroke="var(--violet)"/>
+  <path d="M98 54 h18 m-6 -6 l6 6 l-6 6" stroke="var(--ink)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M124 18 h28 l10 10 v74 h-38z" class="s-surf" stroke="var(--line)"/><path d="M152 18 v10 h10" fill="none" stroke="var(--line)"/>
+  <text x="129" y="40" font-family="IBM Plex Mono,monospace" font-size="6.5" font-weight="600" class="s-ink">DESIGN.md</text>
+  ${[50,58,66,74,82].map((y,i)=>`<rect x="129" y="${y}" width="${[26,20,24,16,22][i]}" height="3" class="s-mut" opacity=".55"/>`).join("")}
+  <rect x="129" y="90" width="6" height="6" class="s-cyan"/><rect x="137" y="90" width="6" height="6" class="s-vio"/><rect x="145" y="90" width="6" height="6" class="s-ink"/></svg>`,
+claude:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  <rect x="6" y="18" width="62" height="40" rx="4" class="s-surf" stroke="var(--line)"/><rect x="12" y="26" width="30" height="5" class="s-ink"/><rect x="12" y="36" width="44" height="3" class="s-mut" opacity=".5"/>
+  <rect x="76" y="10" width="40" height="56" rx="3" class="s-kraft"/><rect x="82" y="18" width="28" height="6" class="s-surf"/><circle cx="96" cy="44" r="10" class="s-surf" opacity=".75"/>
+  <rect x="124" y="14" width="34" height="58" rx="7" class="s-surf" stroke="var(--line)"/><rect x="129" y="24" width="24" height="16" rx="2" fill="var(--violet-soft)"/><rect x="129" y="44" width="24" height="4" rx="2" class="s-mut" opacity=".5"/>
+  <text x="84" y="94" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8.5" class="s-mut">deck · poster · prototype</text>
+  <rect x="34" y="102" width="100" height="14" rx="7" fill="var(--err-soft)"/><text x="84" y="112" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" font-weight="600" fill="var(--err)">use built-in Claude Design</text></svg>`,
+landing:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  ${[["HERO ×5",22,"var(--violet)"],["FEATURES",14,"var(--sunk)"],["PRICING",14,"var(--sunk)"],["FAQ",12,"var(--sunk)"],["PROOF",12,"var(--sunk)"],["CTA",14,"var(--cyan)"]].reduce((acc,[l,h,c])=>{acc.s+=`<rect x="34" y="${acc.y}" width="100" height="${h}" rx="3" fill="${c}" stroke="var(--line)"/><text x="84" y="${acc.y+h/2+3}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7.5" font-weight="600" fill="${c.includes('sunk')?'var(--muted)':'var(--surface)'}">${l}</text>`;acc.y+=h+3;return acc},{s:"",y:6}).s}
+  <text x="4" y="40" font-family="Big Shoulders Display,sans-serif" font-weight="800" font-size="13" class="s-mut">P</text><text x="4" y="62" font-family="Big Shoulders Display,sans-serif" font-weight="800" font-size="13" class="s-mut">A</text><text x="4" y="84" font-family="Big Shoulders Display,sans-serif" font-weight="800" font-size="13" class="s-mut">S</text>
+  <path d="M142 14 v86" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="2 3"/><path d="M138 96 l4 6 l4 -6" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>`,
+cinema:`<svg viewBox="0 0 168 120" aria-hidden="true">
+  <rect x="4" y="16" width="160" height="88" rx="4" fill="#0B0E12"/>
+  <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8A25C"/><stop offset=".6" stop-color="#7B3F2A"/><stop offset="1" stop-color="#1D1414"/></linearGradient></defs>
+  <rect x="4" y="30" width="160" height="60" fill="url(#g2)"/>
+  <circle cx="122" cy="52" r="11" fill="#F6D7A7" opacity=".9"/><path d="M4 90 L46 64 L74 80 L108 58 L164 86 V90 Z" fill="#1D1414"/>
+  <rect x="22" y="70" width="3" height="14" fill="#0B0E12"/><circle cx="23.5" cy="67" r="3" fill="#0B0E12"/>
+  ${Array.from({length:10},(_,i)=>`<rect x="${10+i*16}" y="20" width="8" height="5" rx="1" fill="#2A3038"/><rect x="${10+i*16}" y="95" width="8" height="5" rx="1" fill="#2A3038"/>`).join("")}
+  <text x="84" y="116" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" class="s-mut">director → storyboard → build</text></svg>`
+};
+
+const S=[
+ {r:1,id:"hallmark",name:"Hallmark",zh:"反 AI 味網頁審美校準",type:"Skill",st:"add",crew:17,
+  what:"Hard rules that stop a page looking AI-made, plus a checker that inspects it at eight screen widths. Builds the hero first, then the rest.",
+  when:"You want a page that cannot slip into purple gradients, nested cards or emoji icons, and you want it checked, not just promised.",
+  src:"Nutlope/hallmark · MIT · 8f6969f",install:"npx skills add nutlope/hallmark"},
+ {r:2,id:"open",name:"Open Design",zh:"AI 設計工作台",type:"Desktop app + MCP",st:"add",crew:20,
+  what:"A local design workspace app: projects, design systems, previews and team review in one place, driven by Claude Code or your own API key.",
+  when:"You want one home for many deliverables (prototypes, decks, screens) that all follow your DESIGN.md.",
+  src:"nexu-io/open-design · Apache-2.0 · 06de116",install:"od mcp install claude",
+  note:"It is an app, not a skill: install the desktop app from open-design.ai first."},
+ {r:3,id:"promax",name:"UI/UX Pro Max",zh:"SaaS、Dashboard 高級頁面",type:"Skill",st:"had",crew:18,
+  what:"A searchable database of styles, product-specific palettes, font pairings and UX rules; can write a design system file.",
+  when:"You need evidence for a palette or font choice for a product type.",
+  src:"nextlevelbuilder/ui-ux-pro-max-skill · MIT",install:"npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max"},
+ {r:4,id:"taste",name:"Taste Skill",zh:"去模板感，提升質感",type:"Skill family",st:"had",crew:17,
+  what:"Offers three researched visual directions, builds the one you pick and checks it in a browser. Classic versions use three 1–10 dials.",
+  when:"The look is not decided yet, or an existing page needs a restyle.",
+  src:"Leonxlnx/taste-skill · MIT",install:"npx skills add https://github.com/Leonxlnx/taste-skill --skill design-taste-frontend"},
+ {r:5,id:"gsap",name:"GSAP Skills",zh:"滾動動效、時間軸編排",type:"8 skills (official)",st:"new",crew:32,
+  what:"GreenSock's own eight skills that teach the agent to write correct GSAP: timelines, ScrollTrigger pinning and scrub, plugins, React cleanup, performance.",
+  when:"A page needs scroll storytelling or a choreographed sequence of moves.",
+  src:"greensock/gsap-skills · MIT · aed9cfd",install:"npx skills add https://github.com/greensock/gsap-skills"},
+ {r:6,id:"pencil",name:"PencilPlaybook",zh:"設計心理學導向 UI 規則",type:"Skill (Pencil.dev only)",st:"new",crew:33,
+  what:"A routine for designing on a Pencil.dev canvas: one-time token setup, nine ready screen layouts, and perception-based defaults for states and spacing.",
+  when:"You design in Pencil.dev. Outside Pencil.dev it does almost nothing.",
+  src:"stevembarclay/pencilplaybook · MIT · b732429",install:"git clone https://github.com/stevembarclay/pencilplaybook ~/.claude/skills/pencilplaybook",
+  note:"Small one-person project. Only worth installing if Pencil.dev is part of your workflow."},
+ {r:7,id:"chrome",name:"design-md-chrome",zh:"提取網站風格生成參考文檔",type:"Chrome extension",st:"add",crew:31,
+  what:"Click it on any website and download a DESIGN.md (or SKILL.md) built from that page's real colours, type, spacing and shadows.",
+  when:"The look you want to borrow is not in the awesome-design-md collection.",
+  src:"bergside/design-md-chrome · MIT · 8e07614",install:"Chrome Web Store → “DESIGN.md Style Extractor – TypeUI”",
+  note:"Reads one page only, so treat the file as a rough sketch and merge two or three pages."},
+ {r:8,id:"claude",name:"Claude Design Skill",zh:"落地頁、海報、原型一體化",type:"Skill (community)",st:"skip",crew:20,
+  what:"A community repackaging of the system prompt behind Anthropic's hosted Claude Design tool.",
+  when:"Not wrapped. Its README says the content is Anthropic's, so it fails the crew's open-licence rule. Your Claude app already has Claude Design itself.",
+  src:"jiji262/claude-design-skill · labelled MIT, content not",install:"Use Claude Design in the Claude app instead"},
+ {r:9,id:"landing",name:"Landing Page Generator",zh:"高轉化落地頁內容結構",type:"Skill",st:"new",crew:34,
+  what:"Writes the copy first from PAS, AIDA or BAB, then builds the page in conversion order with five hero options, as Next.js + Tailwind with SEO tags.",
+  when:"The page has to sell or sign people up, and you need the words and structure.",
+  src:"alirezarezvani/claude-skills · MIT · 0496583",install:"npx skills add alirezarezvani/claude-skills --skill landing-page-generator",
+  note:"It invents testimonials and numbers to fill gaps. Replace them with real proof or delete them."},
+ {r:10,id:"cinema",name:"Cinematic UI",zh:"電影感敘事 UI 佈局",type:"Skill",st:"add",crew:17,
+  what:"Picks a real director and film, researches its colour, light and framing, writes a storyboard for your approval, then builds the page from it.",
+  when:"You want a story-led page that feels like a specific film. Pair it with Swift Swallow for the scroll motion.",
+  src:"akseolabs-seo/cinematic-ui · MIT · 24a66c1",install:"git clone https://github.com/akseolabs-seo/cinematic-ui ~/.claude/skills/cinematic-ui"}
+];
+
+const picks=[
+ ["Decide the look and keep it from looking AI-made","Taste Skill or Hallmark",17],
+ ["Make it feel like a film","Cinematic UI",17],
+ ["Palette and fonts for my product type","UI/UX Pro Max",18],
+ ["Borrow a website's design system","design-md-chrome",31],
+ ["Scroll animation and timelines","GSAP Skills",32],
+ ["Write a landing page that converts","Landing Page Generator",34],
+ ["A whole design workspace for many deliverables","Open Design",20],
+ ["Design on a Pencil.dev canvas","PencilPlaybook",33]
+];
+
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+document.getElementById("picker").innerHTML=picks.map(([job,tool,c])=>`<a href="#s-${S.find(x=>x.name===tool.split(" or ")[0]).id}"><span class="job">${job}<em>${tool}</em></span><span class="who"><b>${crew[c][0]}</b>No. ${c}</span></a>`).join("");
+
+const list=document.getElementById("list");
+list.innerHTML=S.map(s=>{const c=crew[s.crew];return `
+<article class="spec${s.st==='skip'?' skip':''}" id="s-${s.id}" data-st="${s.st}">
+  <div class="art"><span class="rank">${String(s.r).padStart(2,"0")}</span>${A[s.id]}</div>
+  <div class="body">
+    <div class="head"><h3>${s.name}</h3><span class="zh">${s.zh}</span></div>
+    <div class="chips"><span class="chip ${ST[s.st][1]}">${ST[s.st][0]}</span><span class="chip">${s.type}</span></div>
+    <p class="what">${s.what}</p>
+    <dl>
+      <dt>Use when</dt><dd>${s.when}</dd>
+      <dt>${s.st==='skip'?'Noted in':'Crew'}</dt><dd><a href="${REPO+c[2]}/SKILL.md" target="_blank" rel="noopener">${s.crew} ${c[0]} · ${c[1]}</a></dd>
+      <dt>Source</dt><dd><span style="font-family:var(--f-mono);font-size:13px">${s.src}</span></dd>
+    </dl>
+    ${s.note?`<p class="note">${s.note}</p>`:""}
+    <div class="install"><code id="cmd-${s.id}">${esc(s.install)}</code>${/^(npx|git|od)/.test(s.install)?`<button type="button" data-copy="cmd-${s.id}">Copy</button>`:""}</div>
+  </div>
+</article>`}).join("");
+
+const fl=[["all","All 10"],["new","New crew · 3"],["add","Added · 4"],["had","Already had · 2"],["skip","Skipped · 1"]];
+const fbox=document.getElementById("filters");
+fbox.innerHTML=fl.map(([k,l],i)=>`<button type="button" data-f="${k}" aria-pressed="${i===0}">${l}</button>`).join("");
+fbox.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  fbox.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  list.querySelectorAll(".spec").forEach(a=>a.hidden=!(b.dataset.f==="all"||a.dataset.st===b.dataset.f));});
+
+list.addEventListener("click",async e=>{const b=e.target.closest("button[data-copy]");if(!b)return;
+  const el=document.getElementById(b.dataset.copy);
+  try{await navigator.clipboard.writeText(el.textContent);b.textContent="Copied";b.classList.add("done");setTimeout(()=>{b.textContent="Copy";b.classList.remove("done")},1600)}
+  catch(_){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected"}});
+</script>
+</body>
+</html>
