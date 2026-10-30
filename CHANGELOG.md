@@ -2,6 +2,16 @@
 
 All notable updates to this library are recorded here.
 
+## [0.9.0] - 2026-10-31
+
+### Added
+
+- 35 Glow Firefly (螢火蟲大片師): guide to MotionSites' motionsites-web-builder (instructions and scripts MIT; examples and media © MotionSites) for cinematic heroes and landing pages with a screenshot-and-fix loop. Links to the original only; none of its examples or media are copied.
+
+### Fixed
+
+- README Design Toolkit table: rows 31–33 were missing their skill links and row 34 linked to skill 31.
+
 ## [0.8.0] - 2026-10-29
 
 Reviewed the ten skills in 庫米工具's "UI 設計 10 大 skill 榜" post against their real repos. All guides are written in our own words; none of the original text is copied.
