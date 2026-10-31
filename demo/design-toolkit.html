@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Design Toolkit Ten</title>
+<title>Ten Design Tools</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,7 +111,7 @@ footer{padding-block:0 48px;color:var(--muted);font-size:14px}
 
 <div class="wrap">
   <header class="top">
-    <div class="eyebrow">UI Interaction Library · Design Toolkit</div>
+    <div class="eyebrow">Skill Library · Tool Library · Design</div>
     <h1>The ten design skills<span class="zh">UI 設計十大 skill · 哪個是哪個</span></h1>
     <p class="lede">The ten skills from the 庫米工具 list, checked against their real repos on 29 Oct 2026. Each card shows what the skill makes, which guide skill now carries it, and the one line to install it.</p>
     <div class="tally" aria-label="Summary">
@@ -140,13 +140,13 @@ footer{padding-block:0 48px;color:var(--muted);font-size:14px}
 <script>
 const REPO="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/";
 const crew={
-  17:["Taste Pack","Taste Pack","17-taste-pack"],
-  18:["UI UX Pro Max + UIZZE","UI UX Pro Max + UIZZE","18-ui-ux-pro-max-uizze"],
-  20:["Huashu + Baoyu","Huashu + Baoyu","20-huashu-baoyu-open-design"],
-  31:["Awesome DESIGN.md","Awesome DESIGN.md","31-awesome-design-md"],
-  32:["GSAP Skills","GSAP Skills","32-gsap-skills"],
-  33:["PencilPlaybook","PencilPlaybook","33-pencilplaybook"],
-  34:["Landing Page Generator","Landing Page Generator","34-landing-page-generator"]
+  "Design-03":["Taste Pack","Taste Pack","design-03-taste-pack"],
+  "Design-05":["UI UX Pro Max + UIZZE","UI UX Pro Max + UIZZE","design-05-ui-ux-pro-max-uizze"],
+  "Design-07":["Huashu + Baoyu","Huashu + Baoyu","design-07-huashu-baoyu-open-design"],
+  "Design-04":["Awesome DESIGN.md","Awesome DESIGN.md","design-04-awesome-design-md"],
+  "Design-08":["GSAP Skills","GSAP Skills","design-08-gsap-skills"],
+  "Design-09":["PencilPlaybook","PencilPlaybook","design-09-pencilplaybook"],
+  "Design-10":["Landing Page Generator","Landing Page Generator","design-10-landing-page-generator"]
 };
 const ST={new:["New guide skill","st-new"],add:["Added to toolkit","st-add"],had:["Already in toolkit","st-had"],skip:["Skipped","st-skip"]};
 
@@ -230,47 +230,47 @@ cinema:`<svg viewBox="0 0 168 120" aria-hidden="true">
 };
 
 const S=[
- {r:1,id:"hallmark",name:"Hallmark",zh:"反 AI 味網頁審美校準",type:"Skill",st:"add",crew:17,
+ {r:1,id:"hallmark",name:"Hallmark",zh:"反 AI 味網頁審美校準",type:"Skill",st:"add",crew:"Design-03",
   what:"Hard rules that stop a page looking AI-made, plus a checker that inspects it at eight screen widths. Builds the hero first, then the rest.",
   when:"You want a page that cannot slip into purple gradients, nested cards or emoji icons, and you want it checked, not just promised.",
   src:"Nutlope/hallmark · MIT · 8f6969f",install:"npx skills add nutlope/hallmark"},
- {r:2,id:"open",name:"Open Design",zh:"AI 設計工作台",type:"Desktop app + MCP",st:"add",crew:20,
+ {r:2,id:"open",name:"Open Design",zh:"AI 設計工作台",type:"Desktop app + MCP",st:"add",crew:"Design-07",
   what:"A local design workspace app: projects, design systems, previews and team review in one place, driven by Claude Code or your own API key.",
   when:"You want one home for many deliverables (prototypes, decks, screens) that all follow your DESIGN.md.",
   src:"nexu-io/open-design · Apache-2.0 · 06de116",install:"od mcp install claude",
   note:"It is an app, not a skill: install the desktop app from open-design.ai first."},
- {r:3,id:"promax",name:"UI/UX Pro Max",zh:"SaaS、Dashboard 高級頁面",type:"Skill",st:"had",crew:18,
+ {r:3,id:"promax",name:"UI/UX Pro Max",zh:"SaaS、Dashboard 高級頁面",type:"Skill",st:"had",crew:"Design-05",
   what:"A searchable database of styles, product-specific palettes, font pairings and UX rules; can write a design system file.",
   when:"You need evidence for a palette or font choice for a product type.",
   src:"nextlevelbuilder/ui-ux-pro-max-skill · MIT",install:"npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max"},
- {r:4,id:"taste",name:"Taste Skill",zh:"去模板感，提升質感",type:"Skill family",st:"had",crew:17,
+ {r:4,id:"taste",name:"Taste Skill",zh:"去模板感，提升質感",type:"Skill family",st:"had",crew:"Design-03",
   what:"Offers three researched visual directions, builds the one you pick and checks it in a browser. Classic versions use three 1–10 dials.",
   when:"The look is not decided yet, or an existing page needs a restyle.",
   src:"Leonxlnx/taste-skill · MIT",install:"npx skills add https://github.com/Leonxlnx/taste-skill --skill design-taste-frontend"},
- {r:5,id:"gsap",name:"GSAP Skills",zh:"滾動動效、時間軸編排",type:"8 skills (official)",st:"new",crew:32,
+ {r:5,id:"gsap",name:"GSAP Skills",zh:"滾動動效、時間軸編排",type:"8 skills (official)",st:"new",crew:"Design-08",
   what:"GreenSock's own eight skills that teach the agent to write correct GSAP: timelines, ScrollTrigger pinning and scrub, plugins, React cleanup, performance.",
   when:"A page needs scroll storytelling or a choreographed sequence of moves.",
   src:"greensock/gsap-skills · MIT · aed9cfd",install:"npx skills add https://github.com/greensock/gsap-skills"},
- {r:6,id:"pencil",name:"PencilPlaybook",zh:"設計心理學導向 UI 規則",type:"Skill (Pencil.dev only)",st:"new",crew:33,
+ {r:6,id:"pencil",name:"PencilPlaybook",zh:"設計心理學導向 UI 規則",type:"Skill (Pencil.dev only)",st:"new",crew:"Design-09",
   what:"A routine for designing on a Pencil.dev canvas: one-time token setup, nine ready screen layouts, and perception-based defaults for states and spacing.",
   when:"You design in Pencil.dev. Outside Pencil.dev it does almost nothing.",
   src:"stevembarclay/pencilplaybook · MIT · b732429",install:"git clone https://github.com/stevembarclay/pencilplaybook ~/.claude/skills/pencilplaybook",
   note:"Small one-person project. Only worth installing if Pencil.dev is part of your workflow."},
- {r:7,id:"chrome",name:"design-md-chrome",zh:"提取網站風格生成參考文檔",type:"Chrome extension",st:"add",crew:31,
+ {r:7,id:"chrome",name:"design-md-chrome",zh:"提取網站風格生成參考文檔",type:"Chrome extension",st:"add",crew:"Design-04",
   what:"Click it on any website and download a DESIGN.md (or SKILL.md) built from that page's real colours, type, spacing and shadows.",
   when:"The look you want to borrow is not in the awesome-design-md collection.",
   src:"bergside/design-md-chrome · MIT · 8e07614",install:"Chrome Web Store → “DESIGN.md Style Extractor – TypeUI”",
   note:"Reads one page only, so treat the file as a rough sketch and merge two or three pages."},
- {r:8,id:"claude",name:"Claude Design Skill",zh:"落地頁、海報、原型一體化",type:"Skill (community)",st:"skip",crew:20,
+ {r:8,id:"claude",name:"Claude Design Skill",zh:"落地頁、海報、原型一體化",type:"Skill (community)",st:"skip",crew:"Design-07",
   what:"A community repackaging of the system prompt behind Anthropic's hosted Claude Design tool.",
   when:"Not wrapped. Its README says the content is Anthropic's, so it fails the toolkit's open-licence rule. Your Claude app already has Claude Design itself.",
   src:"jiji262/claude-design-skill · labelled MIT, content not",install:"Use Claude Design in the Claude app instead"},
- {r:9,id:"landing",name:"Landing Page Generator",zh:"高轉化落地頁內容結構",type:"Skill",st:"new",crew:34,
+ {r:9,id:"landing",name:"Landing Page Generator",zh:"高轉化落地頁內容結構",type:"Skill",st:"new",crew:"Design-10",
   what:"Writes the copy first from PAS, AIDA or BAB, then builds the page in conversion order with five hero options, as Next.js + Tailwind with SEO tags.",
   when:"The page has to sell or sign people up, and you need the words and structure.",
   src:"alirezarezvani/claude-skills · MIT · 0496583",install:"npx skills add alirezarezvani/claude-skills --skill landing-page-generator",
   note:"It invents testimonials and numbers to fill gaps. Replace them with real proof or delete them."},
- {r:10,id:"cinema",name:"Cinematic UI",zh:"電影感敘事 UI 佈局",type:"Skill",st:"add",crew:17,
+ {r:10,id:"cinema",name:"Cinematic UI",zh:"電影感敘事 UI 佈局",type:"Skill",st:"add",crew:"Design-03",
   what:"Picks a real director and film, researches its colour, light and framing, writes a storyboard for your approval, then builds the page from it.",
   when:"You want a story-led page that feels like a specific film. Pair it with GSAP Skills for the scroll motion.",
   src:"akseolabs-seo/cinematic-ui · MIT · 24a66c1",install:"git clone https://github.com/akseolabs-seo/cinematic-ui ~/.claude/skills/cinematic-ui"}
@@ -300,7 +300,7 @@ list.innerHTML=S.map(s=>{const c=crew[s.crew];return `
     <p class="what">${s.what}</p>
     <dl>
       <dt>Use when</dt><dd>${s.when}</dd>
-      <dt>${s.st==='skip'?'Noted in':'Toolkit'}</dt><dd><a href="${REPO+c[2]}/SKILL.md" target="_blank" rel="noopener">${s.crew} ${c[0]} · ${c[1]}</a></dd>
+      <dt>${s.st==='skip'?'Noted in':'Toolkit'}</dt><dd><a href="${REPO+c[2]}/SKILL.md" target="_blank" rel="noopener">${s.crew} ${c[0]}</a></dd>
       <dt>Source</dt><dd><span style="font-family:var(--f-mono);font-size:13px">${s.src}</span></dd>
     </dl>
     ${s.note?`<p class="note">${s.note}</p>`:""}

@@ -2,6 +2,20 @@
 
 All notable updates to this library are recorded here.
 
+## [0.16.0] - 2026-11-01
+
+The whole collection is now the **Skill Library**, and every category numbers its own skills from 01.
+
+### Changed
+
+- New IDs, one sequence per category: UI-01 to UI-40, Design-01 to Design-13, Dev-01 to Dev-06, Video-01 to Video-05, Learning-01. Folders and demo pages are renamed to match (for example `skills/ui-07-drag-to-expand-and-collapse/`, `skills/design-13-quality-pack/`). Old numbers map in the original order: UI follows 01–14, 22–30, 43, 45–60; Design follows workflow order.
+- The section of tools inside is now the **Tool Library** (Design, Dev & Workflow, Video & Media), so it no longer shares a name with the whole Skill Library.
+- README has "Next numbers" per category and a Credits section. AGENTS.md now tells agents to report the section, category and ID before adding anything new, and to credit every source.
+
+### Added
+
+- `## Credit` sections on every skill that came from someone else: the layout interactions UI-15 to UI-22 (叨叨AI是我), the sixteen motion effects UI-25 to UI-40 (大锤和AI), and Design-12, Video-01, Video-04 and Video-05 (tools they build on). Video-04 notes Remotion's company-licence rule.
+
 ## [0.15.0] - 2026-11-01
 
 The repo is now Lilian O.'s whole Library: one index with a UI Library, a Skill Library and a Learning Library. Character names are gone; every tool skill uses its real name. Skill numbers don't change.
@@ -9,7 +23,7 @@ The repo is now Lilian O.'s whole Library: one index with a UI Library, a Skill 
 ### Changed
 
 - README is now the Library index: 1. UI Library (01–14, 22–30, 43, 45–60), 2. Skill Library (Design, Dev & Workflow, Video & Media), 3. Learning Library, 4. References.
-- Guide skills renamed to their tool names, folders included: 15-wireframer, 16-drawio, 17-taste-pack, 18-ui-ux-pro-max-uizze, 19-shadcn-ui, 20-huashu-baoyu-open-design, 21-quality-pack, 31-awesome-design-md, 32-gsap-skills, 33-pencilplaybook, 34-landing-page-generator, 35-motionsites, 36-find-skills, 37-grill-me, 38-codebase-architecture, 39-tdd, 40-agent-browser, 41-hyperframes, 42-reddit-automation, 44-openfilm.
+- Guide skills renamed to their tool names, folders included: design-01-wireframer, design-02-drawio, design-03-taste-pack, design-05-ui-ux-pro-max-uizze, design-06-shadcn-ui, design-07-huashu-baoyu-open-design, design-13-quality-pack, design-04-awesome-design-md, design-08-gsap-skills, design-09-pencilplaybook, design-10-landing-page-generator, design-11-motionsites, dev-01-find-skills, dev-02-grill-me, dev-03-codebase-architecture, dev-04-tdd, dev-05-agent-browser, video-02-hyperframes, dev-06-reddit-automation, video-03-openfilm.
 - 41 HyperFrames and 44 OpenFilm moved to the new Video & Media category.
 - AGENTS.md rewritten so any agent (Claude, Codex) reads the Library index first; CLAUDE.md points to it. CONTRIBUTING and the guide template drop character naming.
 
@@ -51,13 +65,13 @@ The library is now sorted onto four shelves with eleven categories, and every sk
 
 ### Added
 
-- 43 Card-to-Hero Carousel (卡片展開輪播): a full-bleed hero with a queue of portrait cards; tapping a card grows it from its exact spot into the new background, the copy swaps with a stagger and the queue slides along with FLIP. Next grows, previous crossfades when its card is off screen, rapid taps stack, swipe and arrow keys work, live-region announcements, crossfade under reduced motion. Dependency-free reference demo at `demo/43-card-to-hero-carousel.html` with original generated scenes, linked between 14 and 30.
+- 43 Card-to-Hero Carousel (卡片展開輪播): a full-bleed hero with a queue of portrait cards; tapping a card grows it from its exact spot into the new background, the copy swaps with a stagger and the queue slides along with FLIP. Next grows, previous crossfades when its card is off screen, rapid taps stack, swipe and arrow keys work, live-region announcements, crossfade under reduced motion. Dependency-free reference demo at `demo/ui-24-card-to-hero-carousel.html` with original generated scenes, linked between 14 and 30.
 
 ## [0.10.1] - 2026-10-31
 
 ### Added
 
-- 14 Cursor-driven Animated Hero (游標驅動的動態主視覺): layered parallax hero with a spotlight that reveals a second layer; touch drift and drag, keyboard focus moves the spotlight, static under reduced motion. Fills the number that had been reserved, so 01–42 now run without gaps. Demo at `demo/14-cursor-driven-hero.html`, linked between 13 and 30.
+- 14 Cursor-driven Animated Hero (游標驅動的動態主視覺): layered parallax hero with a spotlight that reveals a second layer; touch drift and drag, keyboard focus moves the spotlight, static under reduced motion. Fills the number that had been reserved, so 01–42 now run without gaps. Demo at `demo/ui-14-cursor-driven-hero.html`, linked between 13 and 30.
 
 ## [0.10.0] - 2026-10-31
 
@@ -117,7 +131,7 @@ Reviewed the ten skills in 庫米工具's "UI 設計 10 大 skill 榜" post agai
 ### Added
 
 - 30 Dashboard Nav Patterns (後台菜單六式), in Layout & Navigation: six named dashboard menu patterns — Transparent Nav, Right Rail, Expanding Tab, Title as Nav, Icon Rail + Tooltip and Quick Actions — each with a key spec, interaction contract, and English and Chinese prompt terms. Inspired by a short video on premium dashboard menus (我叫-西瓜同学), written in our own words.
-- `demo/30-dashboard-nav-patterns.html`: one mini dashboard that switches between all six patterns, with a moving active pill, keyboard and long-press tooltips, in-place quick actions, a bottom-bar layout under 560px and a reduced-motion fallback.
+- `demo/ui-23-dashboard-nav-patterns.html`: one mini dashboard that switches between all six patterns, with a moving active pill, keyboard and long-press tooltips, in-place quick actions, a bottom-bar layout under 560px and a reduced-motion fallback.
 
 ## [0.5.0] - 2026-10-22
 

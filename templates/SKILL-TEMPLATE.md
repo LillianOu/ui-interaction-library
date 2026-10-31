@@ -1,8 +1,8 @@
 ---
-name: NN-kebab-case-name
+name: ui-NN-kebab-case-name
 description: Use when <the situation in which this interaction is the right choice>. <One short line on what it does.>
 ---
-# NN — 中文名稱 / English Name
+# UI-NN — 中文名稱 / English Name
 
 **Category:** <one category from CONTRIBUTING.md, e.g. 導覽與視圖 / Navigation & Views · 輸入與控制 / Inputs & Controls · 滾動動效 / Scroll · 游標與懸停 / Cursor & Hover>
 

@@ -1,8 +1,8 @@
 ---
-name: NN-tool-name
+name: category-NN-tool-name
 description: Use when <the situation in which this guide skill is the right choice>. <One short line on which external skills it routes to.>
 ---
-# NN — Tool Name
+# Category-NN — Tool Name
 
 **Category:** 設計 / Design (or another Skill Library or Learning Library category)
 **Powered by:** [owner/repo](https://github.com/owner/repo) (licence)
