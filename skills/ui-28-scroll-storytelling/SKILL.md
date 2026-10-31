@@ -14,7 +14,7 @@ As the page scrolls, the product visual stays pinned while short feature steps s
 
 Use for product launch pages, feature tours, case studies and onboarding explainers with three to six points that share one visual. Not for long reading content or pages where people need to scan everything at once. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -55,7 +55,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Build a Scroll Storytelling section. Two columns: steps on the left, each about 80vh tall with a heading and one line; on the right a visual with position: sticky, top under the header, one viewport tall. An IntersectionObserver (threshold 0.6) marks the active step: it goes to full opacity with an accent left border, others sit at 35% opacity, and the visual crossfades (300ms ease-out) to that step's state. No scroll-jacking. Below 768px pin a shorter visual at the top or move it into each step. The visual is aria-hidden or described by the step text. Under prefers-reduced-motion use instant swaps. Refreshing mid-page shows the right step.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

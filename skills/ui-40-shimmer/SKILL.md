@@ -14,7 +14,7 @@ A soft band of light sweeps across grey placeholder shapes while content loads, 
 
 Use for loading states of cards, lists, profiles and feeds where the layout is known in advance, and sparingly as a sheen on one promotional button. Not for loads under ~300ms (show nothing, to avoid flicker), unknown layouts, or as a permanent decoration on many elements. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add shimmer loading states. While data loads (only if it takes more than 300ms), render a skeleton that matches the real card layout: grey blocks with linear-gradient(90deg, base, highlight 40%, base 80%), background-size 250%, animating background-position 100% → -150% over 1.4s linear infinite, all blocks in sync. The region has aria-busy=true and a visually hidden 'Loading…'; set aria-busy=false and fade the real content in over 200ms when ready; show a message and Retry on error. Add a diagonal sheen ::after on the promo button that sweeps every 3s and once on hover/focus. Under prefers-reduced-motion, static skeleton and no sheen.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

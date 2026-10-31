@@ -14,7 +14,7 @@ Items in a group start their entrance one after another, a few tens of milliseco
 
 Use for grid and list entrances, opening menus, search results arriving, dashboard cards loading. Combine with UI-30 Scroll Reveal for lists that enter as you scroll. Don't stagger content people are waiting to read immediately, like an updated table. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -53,7 +53,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a staggered entrance to this group of items. Each item fades in and rises 12px over 400ms with ease-out cubic-bezier(.2,.8,.2,1); item n starts at min(n, 8) × 60ms, so the sequence stays under ~500ms and later items enter together. Use a --i custom property and transition-delay (or the animation library already in the project). Trigger on mount or when the group scrolls into view, once. Exits happen together and faster. Items are in the DOM and focusable from the start. Under prefers-reduced-motion, show all items at once with no movement.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

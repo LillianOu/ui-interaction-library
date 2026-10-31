@@ -20,7 +20,7 @@ Whenever Lilian gives you a new skill, tool or link to add:
 
 1. Tell her straight away, before adding it: which section (UI Library, Tool Library, Learning Library or References), which category, and the ID it will get (that category's next number, from "Next numbers" in the README). Example: "Tool Library → Design → Design-14".
 2. If it overlaps an existing entry, say which one and suggest adding it there instead.
-3. Credit the source: link the original, name the author and licence, and record the date and commit checked. For anything inspired by a video or post, name the creator. If the source is unknown, ask rather than guess.
+3. For a tool from GitHub, link its own repo and name its licence so people know where to install it. Do not add "inspired by" credits to people (videos, posts) unless Lilian confirms who the original creator is.
 4. Follow [`CONTRIBUTING.md`](CONTRIBUTING.md) and update the README index, "Next numbers" and `CHANGELOG.md` in the same commit. Commit as `Lilian O. <lillianou2000@gmail.com>`.
 
 ## Lilian's own preferences

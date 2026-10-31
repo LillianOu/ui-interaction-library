@@ -56,6 +56,3 @@ The project's own CLAUDE.md lists the official HyperFrames skills (`/hyperframes
 3. `npx hyperframes render --quality draft --output draft.mp4` while iterating; `--quality looks` for review; `--quality delivery` for final.
 4. Verify: `ffprobe -v error -show_entries format=duration:stream=width,height -of csv=p=0 out.mp4`, and grab a frame (`ffmpeg -ss <t> -i out.mp4 -frames:v 1 frame.png`) to look at before sending.
 5. Send the MP4 to Lillian.
-## Credit
-
-Built on HyperFrames by HeyGen (https://github.com/heygen-com/hyperframes), Apache-2.0, and GSAP by GreenSock. The setup notes, gotchas and defaults are Lilian O.'s own tested workflow.

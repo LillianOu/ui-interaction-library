@@ -14,7 +14,7 @@ As the cursor comes near the button, the button drifts toward it as if magnetise
 
 Use for the single most important CTA on a landing page or hero, or a small set of icon buttons in a playful brand. Not for form buttons, dense toolbars or anything people click repeatedly. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -53,7 +53,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Make this primary button magnetic on desktop. Wrap it in a zone; on pointermove (fine pointers only, matchMedia('(hover: hover) and (pointer: fine)')), measure distance from the button's resting centre; within 100px plus half its width, translate the button by 30% of the offset and its label by a further 40% of that, with a 120ms linear transition. On leave, spring back (cubic-bezier(.34,1.56,.64,1), 500ms). Keep it a real button with a visible focus ring; focus doesn't move it. Under prefers-reduced-motion, or on touch, no movement.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

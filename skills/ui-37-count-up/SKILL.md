@@ -14,7 +14,7 @@ Numbers run quickly from zero to their final value as they appear, slowing down 
 
 Use for landing page stats, dashboard KPIs, results sections and pricing savings. Not for numbers that update constantly (live data: animate the change instead, briefly) or for precise figures people compare side by side. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a count-up to these stats. Put the final value in the HTML (so it shows without JS) and in visually hidden text for screen readers; the animated number is aria-hidden. When a stat enters the viewport (once), run a requestAnimationFrame loop for 1.4s with ease-out-expo (1 - 2^(-10t)), formatting each frame with Intl.NumberFormat and keeping decimals, %, + and currency. Use font-variant-numeric: tabular-nums. Animate any related progress bar with the same timing. Under prefers-reduced-motion show the final values immediately.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

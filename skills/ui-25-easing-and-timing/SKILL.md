@@ -14,7 +14,7 @@ Easing is how speed changes during a move. Real objects don't start or stop inst
 
 Use when setting up a motion system or tokens for a product, when an animation feels wrong and you can't say why, or alongside any other motion skill to pick its duration and curve. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Timing and easing rules
 
@@ -66,7 +66,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Set up a motion token system and apply it across this UI. Tokens: --ease-out cubic-bezier(.2,.8,.2,1), --ease-in cubic-bezier(.4,0,1,1), --ease-in-out cubic-bezier(.65,0,.35,1), --dur-micro 160ms, --dur-small 220ms, --dur-medium 320ms, --dur-large 520ms. Rules: entering = ease-out; exiting = ease-in and about 25% shorter; moving between two places = ease-in-out; only infinite loops are linear. Hover/press/toggle use micro, tooltips/dropdowns small, panels/modals medium, page and hero transitions large. Interrupted animations continue from their current value. Under prefers-reduced-motion keep short colour/opacity fades and remove movement, scale and parallax. Animate only transform, opacity, filter, colour and shadow.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

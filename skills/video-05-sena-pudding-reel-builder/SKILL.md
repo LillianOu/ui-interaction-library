@@ -54,6 +54,3 @@ Vertical English-learning reels: Pudding (kitten, left) says a simple phrase, Se
 - Captions appear without CapCut's pop-in animation.
 - Deleting on the AARVO Lab drive needs Lillian's permission; move unwanted files to an `Obsolete` folder instead.
 - Uploading to YouTube is a separate step and needs her OK each time.
-## Credit
-
-Lilian O.'s own workflow and characters (Sena & Pudding). Uses ffmpeg for rendering. Brand assets such as the font, heart animation and music are Lilian's licensed files and are not included in this repo.

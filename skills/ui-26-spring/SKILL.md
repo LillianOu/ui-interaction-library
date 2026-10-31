@@ -14,7 +14,7 @@ The element moves past its target a little and settles back, like a real object 
 
 Use for likes and reactions, toggles, slider and drag handles on release, bottom sheets snapping, and playful brand moments. Don't use it on dense data UI, form validation or anything serious (payments, errors): there, plain ease-out from UI-25 is calmer. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -53,7 +53,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add spring motion to this UI's likes, toggles and draggable handles. Simulate a damped spring (stiffness 170, damping 14, mass 1), sample it into a CSS linear() easing (about 48 points) and use it as the transition timing function for transform only, falling back to cubic-bezier(.34,1.56,.64,1). The like icon pops from scale .4 to 1 on activate; toggles and handles overshoot slightly and settle in under 0.9s. Retriggering mid-move continues from the current value. Update aria-pressed / aria-checked / aria-valuenow immediately. Under prefers-reduced-motion, swap state instantly or with a 120ms fade. Clean up any animation frames.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

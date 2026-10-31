@@ -14,7 +14,7 @@ As the page scrolls, layers in the hero move at different speeds: the far backgr
 
 Use for landing page heroes, story pages and illustrated sections built from separate layers. Keep it subtle. Avoid it on dashboards, forms and content people need to read while scrolling. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a parallax hero. Build it from separate layers (sky, far mountains, title, near trees) inside an overflow-hidden section. On scroll, in one requestAnimationFrame-throttled handler, set each layer's transform: translate3d(0, scrollY × factor, 0) with factors sky 0.15, far mountains 0.3, title 0.5 (also fading out), foreground 0. Oversize back layers so no gaps show. Layers are aria-hidden; the title is real text. Disable or soften below 768px if needed. Under prefers-reduced-motion, keep every layer still. No background-attachment: fixed.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

@@ -46,7 +46,3 @@ Use for photo galleries, mood boards, portfolio project feeds, product lookbooks
 ```text
 Create a reusable two-column offset gallery. Place images of mixed aspect ratios in two columns. While the gallery is scrolling through the viewport, move the columns at different speeds so the faster one travels about 1.5 times as far as the slower one and the images stay staggered. Derive the speed ratio from the two columns' real heights so that, at the end of the gallery, both columns finish together with their bottom edges exactly aligned. Before and after the gallery range, both columns are still. Use the native page scroll without hijacking it, bind progress with CSS scroll-driven animations or a GSAP ScrollTrigger scrub fallback, animate only transform, and recalculate after images load and on resize. Below 600px, collapse to one column and disable the effect. Keep a logical DOM reading order, alt text and visible focus for any links. With prefers-reduced-motion, scroll both columns at normal speed with bottoms aligned statically. Add small number badges on images and expose images, speed ratio and breakpoint as props.
 ```
-
-## Credit
-
-Part of the eight layout interactions UI-15 to UI-22, inspired by a short video on premium layout interactions for vibe coding by 叨叨AI是我 (2026). Written in our own words, with full interaction contracts and a demo added for this library.

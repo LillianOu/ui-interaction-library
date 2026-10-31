@@ -14,7 +14,7 @@ A short, bright arc of light travels continuously around the card's border, like
 
 Use to mark the recommended pricing plan, a new feature, an AI input box or a primary card, usually on a dark background. Only one element per screen. Not on many cards, on light backgrounds where it barely shows, or on anything that isn't the main choice. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a border beam to the recommended card only. Register @property --beam as an angle. On the card's ::before (inset -1.5px, padding 1.5px, border-radius inherit, pointer-events none), use conic-gradient(from var(--beam), transparent 0 68%, accent 80%, white 86%, accent-2 90%, transparent 96%) masked to the border with mask-composite exclude (and -webkit-mask-composite xor). Animate --beam from 0 to 360deg over 3.5s linear infinite, add a soft outer glow, pause when off screen, and provide a pause control. The card also carries a visible 'Recommended' tag. Under prefers-reduced-motion use a static gradient border.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

@@ -46,7 +46,3 @@ Use for editorial headers, story cards, travel journals, product launch pages an
 ```text
 Create a reusable inline-image headline. A large multi-line headline contains one small rounded image placed inside a line of text, sized to the height of the letters, like a word made of picture. Make the image a button with aria-expanded and a descriptive accessible name. On click, tap, Enter or Space, expand it in place to full content width at its natural aspect ratio, while the lines above and below smoothly move apart to make room; a second activation or Escape collapses it back into the line and the text closes around it. Use a FLIP or View Transitions approach so only transform, opacity and clip-path animate, keep the corners rounded through the animation, and reverse from the current position if interrupted. Load a light thumbnail for the inline state and decode the full-size image before expansion. Keep line breaks stable with a placeholder if the image fails, keep page scroll stable, and keep the headline readable as plain text for screen readers. With prefers-reduced-motion, switch states instantly. Expose the headline text, image position, image sources, alt text and easing as props.
 ```
-
-## Credit
-
-Part of the eight layout interactions UI-15 to UI-22, inspired by a short video on premium layout interactions for vibe coding by 叨叨AI是我 (2026). Written in our own words, with full interaction contracts and a demo added for this library.

@@ -14,7 +14,7 @@ As the cursor moves over a group of cards, a soft radial glow follows it inside 
 
 Use for feature grids, pricing cards and bento layouts, usually on dark backgrounds where light reads well. Not on light, busy backgrounds where the glow disappears, or on long lists. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -53,7 +53,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a spotlight effect to this card grid. One pointermove listener on the grid sets --x and --y on every card (pointer position relative to each card's bounding rect). Each card has a ::before radial-gradient(220px circle at var(--x) var(--y), accent at 20% alpha, transparent 60%) and a ::after border ring using the same gradient masked to 1px with mask-composite: exclude. The glow fades in on grid hover (300ms ease-out) and out on leave. On keyboard focus, centre the glow on that card; on touch, follow the drag. Keep text contrast at 4.5:1. Under prefers-reduced-motion, show a static glow on hover/focus.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

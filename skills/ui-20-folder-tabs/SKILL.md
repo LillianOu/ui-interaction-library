@@ -45,7 +45,3 @@ Use for 3–5 sibling sections of one object: a trip binder (Plan, Stays, Views,
 ```text
 Create a reusable folder-tabs component. Stack 3 to 5 content panels front to back like folders in a binder, each with its own colour and a shaped top tab, with the tabs offset horizontally so every tab is always visible. The active folder sits in front at full brightness; each folder behind it is offset slightly lower, scaled down a little and darkened according to its depth. Selecting a tab by click, tap or keyboard pulls that folder to the front with a small lift, and every other folder steps back one layer while keeping its relative order. Drive the stack from a depth index and animate only transform, opacity and filter with a spring, interrupting cleanly on rapid changes. Implement the WAI-ARIA tabs pattern (tablist, tab with aria-selected and aria-controls, tabpanel, arrow keys, Home and End), keep inactive panels mounted but hidden from focus and screen readers, show the active tab by more than colour and keep text contrast on every folder colour. Support a deep link to a tab and animate the container height to the active panel. With prefers-reduced-motion, switch instantly. Expose sections, colours, labels, initial tab and activation mode as props.
 ```
-
-## Credit
-
-Part of the eight layout interactions UI-15 to UI-22, inspired by a short video on premium layout interactions for vibe coding by 叨叨AI是我 (2026). Written in our own words, with full interaction contracts and a demo added for this library.

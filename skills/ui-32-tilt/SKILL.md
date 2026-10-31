@@ -14,7 +14,7 @@ The card rotates in 3D toward the cursor, as if you were holding it and turning 
 
 Use for a single hero object: a membership or gift card, a product, a ticket, a collectible. Not for every card in a grid (too busy) or anything with text people need to read while it moves. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a 3D tilt to this card. Wrap it in a parent with perspective: 800px. On pointermove, normalise the pointer to [-0.5, 0.5] across the card and set rotateX(-py × 20deg) rotateY(px × 20deg) (max 10°) in requestAnimationFrame, with a ::after radial-gradient glare positioned at the pointer (mix-blend-mode soft-light). Use a 80ms linear transition while moving and a spring (cubic-bezier(.34,1.56,.64,1), 500ms) to return flat on pointerleave, pointercancel or blur. Touch: drag tilts it (touch-action: none on the card only). Keyboard: arrow keys nudge, Escape resets. Give the card an accessible name. Under prefers-reduced-motion keep it flat.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

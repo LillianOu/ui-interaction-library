@@ -81,7 +81,3 @@ Given her transition into AI-assisted UX/UI and product design, frame Framer wor
 - Push for a clear structural plan (sitemap + CMS schema) before visual work starts.
 - Flag when something is a Framer-native best practice vs. a personal aesthetic call, so she can make an informed choice.
 - Suggest Code Components as a growth path — since she's also learning to code, Framer is a low-stakes place to start writing small React snippets inside a real, shipping project.
-
-## Credit
-
-Guidance for Framer (framer.com), a product of Framer B.V. Written by Lilian O. for this library from public Framer documentation and practice; it copies no Framer content.

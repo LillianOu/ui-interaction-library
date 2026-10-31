@@ -44,7 +44,3 @@ Use for itineraries, event programmes, booking calendars, habit or KPI logs, ord
 ```text
 Create a reusable sticky date rail for a schedule or itinerary. Lay each day out as a section with two columns: a narrow left rail holding an oversized day number in tabular figures, a small letter-spaced weekday and a short accent bar, and a wider right column listing that day's items as cards with time, title and optional thumbnail. Make each date label position: sticky at the top of its own section (offset by any header height), so it stays pinned while its day scrolls and is pushed up and out by the next day's label when the next section arrives, with no JavaScript positioning. Give each section a minimum height so short days still show their date. Mark the currently stuck date as active with an IntersectionObserver. Give every section a real heading with the full date and a time element for screen readers, keep DOM order equal to visual order, and avoid overflow: hidden on ancestors. Optional: tapping a date scrolls to that day. With prefers-reduced-motion, keep native sticky behaviour without extra fades. Expose the grouped data, rail width, header offset and date format as props.
 ```
-
-## Credit
-
-Part of the eight layout interactions UI-15 to UI-22, inspired by a short video on premium layout interactions for vibe coding by 叨叨AI是我 (2026). Written in our own words, with full interaction contracts and a demo added for this library.

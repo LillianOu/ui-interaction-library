@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.16.1] - 2026-11-01
+
+### Removed
+
+- "Inspired by" credits to video creators on UI-15 to UI-22, UI-23 and UI-25 to UI-40, and the Credit sections added to Design-12, Video-01 and Video-05, because the original creators could not be confirmed. Tool guides keep their links to each tool's own GitHub page. Video-04 keeps its Remotion licence note.
+
 ## [0.16.0] - 2026-11-01
 
 The whole collection is now the **Skill Library**, and every category numbers its own skills from 01.

@@ -15,7 +15,7 @@ Skill Library
 └── 4. References        links to check, not skills
 ```
 
-Each category numbers its own skills from 01, and a new skill takes the next number in its category. Folders are named after the ID (for example `skills/design-01-wireframer/`) and sit flat in `skills/` so AI tools can find them. Tools keep their real names, and every skill that comes from someone else credits them (see [Credits](#credits)).
+Each category numbers its own skills from 01, and a new skill takes the next number in its category. Folders are named after the ID (for example `skills/design-01-wireframer/`) and sit flat in `skills/` so AI tools can find them. Tools keep their real names.
 
 ## 1. UI Library / UI 介面庫
 
@@ -213,15 +213,9 @@ Links to check, not skills.
 
 A new skill joins the category it fits and takes that category's next number; see `CONTRIBUTING.md`.
 
-## Credits
+## Sources
 
-Every skill that comes from someone else names them in its `SKILL.md`.
-
-- **Tool Library and Learning Library guides:** each links the original project, names its author and licence, and records the date and commit checked. The guides are written in our own words and copy none of the original's text.
-- **UI-15 to UI-22** (Knockout Title to Split View): inspired by a short video on premium layout interactions for vibe coding by 叨叨AI是我.
-- **UI-23 Dashboard Nav Patterns:** inspired by a short video on six dashboard menu patterns by 我叫-西瓜同学.
-- **UI-25 to UI-40** (the sixteen motion effects): inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI.
-- Specs, prompts and demos for all of these are written for this library.
+Tool Library and Learning Library guides link to each tool's own GitHub page and name its licence, so you know where to install it from. They are written in our own words and copy none of the original's text.
 
 ## Live demo
 

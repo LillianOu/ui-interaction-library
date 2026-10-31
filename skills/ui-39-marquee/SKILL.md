@@ -14,7 +14,7 @@ Rows of logos or quotes slide sideways in an endless loop, each row in the oppos
 
 Use for 'trusted by' logo walls, testimonial strips, tag clouds and partner lists. Not for content people must read carefully or click precisely while it moves, and not more than one marquee section per page. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Build a marquee section with two rows (logos, then testimonials). Each row's track holds the items followed by an aria-hidden duplicate (links in the duplicate get tabindex=-1), width: max-content, animated translateX(0 → calc(-50% - gap/2)) linear infinite, 26s for row one and 34s reversed for row two. Fade the edges with mask-image linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent). Pause on hover, on focus-within and with a visible Pause/Play button; pause when off screen. Under prefers-reduced-motion stop the animation and make each row horizontally scrollable.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

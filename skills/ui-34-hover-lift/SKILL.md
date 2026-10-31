@@ -14,7 +14,7 @@ The card rises a few pixels and its shadow grows as the pointer moves onto it, s
 
 Use for product cards, article cards, dashboard tiles and any clickable surface in a grid. Pair with UI-31 Spotlight only on dark designs. Not for non-clickable cards (lift promises an action). This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a hover lift to these cards. Each card is a single link or button. Under @media (hover: hover), :hover and :focus-visible apply translateY(-6px) and a deeper shadow over 180ms cubic-bezier(.2,.8,.2,1); :active uses translateY(-2px) with a 100ms transition. Keep a visible focus ring. Make sure the grid doesn't clip lifted cards. For many cards, animate the opacity of a pre-rendered shadow layer instead of box-shadow. Under prefers-reduced-motion, change shadow or border only, with no rise.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

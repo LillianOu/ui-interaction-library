@@ -41,8 +41,6 @@ Then read the repo's own `SKILL.md` in full — it is the real instruction set (
 ## 4. Verify before sending
 
 `ffprobe -v error -show_entries format=duration:stream=width,height -of csv=p=0 out.mp4`, grab a frame with ffmpeg and look at it, then send the MP4.
-## Credit
+## Licence note
 
-Built on video-shotcraft by Vincentwei1021 (https://github.com/Vincentwei1021/video-shotcraft), Apache-2.0, which runs on Remotion (https://www.remotion.dev). The setup notes, gotchas and defaults are Lilian O.'s own tested workflow.
-
-Licence watch-out: Remotion is free for individuals and small companies but asks larger companies to buy a company licence. Check remotion.dev/license before using it for an employer's or client's work.
+Remotion is free for individuals and small companies but asks larger companies to buy a company licence. Check remotion.dev/license before using it for an employer's or client's work.

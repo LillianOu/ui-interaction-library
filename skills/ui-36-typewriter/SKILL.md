@@ -14,7 +14,7 @@ The text appears one character at a time with a blinking caret, as if someone is
 
 Use for AI assistant intros, search placeholders that suggest queries, and hero taglines that rotate through a few phrases. Not for content people must read in full, error messages, or more than about four phrases. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a typewriter effect to this headline. Cycle through 3 phrases: type at 55ms per character (use Array.from for multi-byte characters), hold 1.4s, delete at 25ms per character, wait 350ms, then type the next. Show a 2px caret blinking with steps(1). Reserve the height of the longest phrase. Pause when off screen (IntersectionObserver) or when the tab is hidden, and add a Pause/Play button. Put all phrases in a visually hidden span for screen readers and mark the animated text aria-hidden. Under prefers-reduced-motion show the full phrase with a static caret.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

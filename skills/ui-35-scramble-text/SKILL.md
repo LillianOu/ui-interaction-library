@@ -14,7 +14,7 @@ The text first appears as a jumble of random characters that keep changing, then
 
 Use for short headlines, labels and numbers on tech, AI, security, gaming or launch pages. Not for body text, long headlines (over ~25 characters) or text people must read quickly. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -54,7 +54,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add a scramble-text entrance to this headline. When it enters the viewport (once, via IntersectionObserver), run a requestAnimationFrame loop for about 1.2s: each character has a reveal time of (index / length) × 0.7 × duration plus up to 120ms random; before that it shows a random glyph from A–Z, 0–9 and !<>-_/[]{}=+*^?#, after it the real character. Keep spaces and punctuation fixed, use a monospace or tabular font and reserve the width. Put the final text in aria-label and mark the animated characters aria-hidden. Replaying restarts cleanly. Under prefers-reduced-motion show the final text at once.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.

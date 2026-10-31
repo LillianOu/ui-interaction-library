@@ -47,7 +47,3 @@ Use for daily overviews, trip planners, KPI or dashboard tiles, galleries with c
 ```text
 Create a reusable expanding grid. Show a two-column grid of cards with different heights, for example a stat tile, two photo tiles, a weather tile and a notes tile. Each card has a toggle button with aria-expanded and aria-controls. Activating a card by click, tap, Enter or Space makes it span the full row and grow taller to reveal extra detail, while the cards after it smoothly slide down and repack in their original order; the cards before it stay put. A second activation or Escape restores the original grid, and opening another card collapses the current one in the same transition. Use a FLIP animation (Framer Motion layout, GSAP Flip or View Transitions) so cards animate only transform and opacity, counter-scale inner content so text never stretches, and reveal extra content after the card has grown and hide it before it shrinks. Reverse from the current state on rapid taps, keep the expanded card in view without jarring scroll, and collapse to a single column below 600px where expansion only adds height. With prefers-reduced-motion, change layout instantly. Expose the card data, column count, one-or-many expansion mode and easing as props.
 ```
-
-## Credit
-
-Part of the eight layout interactions UI-15 to UI-22, inspired by a short video on premium layout interactions for vibe coding by 叨叨AI是我 (2026). Written in our own words, with full interaction contracts and a demo added for this library.

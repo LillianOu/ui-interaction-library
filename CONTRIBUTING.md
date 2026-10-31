@@ -9,7 +9,7 @@
 7. UI Library skills only — build a demo: copy `demo/_template.html` to `demo/<category>-<NN>-<name>.html` (same name as the skill folder), build the interaction in it using the tokens in `demo/assets/demo.css`, fix the prev/next links of its neighbours, and add a card for it in `demo/index.html`. Check it at 375px and with reduced motion.
 8. Add a row to the matching category table in `README.md`, update "Next numbers", and add a line to `CHANGELOG.md`, all in the same change.
 
-9. Credit the source. If the skill was inspired by someone's video, post or project, name the creator and link it in a `## Credit` section. Unknown source: ask, don't guess.
+9. Do not add "inspired by" credits to people unless Lilian confirms the original creator.
 
 Keep commits small and descriptive. Do not add private client, employer, health, account or analytics data.
 

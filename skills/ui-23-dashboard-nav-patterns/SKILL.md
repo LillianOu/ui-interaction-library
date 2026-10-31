@@ -83,7 +83,3 @@ Build a reusable dashboard navigation shell that supports six named patterns, se
 - Quick Actions: round buttons stacked vertically next to the menu, at most four, the most-used one in the primary colour; each runs in place without navigating, shows running then success or error, is disabled while running, and announces results in an aria-live region.
 Use one moving active pill for the current item, `aria-current="page"`, accessible names on every icon button, 44px minimum hit areas, and colour tokens for rail, active and primary colours. Below 768px turn rails into a bottom tab bar. With prefers-reduced-motion, swap states without spring or slide motion. Expose items (id, label, icon, group, badge), current id, actions and variant as props.
 ```
-
-## Source
-
-Inspired by a short video on six premium dashboard menu patterns for AI-assisted design (我叫-西瓜同学, 2026). Written in our own words, with full interaction contracts added.

@@ -14,7 +14,7 @@ Each block fades in and rises a short distance as it enters the screen, so the p
 
 Use on landing pages, blogs, feature lists and portfolios. Pair with UI-27 Stagger for groups. Don't use it on content above the fold that should be visible immediately, or on data tables and app screens people return to often. This skill is an interaction recipe, not an existing code component.
 
-Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library. Timing and easing follow UI-25 Easing & Timing.
+Part of the sixteen-effect motion set (UI-25 to UI-40). Timing and easing follow UI-25 Easing & Timing.
 
 ## Interaction contract
 
@@ -53,7 +53,3 @@ Part of the sixteen-effect motion set (UI-25 to UI-40), inspired by the Douyin v
 ```text
 Add scroll reveal to these blocks. Add a .js class to <html> when the script runs; only under .js do blocks start at opacity 0 and translateY(20px). An IntersectionObserver (threshold 0.2) adds .in when a block enters, transitioning to opacity 1 and no transform over 500ms cubic-bezier(.2,.8,.2,1), then unobserves it. Blocks already in view on load show immediately. Focus or an anchor jump reveals the target at once. Combine with a 60ms stagger for groups. Under prefers-reduced-motion everything is visible from the start.
 ```
-
-## Credit
-
-Part of the sixteen motion effects UI-25 to UI-40, inspired by the Douyin video 「非程序员AI开发必看教程：16种常见动画效果科普」 by 大锤和AI. Specs, prompts and demo are written for this library.
