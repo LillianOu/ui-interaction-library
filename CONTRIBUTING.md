@@ -21,8 +21,9 @@ Keep commits small and descriptive. Do not add private client, employer, health,
 | 動態視覺效果 / Motion Effects | Expressive cursor, scroll, hover or ambient visuals such as heroes and transitions |
 | 排版互動 / Layout Relationships | Layout pieces that respond to each other: knockout and inline-image type, reflowing grids, parallax columns, sticky rails, stacked tabs, packed pickers, resizable splits |
 | 設計工具組 / Design Toolkit | Character guides to external open-source design skills, one job each |
+| 開發與工作流工具組 / Dev & Workflow Toolkit | Character guides to external open-source skills for planning, coding, testing, browsing, video and marketing; same rules as the Design Toolkit |
 
-## Adding a Design Toolkit crew member
+## Adding a Design Toolkit or Dev & Workflow crew member
 
 Crew members guide people and AI tools to someone else's skill; they never copy it.
 

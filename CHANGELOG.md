@@ -2,6 +2,21 @@
 
 All notable updates to this library are recorded here.
 
+## [0.10.0] - 2026-10-31
+
+Reviewed the skills.sh install top 10 (dated 2026-10-29) against their real repos. All guides are written in our own words; none of the original text is copied. No skill appeared twice, but three groups overlap, so ten skills became seven crew members.
+
+### Added
+
+- New category 開發與工作流工具組 / Dev & Workflow Toolkit.
+- 36 Truffle Pig (松露豬尋寶師): guide to Vercel's find-skills (MIT).
+- 37 Grill Badger (獾式追問師): guide to Matt Pocock's grill-me and grill-with-docs (MIT), merged because both run the same interview.
+- 38 Weaver Bird (織巢鳥架構師): guide to Matt Pocock's improve-codebase-architecture (MIT).
+- 39 Test Tortoise (烏龜測試師): guide to Matt Pocock's tdd (MIT).
+- 40 Ferret Fetcher (雪貂操作員): guide to Vercel's agent-browser (Apache-2.0).
+- 41 Reel Raccoon (浣熊剪片師): guide to HeyGen's hyperframes, hyperframes-cli and media-use (Apache-2.0), merged as one tool family; notes the overlap with Flip Fox (HyperFrames).
+- 42 Meerkat Lookout (狐獴瞭望員): guide to doany.ai's reddit-automation (MIT).
+
 ## [0.9.0] - 2026-10-31
 
 ### Added

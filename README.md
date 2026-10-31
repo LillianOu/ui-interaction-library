@@ -74,11 +74,25 @@ A crew of characters, each one a guide to the best open-source design skills for
 | 34 | 蜜蜂轉化師 | Buzz Bee (Landing Page Generator) | Landing page copy and structure that converts | [`34-buzz-bee-landing-page-generator`](skills/34-buzz-bee-landing-page-generator/SKILL.md) |
 | 35 | 螢火蟲大片師 | Glow Firefly (MotionSites Web Builder) | Cinematic heroes and landing pages with real video and a screenshot-and-fix loop; prompts for Lovable, Bolt and v0 | [`35-glow-firefly-motionsites`](skills/35-glow-firefly-motionsites/SKILL.md) |
 
-Next number: **36** (14 is reserved for the planned cursor-driven hero).
+### 開發與工作流工具組 / Dev & Workflow Toolkit
+
+The same crew idea for building, testing and shipping: plan the work, shape the code, test it, drive a browser, make video, and find an audience. Picked from the skills.sh install top 10 of 2026-10-29; overlapping skills share one crew member, so ten skills become seven characters. Each one credits and installs the originals; none are copied.
+
+| No. | 中文 | English (powered by) | Job | Skill |
+| --- | --- | --- | --- | --- |
+| 36 | 松露豬尋寶師 | Truffle Pig (Find Skills) | Find an existing skill before building one | [`36-truffle-pig-find-skills`](skills/36-truffle-pig-find-skills/SKILL.md) |
+| 37 | 獾式追問師 | Grill Badger (Grill Me + Grill with Docs) | Be questioned hard until a plan has no soft spots; optional glossary and decision records | [`37-grill-badger-grill-me`](skills/37-grill-badger-grill-me/SKILL.md) |
+| 38 | 織巢鳥架構師 | Weaver Bird (Codebase Architecture) | Refactoring opportunities as a visual report | [`38-weaver-bird-codebase-architecture`](skills/38-weaver-bird-codebase-architecture/SKILL.md) |
+| 39 | 烏龜測試師 | Test Tortoise (TDD) | Build and fix test-first | [`39-test-tortoise-tdd`](skills/39-test-tortoise-tdd/SKILL.md) |
+| 40 | 雪貂操作員 | Ferret Fetcher (agent-browser) | Drive a real browser from a coding agent | [`40-ferret-fetcher-agent-browser`](skills/40-ferret-fetcher-agent-browser/SKILL.md) |
+| 41 | 浣熊剪片師 | Reel Raccoon (HyperFrames Pack) | Video from web code, plus music, images and voiceover | [`41-reel-raccoon-hyperframes`](skills/41-reel-raccoon-hyperframes/SKILL.md) |
+| 42 | 狐獴瞭望員 | Meerkat Lookout (Reddit Automation) | Find real demand on Reddit and draft honest, disclosed replies | [`42-meerkat-lookout-reddit`](skills/42-meerkat-lookout-reddit/SKILL.md) |
+
+Next number: **43** (14 is reserved for the planned cursor-driven hero).
 
 ## Live demo
 
-Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit skills (15–21, 31–35) are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the ten design skills they cover, showing which crew member carries each one.
+Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit (15–21, 31–35) and Dev & Workflow Toolkit (36–42) skills are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the ten design skills they cover, showing which crew member carries each one.
 
 ## How to use
 
@@ -90,7 +104,7 @@ Every interaction skill has a working demo in `demo/`. `demo/index.html` is the 
 
 **By hand:** open a `SKILL.md` and paste its copy-ready prompt into any AI coding tool.
 
-**Design Toolkit crew (15–21, 31–35):** install the crew member as above, then install the originals it names with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call a character by name, for example "Ask Hawk Inspector to check this page."
+**Design and Dev & Workflow crews (15–21, 31–42):** install the crew member as above, then install the originals it names with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call a character by name, for example "Ask Hawk Inspector to check this page."
 
 ## Repository layout
 
