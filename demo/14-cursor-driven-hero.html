@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>14 · Cursor-driven Hero</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* Cursor-driven hero: depth layers move by var(--d) × the smoothed pointer (--mx/--my),
+   and a radial mask at (--sx,--sy) reveals a second, decorative layer.
+   One rAF loop writes the custom properties; CSS does the rest. */
+.d-stage .frame.ch-frame{padding:0;min-height:0}
+.hero{--mx:0;--my:0;--sx:50%;--sy:45%;--r:170px;--shift:22px;position:relative;overflow:hidden;
+  min-height:clamp(440px,62vw,620px);display:grid;place-items:center;isolation:isolate;touch-action:pan-y;
+  background:radial-gradient(120% 90% at 50% 40%,var(--surface) 0%,var(--cyan-soft) 60%,var(--violet-soft) 100%)}
+.layer{position:absolute;inset:-40px;pointer-events:none;will-change:transform;
+  transform:translate3d(calc(var(--mx) * var(--d) * var(--shift)),calc(var(--my) * var(--d) * var(--shift)),0)}
+.shape{position:absolute;border-radius:50%;filter:blur(.5px)}
+.s1{width:34%;aspect-ratio:1;left:6%;top:12%;background:radial-gradient(circle at 35% 35%,color-mix(in srgb,var(--cyan) 55%,transparent),transparent 70%)}
+.s2{width:26%;aspect-ratio:1;right:8%;bottom:10%;background:radial-gradient(circle at 60% 40%,color-mix(in srgb,var(--violet) 50%,transparent),transparent 70%)}
+.s3{width:9%;aspect-ratio:1;right:24%;top:16%;border:1.5px solid color-mix(in srgb,var(--ink) 25%,transparent);border-radius:50%}
+.s4{width:16%;height:2px;left:14%;bottom:22%;background:linear-gradient(90deg,transparent,var(--kraft),transparent);border-radius:2px}
+.copy{position:relative;z-index:3;text-align:center;padding:24px 16px;max-width:900px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.title-wrap{position:relative;margin:10px 0 14px}
+.title{font-family:var(--f-display);font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:-.01em;
+  font-size:clamp(52px,11vw,132px);color:var(--ink)}
+/* the revealed duplicate: same text, coloured, masked to the spotlight */
+.title.reveal{position:absolute;inset:0;margin:0;pointer-events:none;
+  background:linear-gradient(110deg,var(--cyan),var(--violet) 55%,var(--kraft));-webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-mask-image:radial-gradient(circle var(--r) at var(--tx,50%) var(--ty,50%),#000 0,#000 45%,transparent 100%);
+          mask-image:radial-gradient(circle var(--r) at var(--tx,50%) var(--ty,50%),#000 0,#000 45%,transparent 100%)}
+.sub{color:var(--muted);font-size:clamp(16px,1.8vw,19px);max-width:560px;margin:0 auto 22px;line-height:1.5}
+.ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ctas a{display:inline-flex;align-items:center;min-height:46px;padding:0 22px;border-radius:999px;font-weight:600;text-decoration:none;border:1px solid var(--line)}
+.ctas .primary{background:var(--ink);color:var(--bg);border-color:transparent}
+.ctas .ghost{background:var(--glass);color:var(--ink)}
+.ctas a:focus-visible{outline:3px solid var(--violet);outline-offset:3px}
+/* soft light pool under the spotlight */
+.glow{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(circle calc(var(--r) * 1.6) at var(--sx) var(--sy),color-mix(in srgb,var(--surface) 70%,transparent),transparent 70%)}
+.fg{z-index:2}
+.orb{position:absolute;right:12%;bottom:18%;width:clamp(56px,9vw,104px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 32% 30%,#fff 0,var(--cyan) 35%,var(--violet) 100%);box-shadow:0 18px 40px -12px color-mix(in srgb,var(--violet) 60%,transparent)}
+.chip{position:absolute;left:10%;top:26%;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;padding:6px 10px;border-radius:999px;background:var(--glass);border:1px solid var(--line);color:var(--muted)}
+@media (max-width:600px){.chip{left:8%;top:auto;bottom:9%}.s4{display:none}}
+.ch-controls{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;padding:16px clamp(16px,3vw,28px);border-top:1px solid var(--line);background:var(--glass);font-size:14px;color:var(--muted)}
+.ch-controls label{display:flex;align-items:center;gap:8px}
+.ch-controls input[type=range]{width:120px;accent-color:var(--violet)}
+.ch-status{margin-left:auto;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+@media (prefers-reduced-motion: reduce){ .layer{transform:none !important} }
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="13-hover-door-bloom.html">Prev</a><a href="30-dashboard-nav-patterns.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/14-cursor-driven-hero/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">14 · Motion Effects</p>
+    <h1>Cursor-driven Hero</h1>
+    <p class="zh">游標驅動主視覺</p>
+    <p class="lede">Move across the hero: the layers shift at different depths and a spotlight reveals the coloured headline underneath. On a phone it drifts by itself; drag to steer it.</p>
+    <div class="d-try"><span>Mouse: move</span><span>Touch: drag</span><span>Keyboard: Tab to a button</span></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="frame ch-frame">
+      <div class="hero" id="hero">
+        <div class="layer" style="--d:-.35" aria-hidden="true"><span class="shape s1"></span><span class="shape s2"></span><span class="shape s4"></span></div>
+        <div class="layer" style="--d:.25" aria-hidden="true"><span class="shape s3"></span></div>
+        <div class="glow" aria-hidden="true"></div>
+        <div class="copy">
+          <p class="eyebrow">Lilian O. · Designer who builds</p>
+          <div class="title-wrap" id="titleWrap">
+            <h2 class="title">Ideas, shipped</h2>
+            <p class="title reveal" aria-hidden="true">Ideas, shipped</p>
+          </div>
+          <p class="sub">Brand, interface and the code behind it, from first sketch to a live link.</p>
+          <div class="ctas"><a class="primary" href="#">See the work</a><a class="ghost" href="#">Get in touch</a></div>
+        </div>
+        <div class="layer fg" style="--d:1" aria-hidden="true"><span class="orb"></span><span class="chip">AI-assisted UX</span></div>
+      </div>
+      <div class="ch-controls">
+        <label>Depth <input type="range" id="depth" min="0" max="48" value="22"></label>
+        <label>Spotlight <input type="range" id="radius" min="80" max="280" value="170"></label>
+        <span class="ch-status" id="status" aria-live="polite">Rest</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/14-cursor-driven-hero/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+  const hero = document.getElementById('hero'), wrap = document.getElementById('titleWrap'), status = document.getElementById('status');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const coarse = matchMedia('(hover: none)');
+  let tx = 0, ty = 0, mx = 0, my = 0;          // target and smoothed -1..1
+  let sx = 0.5, sy = 0.45, csx = 0.5, csy = 0.45; // spotlight target and smoothed 0..1
+  let mode = 'rest', dragging = false, visible = true, raf = 0, t0 = performance.now();
+  const setMode = m => { if (m !== mode) { mode = m; status.textContent = m; } };
+
+  function fromEvent(e) {
+    const r = hero.getBoundingClientRect();
+    const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+    const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+    sx = px; sy = py; tx = px * 2 - 1; ty = py * 2 - 1;
+  }
+  hero.addEventListener('pointermove', e => {
+    if (e.pointerType === 'mouse' || dragging) { fromEvent(e); setMode(dragging ? 'Drag' : 'Cursor'); }
+  });
+  hero.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { tx = ty = 0; sx = .5; sy = .45; setMode('Rest'); } });
+  hero.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') { dragging = true; fromEvent(e); setMode('Drag'); } });
+  const endDrag = () => { if (dragging) { dragging = false; setMode(coarse.matches ? 'Drift' : 'Rest'); } };
+  hero.addEventListener('pointerup', endDrag); hero.addEventListener('pointercancel', endDrag);
+
+  // keyboard: centre the spotlight on a focused CTA
+  hero.querySelectorAll('.ctas a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+    a.addEventListener('focus', () => {
+      const r = hero.getBoundingClientRect(), b = a.getBoundingClientRect();
+      sx = (b.left + b.width / 2 - r.left) / r.width; sy = (b.top + b.height / 2 - r.top) / r.height;
+      tx = sx * 2 - 1; ty = sy * 2 - 1; setMode('Focus'); if (reduce.matches) paint(true);
+    });
+    a.addEventListener('blur', () => { tx = ty = 0; sx = .5; sy = .45; setMode('Rest'); if (reduce.matches) paint(true); });
+  });
+
+  document.getElementById('depth').addEventListener('input', e => hero.style.setProperty('--shift', e.target.value + 'px'));
+  document.getElementById('radius').addEventListener('input', e => { hero.style.setProperty('--r', e.target.value + 'px'); if (reduce.matches) paint(true); });
+
+  function paint(snap) {
+    const k = snap ? 1 : 0.1;
+    mx += (tx - mx) * k; my += (ty - my) * k; csx += (sx - csx) * k; csy += (sy - csy) * k;
+    const r = hero.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+    const px = csx * r.width, py = csy * r.height;
+    hero.style.setProperty('--mx', reduce.matches ? 0 : mx.toFixed(4));
+    hero.style.setProperty('--my', reduce.matches ? 0 : my.toFixed(4));
+    hero.style.setProperty('--sx', px.toFixed(1) + 'px'); hero.style.setProperty('--sy', py.toFixed(1) + 'px');
+    // spotlight position relative to the headline box, for the text mask
+    wrap.style.setProperty('--tx', (px - (w.left - r.left)).toFixed(1) + 'px');
+    wrap.style.setProperty('--ty', (py - (w.top - r.top)).toFixed(1) + 'px');
+  }
+  function loop(now) {
+    raf = 0;
+    if (!visible || document.hidden || reduce.matches) return;
+    if (coarse.matches && !dragging && mode !== 'Focus') { // ambient drift on touch
+      const t = (now - t0) / 1000;
+      sx = .5 + Math.cos(t * .45) * .3; sy = .45 + Math.sin(t * .6) * .2; tx = (sx - .5) * 1.4; ty = (sy - .45) * 1.4;
+      setMode('Drift');
+    }
+    paint(false);
+    raf = requestAnimationFrame(loop);
+  }
+  const start = () => { if (!raf && visible && !document.hidden && !reduce.matches) raf = requestAnimationFrame(loop); };
+  new IntersectionObserver(([en]) => { visible = en.isIntersecting; start(); }).observe(hero);
+  document.addEventListener('visibilitychange', start);
+  function applyReduce() {
+    if (reduce.matches) { cancelAnimationFrame(raf); raf = 0; tx = ty = 0; sx = .32; sy = .42; paint(true); setMode('Static'); }
+    else start();
+  }
+  reduce.addEventListener('change', applyReduce);
+  addEventListener('resize', () => reduce.matches && paint(true));
+  applyReduce(); paint(true);
+})();
+</script>
+</body>
+</html>

@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.10.1] - 2026-10-31
+
+### Added
+
+- 14 Cursor-driven Hero (游標驅動主視覺): layered parallax hero with a spotlight that reveals a second layer; touch drift and drag, keyboard focus moves the spotlight, static under reduced motion. Fills the number that had been reserved, so 01–42 now run without gaps. Demo at `demo/14-cursor-driven-hero.html`, linked between 13 and 30.
+
 ## [0.10.0] - 2026-10-31
 
 Reviewed the skills.sh install top 10 (dated 2026-10-29) against their real repos. All guides are written in our own words; none of the original text is copied. No skill appeared twice, but three groups overlap, so ten skills became seven crew members.
