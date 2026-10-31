@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.13.0] - 2026-11-01
+
+### Added
+
+- 45 16 Essential Motion Effects (常用動效十六式): a named vocabulary of the sixteen motion effects found on most product pages (Border Beam, Spotlight, Tilt, Scroll Storytelling, Scramble Text, Parallax, Magnetic, Typewriter, Marquee, Shimmer, Count Up, Scroll Reveal, Spring, Stagger, Hover Lift, Easing), each with its job, key spec, technique, reduced-motion fallback and prompt line in English and Chinese, plus a timing and easing cheat sheet. Concept inspired by 大锤和AI's Douyin video on 16 common animation effects; all text and demos written for this library. Demo at `demo/45-motion-essentials.html`: all sixteen live on one page with a reduced-motion preview switch, linked between 43 and 30.
+
 ## [0.12.0] - 2026-10-31
 
 ### Added
