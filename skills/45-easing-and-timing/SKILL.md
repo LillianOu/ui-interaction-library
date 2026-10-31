@@ -41,7 +41,7 @@ Part of the sixteen-effect motion set (45â€“60), inspired by the Douyin video ã€
 ## Implementation notes
 
 - Define durations and curves once as CSS custom properties or design tokens and reuse them; don't write one-off `cubic-bezier` values per component.
-- CSS transitions handle most UI; the Web Animations API (`element.animate`) for sequences; GSAP (32 Swift Swallow) or Motion / Framer Motion for timelines and springs.
+- CSS transitions handle most UI; the Web Animations API (`element.animate`) for sequences; GSAP (32 GSAP Skills) or Motion / Framer Motion for timelines and springs.
 - Check the curve by recording the screen and stepping frame by frame, or with browser DevTools' animation panel.
 - Avoid: `ease` and `linear` defaults on UI moves, durations over 700ms for interface feedback, the same duration for tiny and large changes, and exits slower than entrances.
 

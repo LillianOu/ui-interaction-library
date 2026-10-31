@@ -113,9 +113,9 @@ footer{padding-block:0 48px;color:var(--muted);font-size:14px}
   <header class="top">
     <div class="eyebrow">UI Interaction Library · Design Toolkit</div>
     <h1>The ten design skills<span class="zh">UI 設計十大 skill · 哪個是哪個</span></h1>
-    <p class="lede">The ten skills from the 庫米工具 list, checked against their real repos on 29 Oct 2026. Each card shows what the skill makes, which crew member now carries it, and the one line to install it.</p>
+    <p class="lede">The ten skills from the 庫米工具 list, checked against their real repos on 29 Oct 2026. Each card shows what the skill makes, which guide skill now carries it, and the one line to install it.</p>
     <div class="tally" aria-label="Summary">
-      <div class="new"><b>3</b><span>New crew members</span></div>
+      <div class="new"><b>3</b><span>New guide skills</span></div>
       <div class="add"><b>4</b><span>Added to an existing member</span></div>
       <div class="had"><b>2</b><span>You already had</span></div>
       <div class="skip"><b>1</b><span>Skipped</span></div>
@@ -134,21 +134,21 @@ footer{padding-block:0 48px;color:var(--muted);font-size:14px}
 
 <div class="wrap">
   <main id="list"></main>
-  <footer>Crew members are guides: they link and credit the original skills and never copy them. Commits and licences recorded in each <code>SKILL.md</code>.</footer>
+  <footer>Guide skills are guides: they link and credit the original skills and never copy them. Commits and licences recorded in each <code>SKILL.md</code>.</footer>
 </div>
 
 <script>
 const REPO="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/";
 const crew={
-  17:["Pearl Peacock","孔雀品味師","17-pearl-peacock-taste-pack"],
-  18:["Magpie Muse","喜鵲靈感庫","18-magpie-muse-ui-references"],
-  20:["Octo Studio","章魚工作室","20-octo-studio-huashu-baoyu"],
-  31:["Costume Chameleon","變色龍換裝師","31-costume-chameleon-awesome-design-md"],
-  32:["Swift Swallow","燕子動效師","32-swift-swallow-gsap"],
-  33:["Canvas Pelican","鵜鶘畫板師","33-canvas-pelican-pencilplaybook"],
-  34:["Buzz Bee","蜜蜂轉化師","34-buzz-bee-landing-page-generator"]
+  17:["Taste Pack","Taste Pack","17-taste-pack"],
+  18:["UI UX Pro Max + UIZZE","UI UX Pro Max + UIZZE","18-ui-ux-pro-max-uizze"],
+  20:["Huashu + Baoyu","Huashu + Baoyu","20-huashu-baoyu-open-design"],
+  31:["Awesome DESIGN.md","Awesome DESIGN.md","31-awesome-design-md"],
+  32:["GSAP Skills","GSAP Skills","32-gsap-skills"],
+  33:["PencilPlaybook","PencilPlaybook","33-pencilplaybook"],
+  34:["Landing Page Generator","Landing Page Generator","34-landing-page-generator"]
 };
-const ST={new:["New crew member","st-new"],add:["Added to crew","st-add"],had:["Already in crew","st-had"],skip:["Skipped","st-skip"]};
+const ST={new:["New guide skill","st-new"],add:["Added to toolkit","st-add"],had:["Already in toolkit","st-had"],skip:["Skipped","st-skip"]};
 
 /* small drawings of what each skill produces; all colours come from theme tokens */
 const A={
@@ -263,7 +263,7 @@ const S=[
   note:"Reads one page only, so treat the file as a rough sketch and merge two or three pages."},
  {r:8,id:"claude",name:"Claude Design Skill",zh:"落地頁、海報、原型一體化",type:"Skill (community)",st:"skip",crew:20,
   what:"A community repackaging of the system prompt behind Anthropic's hosted Claude Design tool.",
-  when:"Not wrapped. Its README says the content is Anthropic's, so it fails the crew's open-licence rule. Your Claude app already has Claude Design itself.",
+  when:"Not wrapped. Its README says the content is Anthropic's, so it fails the toolkit's open-licence rule. Your Claude app already has Claude Design itself.",
   src:"jiji262/claude-design-skill · labelled MIT, content not",install:"Use Claude Design in the Claude app instead"},
  {r:9,id:"landing",name:"Landing Page Generator",zh:"高轉化落地頁內容結構",type:"Skill",st:"new",crew:34,
   what:"Writes the copy first from PAS, AIDA or BAB, then builds the page in conversion order with five hero options, as Next.js + Tailwind with SEO tags.",
@@ -272,7 +272,7 @@ const S=[
   note:"It invents testimonials and numbers to fill gaps. Replace them with real proof or delete them."},
  {r:10,id:"cinema",name:"Cinematic UI",zh:"電影感敘事 UI 佈局",type:"Skill",st:"add",crew:17,
   what:"Picks a real director and film, researches its colour, light and framing, writes a storyboard for your approval, then builds the page from it.",
-  when:"You want a story-led page that feels like a specific film. Pair it with Swift Swallow for the scroll motion.",
+  when:"You want a story-led page that feels like a specific film. Pair it with GSAP Skills for the scroll motion.",
   src:"akseolabs-seo/cinematic-ui · MIT · 24a66c1",install:"git clone https://github.com/akseolabs-seo/cinematic-ui ~/.claude/skills/cinematic-ui"}
 ];
 
@@ -300,7 +300,7 @@ list.innerHTML=S.map(s=>{const c=crew[s.crew];return `
     <p class="what">${s.what}</p>
     <dl>
       <dt>Use when</dt><dd>${s.when}</dd>
-      <dt>${s.st==='skip'?'Noted in':'Crew'}</dt><dd><a href="${REPO+c[2]}/SKILL.md" target="_blank" rel="noopener">${s.crew} ${c[0]} · ${c[1]}</a></dd>
+      <dt>${s.st==='skip'?'Noted in':'Toolkit'}</dt><dd><a href="${REPO+c[2]}/SKILL.md" target="_blank" rel="noopener">${s.crew} ${c[0]} · ${c[1]}</a></dd>
       <dt>Source</dt><dd><span style="font-family:var(--f-mono);font-size:13px">${s.src}</span></dd>
     </dl>
     ${s.note?`<p class="note">${s.note}</p>`:""}
@@ -308,7 +308,7 @@ list.innerHTML=S.map(s=>{const c=crew[s.crew];return `
   </div>
 </article>`}).join("");
 
-const fl=[["all","All 10"],["new","New crew · 3"],["add","Added · 4"],["had","Already had · 2"],["skip","Skipped · 1"]];
+const fl=[["all","All 10"],["new","New guide · 3"],["add","Added · 4"],["had","Already had · 2"],["skip","Skipped · 1"]];
 const fbox=document.getElementById("filters");
 fbox.innerHTML=fl.map(([k,l],i)=>`<button type="button" data-f="${k}" aria-pressed="${i===0}">${l}</button>`).join("");
 fbox.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;

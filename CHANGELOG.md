@@ -2,6 +2,23 @@
 
 All notable updates to this library are recorded here.
 
+## [0.15.0] - 2026-11-01
+
+The repo is now Lilian O.'s whole Library: one index with a UI Library, a Skill Library and a Learning Library. Character names are gone; every tool skill uses its real name. Skill numbers don't change.
+
+### Changed
+
+- README is now the Library index: 1. UI Library (01–14, 22–30, 43, 45–60), 2. Skill Library (Design, Dev & Workflow, Video & Media), 3. Learning Library, 4. References.
+- Guide skills renamed to their tool names, folders included: 15-wireframer, 16-drawio, 17-taste-pack, 18-ui-ux-pro-max-uizze, 19-shadcn-ui, 20-huashu-baoyu-open-design, 21-quality-pack, 31-awesome-design-md, 32-gsap-skills, 33-pencilplaybook, 34-landing-page-generator, 35-motionsites, 36-find-skills, 37-grill-me, 38-codebase-architecture, 39-tdd, 40-agent-browser, 41-hyperframes, 42-reddit-automation, 44-openfilm.
+- 41 HyperFrames and 44 OpenFilm moved to the new Video & Media category.
+- AGENTS.md rewritten so any agent (Claude, Codex) reads the Library index first; CLAUDE.md points to it. CONTRIBUTING and the guide template drop character naming.
+
+### Added
+
+- 61 cangjie-skill (Learning Library): distil a book, course or transcript into tested, reusable skills.
+- Lilian's own tested skills, previously only installed on her Claude account: 62 HyperFrames Video, 63 Remotion Shotcraft (Video & Media), 64 Framer (Design), 65 Sena & Pudding Reel Builder (Video & Media).
+- MIT licence for Lilian O.'s own work; replaces LICENSE-DECISION.md.
+
 ## [0.14.0] - 2026-11-01
 
 The library is now sorted onto four shelves with eleven categories, and every skill sits in exactly one. Skill numbers don't change.

@@ -1,22 +1,22 @@
 ---
-name: NN-character-name-tool
-description: Use when <the situation in which this crew member is the right choice>. <One short line on which external skills it routes to.>
+name: NN-tool-name
+description: Use when <the situation in which this guide skill is the right choice>. <One short line on which external skills it routes to.>
 ---
-# NN — 中文角色名 / Character Name (Tool)
+# NN — Tool Name
 
-**Category:** 設計工具組 / Design Toolkit
+**Category:** 設計 / Design (or another Skill Library or Learning Library category)
 **Powered by:** [owner/repo](https://github.com/owner/repo) (licence)
 
-> A crew member is a guide, not a copy. It explains when to call an external skill, how to install it and how to get good results. It contains none of the original skill's text; install the original to use it.
+> This skill is a guide, not a copy. It explains when to call an external skill, how to install it and how to get good results. It contains none of the original skill's text; install the original to use it.
 
 ## What it does
 
-Two or three sentences on the job this character does in a design workflow.
+Two or three sentences on the job this tool does.
 
 ## When to use
 
 - Use when …
-- Do not use when … (name the crew member to call instead)
+- Do not use when … (name the guide skill to call instead)
 
 ## Routing
 
@@ -34,7 +34,7 @@ Requirements: runtimes, browsers, accounts or network access the original needs.
 
 ## How to ask
 
-- "Ask <Character> to …"
+- "Use <Tool Name> to …"
 
 ## Watch-outs
 

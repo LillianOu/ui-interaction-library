@@ -45,7 +45,7 @@ Do not use it for text-heavy content, for more than about 10 items (the queue be
 
 ## Implementation notes
 
-- **Vanilla first.** The reference demo uses the Web Animations API only: one `animate()` on the grow layer, small WAAPI fades for the copy, and FLIP for the queue (record each card's `left`, reorder the DOM, animate `translateX(old − new)` to `none`). No library needed. Use GSAP (see **32 Swift Swallow**) only if you add a longer timeline, such as a parallax drift on the background.
+- **Vanilla first.** The reference demo uses the Web Animations API only: one `animate()` on the grow layer, small WAAPI fades for the copy, and FLIP for the queue (record each card's `left`, reorder the DOM, animate `translateX(old − new)` to `none`). No library needed. Use GSAP (see **32 GSAP Skills**) only if you add a longer timeline, such as a parallax drift on the background.
 - **Keep one element per item** and reorder it with `appendChild`; never rebuild the queue's HTML, or FLIP has nothing to track and focus is lost.
 - **Why animate `width/height` and not `scale`:** the card is portrait and the hero is landscape, so scaling would stretch the image. Animating the box with the image set to cover lets the crop widen naturally, which is what makes the effect feel like the photo "opens up". It is one absolutely positioned element inside a contained stage, so the layout cost is small. If profiling shows jank on low-end phones, switch to animating `clip-path: inset(...) round 14px` on a full-size layer instead.
 - **Match the first frame:** the grow layer must use the same image, crop rule and radius as the card, positioned from `getBoundingClientRect()` relative to the stage, or users see a jump at the start.

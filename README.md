@@ -1,19 +1,31 @@
-# UI Interaction Library
+# Lilian O. — Library
 
-A growing library of reusable UI interactions and motion effects, maintained by Lilian O. Every entry is a self-contained skill: a `SKILL.md` that describes the interaction, its accessibility and fallback rules, and a copy-ready prompt. AI coding tools such as Claude Code and Codex can use the skills directly, and designers and developers can read them as a reference.
+Every skill Lilian O. uses, in one place, sorted by category. Each entry is a self-contained `SKILL.md` that people can read and AI tools (Claude, Claude Code, Codex, Cursor) can use directly.
 
-Each skill is an implementation recipe, not finished code. It tells you, or an AI tool, how to build the interaction well.
+**For AI agents:** read this page first, then open the `SKILL.md` of the entry you need. Agent rules are in [`AGENTS.md`](AGENTS.md).
 
-## Catalogue / 目錄
+```
+Library
+├── 1. UI Library        interactions and motion to build into pages and apps   (01–14, 22–30, 43, 45–60)
+├── 2. Skill Library     tools that help with the work
+│   ├── Design           (15–21, 31–35, 64)
+│   ├── Dev & Workflow   (36–40, 42)
+│   └── Video & Media    (41, 44, 62, 63, 65)
+├── 3. Learning Library  turning books, courses and talks into usable knowledge  (61)
+└── 4. References        links to check, not skills
+```
 
-Sixty skills on four shelves. Each shelf holds a few categories, and every skill sits in exactly one category. Numbers are permanent IDs in the order skills were added, so they jump around inside a category; the folder for every skill stays flat in `skills/` so AI tools can find it.
+Numbers are permanent IDs in the order skills were added, so they jump around inside a category. Every skill folder sits flat in `skills/` so AI tools can find it. Tool skills keep their real tool names.
+
+## 1. UI Library / UI 介面庫
+
+Reusable interactions and motion effects. Each is an implementation recipe with accessibility and fallback rules and a copy-ready prompt, not finished code. Every one has a live demo (see [Live demo](#live-demo)).
 
 | Shelf | Categories |
 | --- | --- |
 | 版面 / Layout | 導覽與視圖 Navigation & Views (5) · 網格與面板 Grids & Panels (5) |
 | 元件 / Components | 輸入與控制 Inputs & Controls (4) · 回饋與載入 Feedback & Loading (3) |
 | 動效 / Motion | 動效基礎 Motion Foundations (3) · 滾動動效 Scroll (5) · 游標與懸停 Cursor & Hover (7) · 文字動效 Text & Type (5) · 氛圍與吸睛 Ambient & Attention (3) |
-| 工具組 / Toolkits | 設計工具組 Design Toolkit (12) · 開發與工作流工具組 Dev & Workflow Toolkit (8) |
 
 ### 版面 / Layout
 
@@ -130,49 +142,70 @@ Self-running motion that sets a mood or points at one thing: floating scenes, bo
 | 58 | 邊緣流光 | Border Beam | Ambient loop | [`58-border-beam`](skills/58-border-beam/SKILL.md) |
 | 59 | 跑馬燈 | Marquee | Ambient loop | [`59-marquee`](skills/59-marquee/SKILL.md) |
 
-### 工具組 / Toolkits
+## 2. Skill Library / 技能庫
 
-Character guides to other people's open-source skills; they credit and install the originals and copy nothing.
+Tools that help with the work. Most are guides to someone else's open-source skill: they explain when to use it and how to install it, credit the original and copy none of its text. Skills 62–65 are Lilian's own tested workflows.
 
-#### 設計工具組 / Design Toolkit
+### Design / 設計
 
-Guides to open-source design skills, one job each, numbered in workflow order.
+In workflow order.
 
-| No. | 中文 | English (powered by) | Job | Skill |
-| --- | --- | --- | --- | --- |
-| 15 | 松鼠草圖師 | Sketch Squirrel (Wireframer) | Lo-fi clickable wireframes | [`15-sketch-squirrel-wireframer`](skills/15-sketch-squirrel-wireframer/SKILL.md) |
-| 16 | 河狸藍圖師 | Blueprint Beaver (draw.io) | Editable system and flow diagrams | [`16-blueprint-beaver-drawio`](skills/16-blueprint-beaver-drawio/SKILL.md) |
-| 17 | 孔雀品味師 | Pearl Peacock (Taste Pack + Hallmark + Cinematic UI) | Visual direction for web and app UI without AI slop; strict anti-AI-look rules; film-directed pages; restyles; reference boards | [`17-pearl-peacock-taste-pack`](skills/17-pearl-peacock-taste-pack/SKILL.md) |
-| 31 | 變色龍換裝師 | Costume Chameleon (Awesome DESIGN.md + design-md-chrome) | Borrow a proven brand's design system as a DESIGN.md, or extract one from any site, then make it your own | [`31-costume-chameleon-awesome-design-md`](skills/31-costume-chameleon-awesome-design-md/SKILL.md) |
-| 18 | 喜鵲靈感庫 | Magpie Muse (UI UX Pro Max + UIZZE) | Palettes, fonts and real-screen references | [`18-magpie-muse-ui-references`](skills/18-magpie-muse-ui-references/SKILL.md) |
-| 19 | 螞蟻組件師 | Builder Ant (shadcn/ui) | Build with React components | [`19-builder-ant-shadcn`](skills/19-builder-ant-shadcn/SKILL.md) |
-| 20 | 章魚工作室 | Octo Studio (Huashu + Baoyu + Open Design) | Prototypes, decks and animations in one prompt; a full local design workspace | [`20-octo-studio-huashu-baoyu`](skills/20-octo-studio-huashu-baoyu/SKILL.md) |
-| 32 | 燕子動效師 | Swift Swallow (GSAP Skills) | Scroll animation and timeline choreography in code | [`32-swift-swallow-gsap`](skills/32-swift-swallow-gsap/SKILL.md) |
-| 33 | 鵜鶘畫板師 | Canvas Pelican (PencilPlaybook) | Token-consistent screens on a Pencil.dev canvas | [`33-canvas-pelican-pencilplaybook`](skills/33-canvas-pelican-pencilplaybook/SKILL.md) |
-| 34 | 蜜蜂轉化師 | Buzz Bee (Landing Page Generator) | Landing page copy and structure that converts | [`34-buzz-bee-landing-page-generator`](skills/34-buzz-bee-landing-page-generator/SKILL.md) |
-| 35 | 螢火蟲大片師 | Glow Firefly (MotionSites Web Builder) | Cinematic heroes and landing pages with real video and a screenshot-and-fix loop; prompts for Lovable, Bolt and v0 | [`35-glow-firefly-motionsites`](skills/35-glow-firefly-motionsites/SKILL.md) |
-| 21 | 鷹眼質檢員 | Hawk Inspector (Quality Pack) | Standards, score, polish and motion check | [`21-hawk-inspector-quality-pack`](skills/21-hawk-inspector-quality-pack/SKILL.md) |
+| No. | Skill | Job |
+| --- | --- | --- |
+| 15 | [Wireframer](skills/15-wireframer/SKILL.md) | Lo-fi clickable wireframes |
+| 16 | [draw.io](skills/16-drawio/SKILL.md) | Editable system and flow diagrams |
+| 17 | [Taste Pack + Hallmark + Cinematic UI](skills/17-taste-pack/SKILL.md) | Visual direction without the generic AI look; film-directed pages; restyles; reference boards |
+| 31 | [Awesome DESIGN.md + design-md-chrome](skills/31-awesome-design-md/SKILL.md) | Borrow a proven brand's design system as a DESIGN.md, or extract one from any site, then make it your own |
+| 18 | [UI UX Pro Max + UIZZE](skills/18-ui-ux-pro-max-uizze/SKILL.md) | Palettes, fonts and real-screen references |
+| 19 | [shadcn/ui](skills/19-shadcn-ui/SKILL.md) | Build with React components |
+| 20 | [Huashu + Baoyu + Open Design](skills/20-huashu-baoyu-open-design/SKILL.md) | Prototypes, decks and animations in one prompt; a local design workspace |
+| 32 | [GSAP Skills](skills/32-gsap-skills/SKILL.md) | Scroll animation and timeline choreography in code |
+| 33 | [PencilPlaybook](skills/33-pencilplaybook/SKILL.md) | Token-consistent screens on a Pencil.dev canvas |
+| 34 | [Landing Page Generator](skills/34-landing-page-generator/SKILL.md) | Landing page copy and structure that converts |
+| 35 | [MotionSites Web Builder](skills/35-motionsites/SKILL.md) | Cinematic heroes with real video; prompts for Lovable, Bolt and v0 |
+| 64 | [Framer](skills/64-framer/SKILL.md) | Planning and building sites in Framer: layout, breakpoints, CMS, interactions, publishing |
+| 21 | [Quality Pack](skills/21-quality-pack/SKILL.md) | Standards, score, polish and motion check |
 
-#### 開發與工作流工具組 / Dev & Workflow Toolkit
+### Dev & Workflow / 開發與工作流
 
-Guides to open-source skills for planning, coding, testing, browsing, video and marketing.
+| No. | Skill | Job |
+| --- | --- | --- |
+| 36 | [Find Skills](skills/36-find-skills/SKILL.md) | Find an existing skill before building one |
+| 37 | [Grill Me + Grill with Docs](skills/37-grill-me/SKILL.md) | Be questioned hard until a plan has no soft spots |
+| 38 | [Codebase Architecture](skills/38-codebase-architecture/SKILL.md) | Refactoring opportunities as a visual report |
+| 39 | [TDD](skills/39-tdd/SKILL.md) | Build and fix test-first |
+| 40 | [agent-browser](skills/40-agent-browser/SKILL.md) | Drive a real browser from a coding agent |
+| 42 | [Reddit Automation](skills/42-reddit-automation/SKILL.md) | Find real demand on Reddit and draft honest, disclosed replies |
 
-| No. | 中文 | English (powered by) | Job | Skill |
-| --- | --- | --- | --- | --- |
-| 36 | 松露豬尋寶師 | Truffle Pig (Find Skills) | Find an existing skill before building one | [`36-truffle-pig-find-skills`](skills/36-truffle-pig-find-skills/SKILL.md) |
-| 37 | 獾式追問師 | Grill Badger (Grill Me + Grill with Docs) | Be questioned hard until a plan has no soft spots; optional glossary and decision records | [`37-grill-badger-grill-me`](skills/37-grill-badger-grill-me/SKILL.md) |
-| 38 | 織巢鳥架構師 | Weaver Bird (Codebase Architecture) | Refactoring opportunities as a visual report | [`38-weaver-bird-codebase-architecture`](skills/38-weaver-bird-codebase-architecture/SKILL.md) |
-| 39 | 烏龜測試師 | Test Tortoise (TDD) | Build and fix test-first | [`39-test-tortoise-tdd`](skills/39-test-tortoise-tdd/SKILL.md) |
-| 40 | 雪貂操作員 | Ferret Fetcher (agent-browser) | Drive a real browser from a coding agent | [`40-ferret-fetcher-agent-browser`](skills/40-ferret-fetcher-agent-browser/SKILL.md) |
-| 41 | 浣熊剪片師 | Reel Raccoon (HyperFrames Pack) | Video from web code, plus music, images and voiceover | [`41-reel-raccoon-hyperframes`](skills/41-reel-raccoon-hyperframes/SKILL.md) |
-| 42 | 狐獴瞭望員 | Meerkat Lookout (Reddit Automation) | Find real demand on Reddit and draft honest, disclosed replies | [`42-meerkat-lookout-reddit`](skills/42-meerkat-lookout-reddit/SKILL.md) |
-| 44 | 水獺片場師 | Studio Otter (OpenFilm) | Agent-made films you finish by hand in a real editor; ten built-in film styles; NLE export | [`44-studio-otter-openfilm`](skills/44-studio-otter-openfilm/SKILL.md) |
+### Video & Media / 影片與媒體
 
-Next number: **61**. Numbers 01–60 are all in use. New skills take the next number and join whichever category fits; see `CONTRIBUTING.md`.
+| No. | Skill | Job |
+| --- | --- | --- |
+| 62 | [HyperFrames Video](skills/62-hyperframes-video/SKILL.md) | Lilian's tested workflow: reels, animated cards and title sequences from HTML to MP4 |
+| 41 | [HyperFrames Pack (official)](skills/41-hyperframes/SKILL.md) | The official HyperFrames skills, plus music, images and voiceover. Same tool as 62; use one per session |
+| 44 | [OpenFilm](skills/44-openfilm/SKILL.md) | Agent-made films you finish by hand in a real editor; NLE export |
+| 63 | [Remotion Shotcraft](skills/63-remotion-shotcraft/SKILL.md) | Cinematic product promo videos of a website or app |
+| 65 | [Sena & Pudding Reel Builder](skills/65-sena-pudding-reel-builder/SKILL.md) | Builds the Sena & Pudding English reels by script |
+
+## 3. Learning Library / 學習庫
+
+Turning books, courses, talks and podcasts into knowledge you can use.
+
+| No. | Skill | Job |
+| --- | --- | --- |
+| 61 | [cangjie-skill (仓颉)](skills/61-cangjie-skill/SKILL.md) | Distil a book, course or transcript into tested, reusable Claude skills plus a digest |
+
+## 4. References / 參考
+
+Links to check, not skills.
+
+- **Game UI:** curated reference sites and licence-cleared asset sources in [`game-ui-references.md`](game-ui-references.md). Downloaded assets go in [`game-assets/`](game-assets/README.md).
+
+Next number: **66**. Numbers 01–65 are all in use. New skills take the next number and join whichever category fits; see `CONTRIBUTING.md`.
 
 ## Live demo
 
-Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), skills 22–29 are shown together on `demo/returns-bench.html`, and the sixteen motion skills 45–60 are also shown side by side, grouped by category, on `demo/motion-essentials.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit (15–21, 31–35) and Dev & Workflow Toolkit (36–42, 44) skills are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the ten design skills they cover, showing which crew member carries each one.
+Every UI Library skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), skills 22–29 are shown together on `demo/returns-bench.html`, and the sixteen motion skills 45–60 are also shown side by side on `demo/motion-essentials.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Skill Library and Learning Library entries are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the design tools they cover.
 
 ## How to use
 
@@ -184,19 +217,20 @@ Every interaction skill has a working demo in `demo/`. `demo/index.html` is the 
 
 **By hand:** open a `SKILL.md` and paste its copy-ready prompt into any AI coding tool.
 
-**Design and Dev & Workflow crews (15–21, 31–42, 44):** install the crew member as above, then install the originals it names with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call a character by name, for example "Ask Hawk Inspector to check this page."
+**Guide skills (Skill Library and Learning Library):** install the guide as above, then install the original tool with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call it by its tool name, for example "Use Quality Pack to check this page."
 
 ## Repository layout
 
 ```
-skills/<NN>-<name>/SKILL.md   one folder per skill, numbered in the order added
-templates/SKILL-TEMPLATE.md   starting point for a new interaction skill
-templates/TOOLKIT-SKILL-TEMPLATE.md   starting point for a new Design Toolkit crew member
-CONTRIBUTING.md               how to add a skill and pick its category
-CHANGELOG.md                  what changed and when
-demo/                         live demos: index.html gallery, one page per skill, shared assets/demo.css, _template.html
-vercel.json                   Vercel config (root redirects to /demo/)
-LICENSE-DECISION.md           licence status
+skills/<NN>-<name>/SKILL.md          one folder per skill, numbered in the order added
+templates/SKILL-TEMPLATE.md          starting point for a new UI Library skill
+templates/TOOLKIT-SKILL-TEMPLATE.md  starting point for a new guide skill
+CONTRIBUTING.md                      how to add a skill and pick its category
+CHANGELOG.md                         what changed and when
+AGENTS.md / CLAUDE.md                rules for AI agents working in this repo
+demo/                                live demos: index.html gallery, one page per skill
+vercel.json                          Vercel config (root redirects to /demo/)
+LICENSE                              MIT
 ```
 
 ## Working principles
@@ -205,11 +239,8 @@ LICENSE-DECISION.md           licence status
 - Include pointer, touch, keyboard, accessibility, reduced-motion, cancellation, state, and implementation safeguards where relevant.
 - Keep every skill self-contained, so it still works when copied on its own.
 - Do not describe unfinished work as production-complete.
+- Use each tool's real name. No renaming.
 
 ## Licence
 
-No licence has been chosen yet. See [LICENSE-DECISION.md](LICENSE-DECISION.md).
-
-## Game UI References / 遊戲 UI 參考
-
-Curated game UI reference sites and licence-cleared asset sources: [`game-ui-references.md`](game-ui-references.md). Downloaded assets go in [`game-assets/`](game-assets/README.md).
+Lilian O.'s own work in this repository is released under the [MIT licence](LICENSE). Guide skills point to other people's tools, which keep their own licences; each guide names the original's licence and links to it.

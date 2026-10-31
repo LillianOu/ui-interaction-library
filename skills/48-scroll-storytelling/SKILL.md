@@ -29,7 +29,7 @@ Part of the sixteen-effect motion set (45–60), inspired by the Douyin video �
 
 - Layout: two columns; the visual column is `position: sticky; top: <header height>` with a height of about one viewport; each step is about 60–100vh tall.
 - Detection: `IntersectionObserver` on the steps with a threshold around 0.6 (or a rootMargin band across the middle of the screen) marks the active step.
-- Scrubbed variants (the visual animates continuously with scroll): GSAP ScrollTrigger with `pin` and `scrub` (32 Swift Swallow), or CSS `animation-timeline: view()`.
+- Scrubbed variants (the visual animates continuously with scroll): GSAP ScrollTrigger with `pin` and `scrub` (32 GSAP Skills), or CSS `animation-timeline: view()`.
 - Swap the visual's state with opacity/transform on pre-rendered layers rather than reloading images.
 - Avoid: scroll-jacking (changing scroll speed or snapping hard), pins taller than the viewport, and more than about six steps.
 
