@@ -4,7 +4,7 @@ description: Use when building scroll-driven vortex transit for an interactive w
 ---
 # 12 — 滾動漩渦轉場 / Scroll-driven Vortex Transit
 
-**Category:** 動態視覺效果 / Motion Effects
+**Category:** 滾動動效 / Scroll
 
 ## When to use
 Use when the user requests scrolling through a depth-based vortex transition. This skill is an implementation recipe, not an existing code component.

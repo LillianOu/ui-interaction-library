@@ -4,7 +4,7 @@ description: Use when building a bottom sheet, drawer or panel that is dragged o
 ---
 # 07 — 拖曳展開與收合 / Drag to Expand & Collapse
 
-**Category:** 版面與導覽 / Layout & Navigation
+**Category:** 導覽與視圖 / Navigation & Views
 
 ## Effect
 

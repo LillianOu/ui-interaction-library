@@ -4,7 +4,7 @@ description: Use when a dashboard or bento grid of cards should let one card gro
 ---
 # 24 — 點一格撐成通欄 / Expanding Grid
 
-**Category:** 排版互動 / Layout Relationships
+**Category:** 網格與面板 / Grids & Panels
 
 ## Effect
 

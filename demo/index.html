@@ -16,6 +16,7 @@
 .filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .cat{padding-block:28px 12px}
 .cat h2{font-family:var(--f-mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);font-weight:500;margin-bottom:16px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.cat h2 .shelf{color:var(--ink);background:var(--violet-soft);padding:3px 8px;border-radius:999px;letter-spacing:.1em}
 .cat h2 small{color:var(--muted);letter-spacing:.04em;text-transform:none;font-family:var(--f-body);font-size:14px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
 .card{position:relative;display:grid;grid-template-rows:auto 1fr auto;gap:10px;padding:20px 20px 18px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);text-decoration:none;color:inherit;min-height:200px;overflow:hidden;transition:transform .35s var(--ease),border-color .25s}
@@ -38,60 +39,79 @@
 <body>
 <header class="d-top"><div class="wrap">
   <a href="./">UI Interaction Library</a>
-  <nav class="d-nav"><a href="returns-bench.html">Showcase</a><a href="design-toolkit.html">Design Toolkit</a><a href="https://github.com/LillianOu/ui-interaction-library" target="_blank" rel="noopener">GitHub</a></nav>
+  <nav class="d-nav"><a href="returns-bench.html">Showcase</a><a href="motion-essentials.html">Motion</a><a href="design-toolkit.html">Design Toolkit</a><a href="https://github.com/LillianOu/ui-interaction-library" target="_blank" rel="noopener">GitHub</a></nav>
 </div></header>
 
 <main class="wrap">
   <section class="hero">
     <p class="d-num">Lilian O. · Live demos</p>
     <h1>Interaction <span>library</span></h1>
-    <p>Every interaction skill in the library, working. Open one, try it with a mouse, a finger or the keyboard, then note the number you want to use.</p>
-    <div class="filters" role="group" aria-label="Filter by category" id="filters"></div>
+    <p>Every interaction skill in the library, working, sorted onto three shelves: Layout, Components and Motion. Open one, try it with a mouse, a finger or the keyboard, then note the number you want to use. The sixteen motion skills 45–60 are also side by side on the <a href="motion-essentials.html" style="color:inherit">Motion Essentials</a> page.</p>
+    <div class="filters" role="group" aria-label="Filter by shelf" id="filters"></div>
   </section>
   <div id="list"></div>
-  <p class="note">Skills 15–21 and 31–35 are the Design Toolkit crew: guides to other people's open-source design skills, so they have no demo of their own. See which is which in the <a href="design-toolkit.html">Design Toolkit field guide</a>. Read them on <a href="https://github.com/LillianOu/ui-interaction-library#設計工具組--design-toolkit" target="_blank" rel="noopener">GitHub</a>.</p>
+  <p class="note">The fourth shelf, Toolkits (Design 15–21 and 31–35, Dev & Workflow 36–42 and 44), holds guides to other people's open-source skills, so they have no demo of their own. See which is which in the <a href="design-toolkit.html">Design Toolkit field guide</a>. Read them on <a href="https://github.com/LillianOu/ui-interaction-library#設計工具組--design-toolkit" target="_blank" rel="noopener">GitHub</a>.</p>
 </main>
 
 <footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library" target="_blank" rel="noopener">Skills on GitHub</a></div></footer>
 
 <script>
 const S = [
-  ['Layout & Navigation','版面與導覽','Moving between views and rearranging content',[
-    ['01','shared-element-expansion','Shared Element Expansion','共享元素展開','Tap'],
-    ['06','drag-to-reorder','Drag to Reorder','拖曳排序','Drag'],
-    ['07','drag-to-expand-and-collapse','Drag to Expand & Collapse','拖曳展開與收合','Drag'],
-    ['30','dashboard-nav-patterns','Dashboard Nav Patterns','後台菜單六式','Tap']]],
-  ['Input & Controls','輸入與控制','Ways to enter a value',[
-    ['02','elastic-value-adjustment','Elastic Value Adjustment','彈性數值調節','Drag'],
-    ['03','swipe-selection','Swipe Selection','滑動選擇','Swipe'],
-    ['05','floating-label','Floating Label','浮動標籤','Type']]],
-  ['Feedback & State','回饋與狀態','Confirming actions and showing progress',[
-    ['04','animated-state-transition','Animated State Transition','動態狀態切換','Tap'],
-    ['08','fly-to-target-feedback','Fly-to-Target Feedback','飛向目標的回饋','Tap']]],
-  ['Motion Effects','動態視覺效果','Expressive cursor, scroll and hover visuals',[
-    ['09','cursor-luminous-flow','Cursor-driven Luminous Flow','游標流光','Cursor'],
-    ['10','scroll-helix-flow','Scroll-driven Helix Flow','滾動螺旋流動','Scroll'],
-    ['11','immersive-float','Immersive Float','沉浸式漂浮','Tap'],
-    ['12','scroll-vortex-transit','Scroll-driven Vortex Transit','滾動漩渦轉場','Scroll'],
-    ['13','hover-door-bloom','Hover-triggered Door Bloom','滑過開門綻放','Hover'],
-    ['14','cursor-driven-hero','Cursor-driven Animated Hero','游標驅動的動態主視覺','Cursor'],
-    ['43','card-to-hero-carousel','Card-to-Hero Carousel','卡片展開輪播','Tap'],
-    ['45','motion-essentials','16 Essential Motion Effects','常用動效十六式','Mixed']]],
-  ['Layout Relationships','排版互動','Layout pieces that respond to each other · shown together on the Returns Bench showcase',[
-    ['22','knockout-title','Knockout Title','鏤空大標題','Scroll','returns-bench.html'],
-    ['23','inline-image-title','Inline Image Title','標題嵌小圖','Tap','returns-bench.html#inl'],
-    ['24','expanding-grid','Expanding Grid','點一格撐成通欄','Tap','returns-bench.html#features'],
-    ['25','offset-columns','Offset Columns','兩列錯速滾動','Scroll','returns-bench.html#screens'],
-    ['26','sticky-date-rail','Sticky Date Rail','左欄日期吸頂','Scroll','returns-bench.html#how'],
-    ['27','folder-tabs','Folder Tabs','檔案夾標籤頁','Tap','returns-bench.html#teams'],
-    ['28','bubble-picker','Bubble Picker','圓泡堆疊選擇','Tap','returns-bench.html#demo'],
-    ['29','split-view','Split View','拖動分屏比例','Drag','returns-bench.html#split']]]
+  ["Navigation & Views","導覽與視圖","Moving between views and pages: expanding cards, sheets, tabs, menus, carousels","Layout",[
+    ["01", "", "Shared Element Expansion", "共享元素展開", "Tap", "01-shared-element-expansion.html"],
+    ["07", "", "Drag to Expand & Collapse", "拖曳展開與收合", "Drag", "07-drag-to-expand-and-collapse.html"],
+    ["27", "", "Folder Tabs", "檔案夾標籤頁", "Tap", "returns-bench.html#teams"],
+    ["30", "", "Dashboard Nav Patterns (Transparent Nav · Right Rail · Expanding Tab · Title as Nav · Icon Rail · Quick Actions)", "後台菜單六式", "Tap", "30-dashboard-nav-patterns.html"],
+    ["43", "", "Card-to-Hero Carousel", "卡片展開輪播", "Click", "43-card-to-hero-carousel.html"]]],
+  ["Grids & Panels","網格與面板","Arranging and rearranging content: reorderable lists, reflowing grids, columns, rails, resizable splits","Layout",[
+    ["06", "", "Drag to Reorder", "拖曳排序", "Drag", "06-drag-to-reorder.html"],
+    ["24", "", "Expanding Grid", "點一格撐成通欄", "Tap", "returns-bench.html#features"],
+    ["25", "", "Offset Columns", "兩列錯速滾動", "Scroll", "returns-bench.html#screens"],
+    ["26", "", "Sticky Date Rail", "左欄日期吸頂", "Scroll", "returns-bench.html#how"],
+    ["29", "", "Split View", "拖動分屏比例", "Drag", "returns-bench.html#split"]]],
+  ["Inputs & Controls","輸入與控制","Entering or choosing a value: fields, pickers, sliders, steppers, swipes","Components",[
+    ["02", "", "Elastic Value Adjustment", "彈性數值調節", "Drag", "02-elastic-value-adjustment.html"],
+    ["03", "", "Swipe Selection", "滑動選擇", "Swipe", "03-swipe-selection.html"],
+    ["05", "", "Floating Label", "浮動標籤", "Type", "05-floating-label.html"],
+    ["28", "", "Bubble Picker", "圓泡堆疊選擇", "Tap", "returns-bench.html#demo"]]],
+  ["Feedback & Loading","回饋與載入","Confirming actions and showing loading, success, error or progress","Components",[
+    ["04", "", "Animated State Transition", "動態狀態切換", "Tap", "04-animated-state-transition.html"],
+    ["08", "", "Fly-to-Target Feedback", "飛向目標的回饋", "Tap", "08-fly-to-target-feedback.html"],
+    ["60", "", "Shimmer", "流光", "Loading", "60-shimmer.html"]]],
+  ["Motion Foundations","動效基礎","The rules behind all motion: easing, duration, spring physics, stagger","Motion",[
+    ["45", "", "Easing & Timing", "緩動與時長", "Every animation", "45-easing-and-timing.html"],
+    ["46", "", "Spring", "彈性", "Any state change", "46-spring.html"],
+    ["47", "", "Stagger", "錯峰", "Group entrance", "47-stagger.html"]]],
+  ["Scroll","滾動動效","Effects driven by scrolling: pinned stories, parallax, reveals, scroll-scrubbed transitions","Motion",[
+    ["10", "", "Scroll-driven Helix Flow", "滾動螺旋流動", "Scroll", "10-scroll-helix-flow.html"],
+    ["12", "", "Scroll-driven Vortex Transit", "滾動漩渦轉場", "Scroll", "12-scroll-vortex-transit.html"],
+    ["48", "", "Scroll Storytelling", "滾動敘事", "Scroll", "48-scroll-storytelling.html"],
+    ["49", "", "Parallax", "視差滾動", "Scroll", "49-parallax.html"],
+    ["50", "", "Scroll Reveal", "滾動出現", "In view", "50-scroll-reveal.html"]]],
+  ["Cursor & Hover","游標與懸停","Effects that follow or react to the pointer: glows, tilts, magnetic pulls, lifts, cursor-driven heroes","Motion",[
+    ["09", "", "Cursor-driven Luminous Flow", "游標流光", "Cursor", "09-cursor-luminous-flow.html"],
+    ["13", "", "Hover-triggered Door Bloom", "滑過開門綻放", "Hover", "13-hover-door-bloom.html"],
+    ["14", "", "Cursor-driven Animated Hero", "游標驅動的動態主視覺", "Cursor", "14-cursor-driven-hero.html"],
+    ["51", "", "Spotlight", "聚光", "Pointer move", "51-spotlight.html"],
+    ["52", "", "Tilt", "3D 傾斜", "Pointer move", "52-tilt.html"],
+    ["53", "", "Magnetic", "磁吸", "Pointer near", "53-magnetic.html"],
+    ["54", "", "Hover Lift", "懸停上浮", "Hover", "54-hover-lift.html"]]],
+  ["Text & Type","文字動效","Headlines and numbers that move: knockout and inline-image type, scramble, typewriter, count up","Motion",[
+    ["22", "", "Knockout Title", "鏤空大標題", "Scroll", "returns-bench.html"],
+    ["23", "", "Inline Image Title", "標題嵌小圖", "Tap", "returns-bench.html#inl"],
+    ["55", "", "Scramble Text", "亂碼解碼", "In view", "55-scramble-text.html"],
+    ["56", "", "Typewriter", "打字機", "In view", "56-typewriter.html"],
+    ["57", "", "Count Up", "數字滾動", "In view", "57-count-up.html"]]],
+  ["Ambient & Attention","氛圍與吸睛","Self-running motion that sets a mood or points at one thing: floating scenes, border beams, marquees","Motion",[
+    ["11", "", "Immersive Float", "沉浸式漂浮", "Click", "11-immersive-float.html"],
+    ["58", "", "Border Beam", "邊緣流光", "Ambient loop", "58-border-beam.html"],
+    ["59", "", "Marquee", "跑馬燈", "Ambient loop", "59-marquee.html"]]]
 ];
 const list = document.getElementById('list'), filters = document.getElementById('filters');
 const esc = s => s.replace(/&/g,'&amp;');
-list.innerHTML = S.map(([en, zh, sub, items], i) => `
-  <section class="cat" data-cat="${i}" aria-labelledby="c${i}">
-    <h2 id="c${i}">${zh} / ${esc(en)} <small>${sub}</small></h2>
+list.innerHTML = S.map(([en, zh, sub, shelf, items], i) => `
+  <section class="cat" data-shelf="${shelf}" aria-labelledby="c${i}">
+    <h2 id="c${i}"><span class="shelf">${shelf}</span> ${zh} / ${esc(en)} <small>${sub}</small></h2>
     <div class="cards">${items.map(([n, slug, name, zhn, trig, href]) => `
       <a class="card" href="${href || n + '-' + slug + '.html'}">
         <span class="n" aria-hidden="true">${n}</span>
@@ -100,11 +120,12 @@ list.innerHTML = S.map(([en, zh, sub, items], i) => `
         <span class="sr-only">, skill ${n}, ${trig}</span>
       </a>`).join('')}</div>
   </section>`).join('');
-const btns = ['All', ...S.map(s => s[0])].map((label, i) => {
+const shelves = ['All', ...new Set(S.map(s => s[3]))];
+const btns = shelves.map((label, i) => {
   const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.setAttribute('aria-pressed', String(i === 0));
   b.addEventListener('click', () => {
     btns.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    list.querySelectorAll('.cat').forEach(c => { c.hidden = i !== 0 && Number(c.dataset.cat) !== i - 1; });
+    list.querySelectorAll('.cat').forEach(c => { c.hidden = i !== 0 && c.dataset.shelf !== label; });
   });
   filters.appendChild(b); return b;
 });

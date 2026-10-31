@@ -4,7 +4,7 @@ description: Use when a two-column image gallery should scroll its columns at di
 ---
 # 25 — 兩列錯速滾動 / Offset Columns
 
-**Category:** 排版互動 / Layout Relationships
+**Category:** 網格與面板 / Grids & Panels
 
 ## Effect
 

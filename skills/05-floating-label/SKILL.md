@@ -4,7 +4,7 @@ description: Use when building form fields whose label floats above the value. F
 ---
 # 05 — 浮動標籤 / Floating Label
 
-**Category:** 輸入與控制 / Input & Controls
+**Category:** 輸入與控制 / Inputs & Controls
 
 ## Effect
 

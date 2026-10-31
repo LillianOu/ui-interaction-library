@@ -2,6 +2,22 @@
 
 All notable updates to this library are recorded here.
 
+## [0.14.0] - 2026-11-01
+
+The library is now sorted onto four shelves with eleven categories, and every skill sits in exactly one. Skill numbers don't change.
+
+### Changed
+
+- New catalogue structure in the README, CONTRIBUTING, the skill template and the demo gallery (filters by shelf):
+  - 版面 / Layout: 導覽與視圖 Navigation & Views (01, 07, 27, 30, 43) · 網格與面板 Grids & Panels (06, 24, 25, 26, 29)
+  - 元件 / Components: 輸入與控制 Inputs & Controls (02, 03, 05, 28) · 回饋與載入 Feedback & Loading (04, 08, 60)
+  - 動效 / Motion: 動效基礎 Motion Foundations (45–47) · 滾動動效 Scroll (10, 12, 48–50) · 游標與懸停 Cursor & Hover (09, 13, 14, 51–54) · 文字動效 Text & Type (22, 23, 55–57) · 氛圍與吸睛 Ambient & Attention (11, 58, 59)
+  - 工具組 / Toolkits: 設計工具組 Design Toolkit · 開發與工作流工具組 Dev & Workflow Toolkit (unchanged)
+- Every existing skill's `**Category:**` line updated to its new category. The old categories 動態視覺效果 Motion Effects and 排版互動 Layout Relationships are retired; their skills moved into the categories above.
+- The single 45 16 Essential Motion Effects skill is split into sixteen skills, one per effect, each with its own demo page: 45 Easing & Timing (the base timing rules every motion skill uses), 46 Spring, 47 Stagger, 48 Scroll Storytelling, 49 Parallax, 50 Scroll Reveal, 51 Spotlight, 52 Tilt, 53 Magnetic, 54 Hover Lift, 55 Scramble Text, 56 Typewriter, 57 Count Up, 58 Border Beam, 59 Marquee, 60 Shimmer.
+- `demo/45-motion-essentials.html` becomes `demo/motion-essentials.html`, a showcase of 45–60 grouped by category; each single demo page links to the rest of its category. Demo chain: 43 → 45 … 60 → 30.
+- Next number is 61.
+
 ## [0.13.0] - 2026-11-01
 
 ### Added

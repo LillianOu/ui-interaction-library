@@ -4,7 +4,7 @@ description: Use when <the situation in which this interaction is the right choi
 ---
 # NN — 中文名稱 / English Name
 
-**Category:** <one of: 版面與導覽 / Layout & Navigation · 輸入與控制 / Input & Controls · 回饋與狀態 / Feedback & State · 動態視覺效果 / Motion Effects>
+**Category:** <one category from CONTRIBUTING.md, e.g. 導覽與視圖 / Navigation & Views · 輸入與控制 / Inputs & Controls · 滾動動效 / Scroll · 游標與懸停 / Cursor & Hover>
 
 ## Effect
 

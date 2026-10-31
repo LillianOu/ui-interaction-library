@@ -4,7 +4,7 @@ description: Use when building immersive float for an interactive website. Motio
 ---
 # 11 — 沉浸式漂浮 / Immersive Float
 
-**Category:** 動態視覺效果 / Motion Effects
+**Category:** 氛圍與吸睛 / Ambient & Attention
 
 ## When to use
 Use when the user requests activating a floating immersive object. This skill is an implementation recipe, not an existing code component.

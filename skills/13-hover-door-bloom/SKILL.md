@@ -4,7 +4,7 @@ description: Use when building hover-triggered door bloom interaction for an int
 ---
 # 13 — 滑過開門綻放 / Hover-triggered Door Bloom Interaction
 
-**Category:** 動態視覺效果 / Motion Effects
+**Category:** 游標與懸停 / Cursor & Hover
 
 ## When to use
 Use when the user requests hovering or focusing on an interactive door or panel. This skill is an implementation recipe, not an existing code component.

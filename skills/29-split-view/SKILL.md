@@ -4,7 +4,7 @@ description: Use when a page has two stacked panes (for example a map or hero ab
 ---
 # 29 — 拖動分屏比例 / Split View
 
-**Category:** 排版互動 / Layout Relationships
+**Category:** 網格與面板 / Grids & Panels
 
 ## Effect
 

@@ -4,7 +4,7 @@ description: Use when a schedule, itinerary, timeline or feed grouped by day sho
 ---
 # 26 — 左欄日期吸頂 / Sticky Date Rail
 
-**Category:** 排版互動 / Layout Relationships
+**Category:** 網格與面板 / Grids & Panels
 
 ## Effect
 

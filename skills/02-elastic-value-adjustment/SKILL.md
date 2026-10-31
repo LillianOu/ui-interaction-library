@@ -4,7 +4,7 @@ description: Use when building a draggable or scrubbable numeric control such as
 ---
 # 02 — 彈性數值調節 / Elastic Value Adjustment
 
-**Category:** 輸入與控制 / Input & Controls
+**Category:** 輸入與控制 / Inputs & Controls
 
 ## Effect
 

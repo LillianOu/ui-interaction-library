@@ -4,7 +4,7 @@ description: Use when a full-bleed hero should cycle through places, products or
 ---
 # 43 — 卡片展開輪播 / Card-to-Hero Carousel
 
-**Category:** 動態視覺效果 / Motion Effects
+**Category:** 導覽與視圖 / Navigation & Views
 
 ## Effect
 

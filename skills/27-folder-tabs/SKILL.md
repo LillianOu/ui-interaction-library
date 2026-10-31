@@ -4,7 +4,7 @@ description: Use when a small set of sections should look like physical folders 
 ---
 # 27 — 檔案夾標籤頁 / Folder Tabs
 
-**Category:** 排版互動 / Layout Relationships
+**Category:** 導覽與視圖 / Navigation & Views
 
 ## Effect
 

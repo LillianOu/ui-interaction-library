@@ -4,7 +4,7 @@ description: Use when building or restyling an admin panel, dashboard or back-of
 ---
 # 30 — 後台菜單六式 / Dashboard Nav Patterns
 
-**Category:** 版面與導覽 / Layout & Navigation
+**Category:** 導覽與視圖 / Navigation & Views
 
 ## Effect
 

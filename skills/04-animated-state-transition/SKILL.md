@@ -4,7 +4,7 @@ description: Use when animating a button, toggle or status between idle, loading
 ---
 # 04 — 動態狀態切換 / Animated State Transition
 
-**Category:** 回饋與狀態 / Feedback & State
+**Category:** 回饋與載入 / Feedback & Loading
 
 ## Effect
 

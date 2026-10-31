@@ -4,7 +4,7 @@ description: Use when an onboarding, preference or filter screen lets people pic
 ---
 # 28 — 圓泡堆疊選擇 / Bubble Picker
 
-**Category:** 排版互動 / Layout Relationships
+**Category:** 輸入與控制 / Inputs & Controls
 
 ## Effect
 

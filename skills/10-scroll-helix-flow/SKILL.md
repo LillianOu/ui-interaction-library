@@ -4,7 +4,7 @@ description: Use when building scroll-driven helix flow for an interactive websi
 ---
 # 10 — 滾動螺旋流動 / Scroll-driven Helix Flow
 
-**Category:** 動態視覺效果 / Motion Effects
+**Category:** 滾動動效 / Scroll
 
 ## When to use
 Use when the user requests scrolling through a spiralling helix. This skill is an implementation recipe, not an existing code component.

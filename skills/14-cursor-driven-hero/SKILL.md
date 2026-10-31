@@ -4,7 +4,7 @@ description: Use when a landing page or portfolio hero should feel alive under t
 ---
 # 14 — 游標驅動的動態主視覺 / Cursor-driven Animated Hero
 
-**Category:** 動態視覺效果 / Motion Effects
+**Category:** 游標與懸停 / Cursor & Hover
 
 ## Effect
 

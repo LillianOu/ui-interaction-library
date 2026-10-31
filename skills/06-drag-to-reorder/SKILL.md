@@ -4,7 +4,7 @@ description: Use when letting users reorder items in a list or grid by dragging.
 ---
 # 06 — 拖曳排序 / Drag to Reorder
 
-**Category:** 版面與導覽 / Layout & Navigation
+**Category:** 網格與面板 / Grids & Panels
 
 ## Effect
 

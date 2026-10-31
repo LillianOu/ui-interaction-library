@@ -4,7 +4,7 @@ description: Use when confirming add-to-cart, save or add-to-list actions with a
 ---
 # 08 — 飛向目標的回饋 / Fly-to-Target Feedback
 
-**Category:** 回饋與狀態 / Feedback & State
+**Category:** 回饋與載入 / Feedback & Loading
 
 ## Effect
 

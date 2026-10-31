@@ -4,7 +4,7 @@ description: Use when opening a list item, card or thumbnail into a detail view.
 ---
 # 01 — 共享元素展開 / Shared Element Expansion
 
-**Category:** 版面與導覽 / Layout & Navigation
+**Category:** 導覽與視圖 / Navigation & Views
 
 ## Effect
 

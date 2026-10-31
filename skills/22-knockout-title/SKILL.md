@@ -4,7 +4,7 @@ description: Use when a hero or cover needs a huge headline that a photo shows t
 ---
 # 22 — 鏤空大標題 / Knockout Title
 
-**Category:** 排版互動 / Layout Relationships
+**Category:** 文字動效 / Text & Type
 
 ## Effect
 

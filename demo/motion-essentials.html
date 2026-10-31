@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>45 · 16 Essential Motion Effects</title>
+<title>Motion Essentials · 45–60</title>
 <link rel="stylesheet" href="assets/demo.css">
 <style>
-/* 45 · 16 Essential Motion Effects. Interaction CSS for this demo only. */
+/* Motion Essentials showcase: skills 45–60 on one page. Each also has its own demo page. */
 @property --beam{syntax:'<angle>';initial-value:0deg;inherits:false}
 :root{--night:#0E1122;--night-2:#161A33;--night-line:rgba(255,255,255,.1);--night-ink:#EEF0FF;--night-muted:#9AA0C8;--glow:#8C74FF;--glow-2:#3DCFEA;
   --out:cubic-bezier(.2,.8,.2,1);--in:cubic-bezier(.4,0,1,1);--inout:cubic-bezier(.65,0,.35,1);--spring:cubic-bezier(.34,1.56,.64,1)}
@@ -18,6 +18,9 @@
 .jump a:hover{color:var(--violet);border-color:var(--violet)}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:14px}
+.grp{font-family:var(--f-mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);font-weight:500;margin:30px 0 14px;display:flex;gap:10px;align-items:baseline;scroll-margin-top:72px}
+.grp:first-child{margin-top:0}.grp small{color:var(--muted);letter-spacing:.04em}
+.mini.open{text-decoration:none;display:inline-flex;align-items:center}
 .tile{display:grid;grid-template-rows:auto 1fr auto;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden;scroll-margin-top:72px}
 .tile header{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center;padding:16px 18px 12px}
 .tile .no{grid-row:span 2;display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--violet);color:var(--on-fill);font-family:var(--f-display);font-weight:800;font-size:24px}
@@ -286,63 +289,65 @@
 <body>
 <header class="d-top"><div class="wrap">
   <a href="./">← All demos</a>
-  <nav class="d-nav"><a href="43-card-to-hero-carousel.html">Prev</a><a href="30-dashboard-nav-patterns.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/45-motion-essentials/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+  <nav class="d-nav"><a href="45-easing-and-timing.html">Start at 45</a><a href="https://github.com/LillianOu/ui-interaction-library#動效--motion" target="_blank" rel="noopener">Skills</a></nav>
 </div></header>
 
 <main>
   <section class="d-intro wrap">
-    <p class="d-num">45 · Motion Effects</p>
+    <p class="d-num">Showcase · Skills 45–60 · Motion</p>
     <h1>16 Essential Motion Effects</h1>
     <p class="zh">常用動效十六式</p>
-    <p class="lede">The sixteen effects behind most modern product pages, each live and named. Learn the term, then ask for it by name: “add a Border Beam to the recommended plan” beats “make it pop”.</p>
+    <p class="lede">Skills 45–60 live on one page, grouped into the six motion categories. Each also has its own demo page. Learn the term, then ask for it by name: “add a Border Beam to the recommended plan” beats “make it pop”.</p>
     <div class="d-try"><span>Mouse</span><span>Touch</span><span>Keyboard: Tab, arrows on 03</span><span>Scroll inside 04, 06, 12</span></div>
     <div class="toolbar">
       <button class="btn btn-ghost" type="button" id="motionBtn" aria-pressed="false">Preview reduced motion</button>
     </div>
-    <nav class="jump" aria-label="Jump to effect" id="jump"></nav>
+    <nav class="jump" aria-label="Jump to category" id="jump"></nav>
   </section>
 
   <section class="d-stage wrap" aria-label="Demo">
-    <div class="grid" id="grid">
-
-      <article class="tile" id="e01" aria-labelledby="h01">
-        <header><span class="no" aria-hidden="true">01</span><h2 id="h01">Border Beam<span>邊緣流光</span></h2><p class="use">Point at the one recommended plan or new feature.</p></header>
-        <div class="stage night"><div class="center">
-          <div class="plans" id="beamPlans">
-            <div class="plan"><b>Starter</b><i>For trying it out</i><span class="p">$0<small>/mo</small></span><span class="pick">Choose</span></div>
-            <div class="plan rec"><span class="tag">Best</span><b>Studio</b><i>For solo makers</i><span class="p">$12<small>/mo</small></span><span class="pick">Upgrade</span></div>
-            <div class="plan"><b>Team</b><i>For small teams</i><span class="p">$29<small>/mo</small></span><span class="pick">Choose</span></div>
+    <div id="grid">
+<h2 class="grp" id="c-found">動效基礎 / Motion Foundations <small>45–47</small></h2>
+<div class="grid"><article class="tile" id="e45" aria-labelledby="h45">
+        <header><span class="no" aria-hidden="true">45</span><h2 id="h45">Easing<span>緩動</span></h2><p class="use">How speed changes. The rule behind all the others.</p></header>
+        <div class="stage">
+          <div class="ez" id="ez">
+            <div class="lane lin"><span class="tag">linear</span><div class="rail"><span class="note"><i></i><s></s></span></div></div>
+            <div class="lane sp out"><span class="tag">ease-out</span><div class="rail"><span class="note"><i></i><s></s></span></div></div>
+            <svg class="curve" viewBox="0 0 300 82" preserveAspectRatio="xMidYMid meet" aria-label="Speed over time: linear stays flat, ease-out starts fast and slows to a stop">
+              <text x="8" y="14">speed</text><text x="262" y="76">time</text>
+              <line x1="30" y1="44" x2="290" y2="44" stroke="#9BA3AE" stroke-width="2"/>
+              <path d="M30 12 C 110 40, 170 62, 290 66" fill="none" stroke="#5A40D4" stroke-width="2.5"/>
+            </svg>
           </div>
-        </div></div>
-        <footer><span class="hint">3.5s loop · linear · 1 per screen</span><button class="mini" type="button" id="beamBtn" aria-pressed="false">Pause</button></footer>
+        </div>
+        <footer><span class="hint">Enter ease-out · exit ease-in · loops linear</span><button class="mini" type="button" id="ezBtn">Play</button><a class="mini open" href="45-easing-and-timing.html">Open 45 →</a></footer>
       </article>
-
-      <article class="tile" id="e02" aria-labelledby="h02">
-        <header><span class="no" aria-hidden="true">02</span><h2 id="h02">Spotlight<span>聚光</span></h2><p class="use">Make a grid of feature cards feel alive.</p></header>
-        <div class="stage night"><div class="center">
-          <div class="spots" id="spots">
-            <div class="spot" tabindex="0"><span class="ic" aria-hidden="true">✦</span><b>Generate</b><span>Describe a page in one line, get all of it.</span></div>
-            <div class="spot" tabindex="0"><span class="ic" aria-hidden="true">◈</span><b>Secure</b><span>Encrypted data and role-based access.</span></div>
-            <div class="spot" tabindex="0"><span class="ic" aria-hidden="true">ϟ</span><b>Deploy</b><span>One click, served from the edge.</span></div>
+<article class="tile" id="e46" aria-labelledby="h46">
+        <header><span class="no" aria-hidden="true">46</span><h2 id="h46">Spring<span>彈性</span></h2><p class="use">Likes, toggles, sliders, playful moments.</p></header>
+        <div class="stage">
+          <div class="spr" id="spr">
+            <div class="lane"><span class="tag">ease-out</span><div class="rail"><span class="ball"></span></div></div>
+            <div class="lane sp"><span class="tag">spring</span><div class="rail"><span class="ball"></span></div></div>
+            <button class="like" type="button" id="like" aria-pressed="false" aria-label="Like, 128 likes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-8.6C1.2 8.3 3 5 6.2 5c2 0 3.2 1.1 3.8 2.2C10.6 6.1 11.8 5 13.8 5 17 5 18.8 8.3 17.2 11.4 15 15.6 12 20 12 20z" transform="translate(1.5 0)"/></svg><span id="likeN" aria-hidden="true">128</span></button>
           </div>
-        </div></div>
-        <footer><span class="hint">Glow follows pointer · focus centres it</span></footer>
+        </div>
+        <footer><span class="hint">Overshoot then settle · tap the heart</span><button class="mini" type="button" id="sprBtn">Play</button><a class="mini open" href="46-spring.html">Open 46 →</a></footer>
       </article>
-
-      <article class="tile" id="e03" aria-labelledby="h03">
-        <header><span class="no" aria-hidden="true">03</span><h2 id="h03">Tilt<span>3D 傾斜</span></h2><p class="use">Show off one physical-looking object.</p></header>
-        <div class="stage night"><div class="center tilt-scene">
-          <div class="tilt" id="tilt" tabindex="0" role="img" aria-label="Studio Pass membership card. Use arrow keys to tilt.">
-            <div class="t1"><span>STUDIO</span><span style="letter-spacing:.1em;font-size:12px">PASS</span></div>
-            <div class="chip"></div>
-            <div class="t2"><span>MEMBER · NO. 045</span><span>2026</span></div>
+<article class="tile" id="e47" aria-labelledby="h47">
+        <header><span class="no" aria-hidden="true">47</span><h2 id="h47">Stagger<span>錯峰</span></h2><p class="use">Grids, menus and lists entering together.</p></header>
+        <div class="stage">
+          <div class="stg in" id="stg">
+            <div class="col"><span>Together</span><div class="cells"></div></div>
+            <span class="sep" aria-hidden="true"></span>
+            <div class="col b"><span>One by one</span><div class="cells"></div></div>
           </div>
-        </div></div>
-        <footer><span class="hint">Max 10° · perspective 800px · spring back</span><button class="mini" type="button" id="tiltReset">Reset</button></footer>
-      </article>
-
-      <article class="tile" id="e04" aria-labelledby="h04">
-        <header><span class="no" aria-hidden="true">04</span><h2 id="h04">Scroll Storytelling<span>滾動敘事</span></h2><p class="use">Explain a product one feature at a time.</p></header>
+        </div>
+        <footer><span class="hint">70ms apart · whole run &lt; 500ms</span><button class="mini" type="button" id="stgBtn">Play</button><a class="mini open" href="47-stagger.html">Open 47 →</a></footer>
+      </article></div>
+<h2 class="grp" id="c-scroll">滾動動效 / Scroll <small>48–50</small></h2>
+<div class="grid"><article class="tile" id="e48" aria-labelledby="h48">
+        <header><span class="no" aria-hidden="true">48</span><h2 id="h48">Scroll Storytelling<span>滾動敘事</span></h2><p class="use">Explain a product one feature at a time.</p></header>
         <div class="stage">
           <div class="story" id="story" tabindex="0" aria-label="Scroll Storytelling demo, scroll to step through features">
             <div class="story-in">
@@ -359,27 +364,10 @@
           </div>
           <div class="story-progress" aria-hidden="true"><i id="sp"></i></div>
         </div>
-        <footer><span class="hint">Visual sticky · step swaps at 60% visible</span><span>Scroll inside ↕</span></footer>
+        <footer><span class="hint">Visual sticky · step swaps at 60% visible</span><span>Scroll inside ↕</span><a class="mini open" href="48-scroll-storytelling.html">Open 48 →</a></footer>
       </article>
-
-      <article class="tile" id="e05" aria-labelledby="h05">
-        <header><span class="no" aria-hidden="true">05</span><h2 id="h05">Scramble Text<span>亂碼解碼</span></h2><p class="use">Tech, AI or launch headlines.</p></header>
-        <div class="stage night"><div class="center">
-          <div class="term">
-            <div class="term-top"><i></i><i></i><i></i><span>decode.ts</span></div>
-            <div class="scr" id="scr" aria-label="Motion design, 2026, 16 effects" role="img">
-              <span class="l1" data-final="MOTION" aria-hidden="true">MOTION</span>
-              <span class="l2" data-final="DESIGN" aria-hidden="true">DESIGN</span>
-              <span class="l3" data-final="2026 · 16 EFFECTS" aria-hidden="true">2026 · 16 EFFECTS</span>
-            </div>
-            <div class="dec" aria-hidden="true"><span id="decLabel">● READY</span><span class="bar"><i id="decBar"></i></span><span class="pct" id="decPct">100%</span></div>
-          </div>
-        </div></div>
-        <footer><span class="hint">~1.2s · locks left to right</span><button class="mini" type="button" id="scrBtn">Replay</button></footer>
-      </article>
-
-      <article class="tile" id="e06" aria-labelledby="h06">
-        <header><span class="no" aria-hidden="true">06</span><h2 id="h06">Parallax<span>視差滾動</span></h2><p class="use">Give a layered hero real depth.</p></header>
+<article class="tile" id="e49" aria-labelledby="h49">
+        <header><span class="no" aria-hidden="true">49</span><h2 id="h49">Parallax<span>視差滾動</span></h2><p class="use">Give a layered hero real depth.</p></header>
         <div class="stage">
           <div class="para" id="para" tabindex="0" aria-label="Parallax demo, scroll to see layers move at different speeds">
             <div class="para-nav"><span>▲ Wildlands</span><span>Trails · Camps · Gear</span></div>
@@ -397,11 +385,40 @@
             </div>
           </div>
         </div>
-        <footer><span class="hint">Layers at 0.15 · 0.3 · 0.5 · 0 speed</span><span>Scroll inside ↕</span></footer>
+        <footer><span class="hint">Layers at 0.15 · 0.3 · 0.5 · 0 speed</span><span>Scroll inside ↕</span><a class="mini open" href="49-parallax.html">Open 49 →</a></footer>
       </article>
-
-      <article class="tile" id="e07" aria-labelledby="h07">
-        <header><span class="no" aria-hidden="true">07</span><h2 id="h07">Magnetic<span>磁吸</span></h2><p class="use">Pull attention to one primary call-to-action.</p></header>
+<article class="tile" id="e50" aria-labelledby="h50">
+        <header><span class="no" aria-hidden="true">50</span><h2 id="h50">Scroll Reveal<span>滾動出現</span></h2><p class="use">Lists, articles and feature sections.</p></header>
+        <div class="stage">
+          <div class="rv" id="rv" tabindex="0" aria-label="Scroll Reveal demo, scroll to reveal cards"></div>
+        </div>
+        <footer><span class="hint">Fade + rise 20px · 500ms · once</span><button class="mini" type="button" id="rvBtn">Reset</button><a class="mini open" href="50-scroll-reveal.html">Open 50 →</a></footer>
+      </article></div>
+<h2 class="grp" id="c-cursor">游標與懸停 / Cursor & Hover <small>51–54</small></h2>
+<div class="grid"><article class="tile" id="e51" aria-labelledby="h51">
+        <header><span class="no" aria-hidden="true">51</span><h2 id="h51">Spotlight<span>聚光</span></h2><p class="use">Make a grid of feature cards feel alive.</p></header>
+        <div class="stage night"><div class="center">
+          <div class="spots" id="spots">
+            <div class="spot" tabindex="0"><span class="ic" aria-hidden="true">✦</span><b>Generate</b><span>Describe a page in one line, get all of it.</span></div>
+            <div class="spot" tabindex="0"><span class="ic" aria-hidden="true">◈</span><b>Secure</b><span>Encrypted data and role-based access.</span></div>
+            <div class="spot" tabindex="0"><span class="ic" aria-hidden="true">ϟ</span><b>Deploy</b><span>One click, served from the edge.</span></div>
+          </div>
+        </div></div>
+        <footer><span class="hint">Glow follows pointer · focus centres it</span><a class="mini open" href="51-spotlight.html">Open 51 →</a></footer>
+      </article>
+<article class="tile" id="e52" aria-labelledby="h52">
+        <header><span class="no" aria-hidden="true">52</span><h2 id="h52">Tilt<span>3D 傾斜</span></h2><p class="use">Show off one physical-looking object.</p></header>
+        <div class="stage night"><div class="center tilt-scene">
+          <div class="tilt" id="tilt" tabindex="0" role="img" aria-label="Studio Pass membership card. Use arrow keys to tilt.">
+            <div class="t1"><span>STUDIO</span><span style="letter-spacing:.1em;font-size:12px">PASS</span></div>
+            <div class="chip"></div>
+            <div class="t2"><span>MEMBER · NO. 045</span><span>2026</span></div>
+          </div>
+        </div></div>
+        <footer><span class="hint">Max 10° · perspective 800px · spring back</span><button class="mini" type="button" id="tiltReset">Reset</button><a class="mini open" href="52-tilt.html">Open 52 →</a></footer>
+      </article>
+<article class="tile" id="e53" aria-labelledby="h53">
+        <header><span class="no" aria-hidden="true">53</span><h2 id="h53">Magnetic<span>磁吸</span></h2><p class="use">Pull attention to one primary call-to-action.</p></header>
         <div class="stage">
           <div class="mag-zone" id="magZone">
             <h3>Build your first product with AI</h3>
@@ -410,11 +427,37 @@
             <div class="mag" id="mag"><button class="btn btn-primary" type="button"><span class="lab">Start now →</span></button></div>
           </div>
         </div>
-        <footer><span class="hint">Radius 110px · 30% pull · desktop only</span></footer>
+        <footer><span class="hint">Radius 110px · 30% pull · desktop only</span><a class="mini open" href="53-magnetic.html">Open 53 →</a></footer>
       </article>
-
-      <article class="tile" id="e08" aria-labelledby="h08">
-        <header><span class="no" aria-hidden="true">08</span><h2 id="h08">Typewriter<span>打字機</span></h2><p class="use">AI assistants, search boxes, taglines.</p></header>
+<article class="tile" id="e54" aria-labelledby="h54">
+        <header><span class="no" aria-hidden="true">54</span><h2 id="h54">Hover Lift<span>懸停上浮</span></h2><p class="use">Product cards and clickable tiles.</p></header>
+        <div class="stage">
+          <div class="hl-row">
+            <a class="prod" href="#e54" style="--g:linear-gradient(135deg,#CFE0FF,#6E9BF2)"><span class="pic"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 36 H4Z" fill="#fff"/><path d="M20 14 L27 36 H13Z" fill="#25407A"/></svg></span><b>Camp tent</b><small>★ 4.8 · 2k sold</small><span class="pr">$129</span></a>
+            <a class="prod" href="#e54" style="--g:linear-gradient(135deg,#FCE1B7,#F2A66B)"><span class="pic"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="8" y="10" width="24" height="26" rx="7" fill="#fff"/><path d="M14 10 a6 6 0 0 1 12 0" fill="none" stroke="#fff" stroke-width="3"/><rect x="16" y="20" width="8" height="3" rx="1.5" fill="#E2622D"/></svg></span><b>Day pack</b><small>★ 4.8 · 2k sold</small><span class="pr">$69</span></a>
+            <a class="prod" href="#e54" style="--g:linear-gradient(135deg,#CBE7A6,#3F8F7A)"><span class="pic"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="15" y="4" width="10" height="6" rx="2" fill="#285B4E"/><rect x="12" y="9" width="16" height="28" rx="6" fill="#fff"/><rect x="12" y="17" width="16" height="5" fill="#9FE3CF"/></svg></span><b>Flask</b><small>★ 4.8 · 2k sold</small><span class="pr">$24</span></a>
+          </div>
+        </div>
+        <footer><span class="hint">Rise 6px · 180ms · press settles</span><a class="mini open" href="54-hover-lift.html">Open 54 →</a></footer>
+      </article></div>
+<h2 class="grp" id="c-text">文字動效 / Text & Type <small>55–57</small></h2>
+<div class="grid"><article class="tile" id="e55" aria-labelledby="h55">
+        <header><span class="no" aria-hidden="true">55</span><h2 id="h55">Scramble Text<span>亂碼解碼</span></h2><p class="use">Tech, AI or launch headlines.</p></header>
+        <div class="stage night"><div class="center">
+          <div class="term">
+            <div class="term-top"><i></i><i></i><i></i><span>decode.ts</span></div>
+            <div class="scr" id="scr" aria-label="Motion design, 2026, 16 effects" role="img">
+              <span class="l1" data-final="MOTION" aria-hidden="true">MOTION</span>
+              <span class="l2" data-final="DESIGN" aria-hidden="true">DESIGN</span>
+              <span class="l3" data-final="2026 · 16 EFFECTS" aria-hidden="true">2026 · 16 EFFECTS</span>
+            </div>
+            <div class="dec" aria-hidden="true"><span id="decLabel">● READY</span><span class="bar"><i id="decBar"></i></span><span class="pct" id="decPct">100%</span></div>
+          </div>
+        </div></div>
+        <footer><span class="hint">~1.2s · locks left to right</span><button class="mini" type="button" id="scrBtn">Replay</button><a class="mini open" href="55-scramble-text.html">Open 55 →</a></footer>
+      </article>
+<article class="tile" id="e56" aria-labelledby="h56">
+        <header><span class="no" aria-hidden="true">56</span><h2 id="h56">Typewriter<span>打字機</span></h2><p class="use">AI assistants, search boxes, taglines.</p></header>
         <div class="stage">
           <div class="tw">
             <div class="tw-top"><i></i><i></i><i></i><span>AI assistant</span></div>
@@ -422,11 +465,34 @@
             <div class="tw-input" aria-hidden="true"><span>Type your idea…</span><i>→</i></div>
           </div>
         </div>
-        <footer><span class="hint">55ms/char · hold 1.4s · delete 25ms</span><button class="mini" type="button" id="twBtn" aria-pressed="false">Pause</button></footer>
+        <footer><span class="hint">55ms/char · hold 1.4s · delete 25ms</span><button class="mini" type="button" id="twBtn" aria-pressed="false">Pause</button><a class="mini open" href="56-typewriter.html">Open 56 →</a></footer>
       </article>
-
-      <article class="tile" id="e09" aria-labelledby="h09">
-        <header><span class="no" aria-hidden="true">09</span><h2 id="h09">Marquee<span>跑馬燈</span></h2><p class="use">Logo walls, testimonials, “trusted by” strips.</p></header>
+<article class="tile" id="e57" aria-labelledby="h57">
+        <header><span class="no" aria-hidden="true">57</span><h2 id="h57">Count Up<span>數字滾動</span></h2><p class="use">Stats, KPIs and social proof.</p></header>
+        <div class="stage">
+          <div class="stats">
+            <div class="stat wide"><div><span class="k">Total users</span><span class="sr-only"> 10,000+</span><div class="v" aria-hidden="true" data-to="10000" data-suf="+">0</div></div>
+              <svg class="spark" viewBox="0 0 110 40" aria-hidden="true"><path d="M2 34 L18 30 L30 31 L44 24 L58 25 L72 17 L86 14 L98 12 L108 3" fill="none" stroke="#7B46E0" stroke-width="2"/></svg></div>
+            <div class="stat"><span class="k">Positive reviews</span><span class="sr-only"> 98%</span><div class="v" aria-hidden="true" data-to="98" data-suf="%">0</div><div class="meter"><i id="meter"></i></div></div>
+            <div class="stat"><span class="k">Average rating</span><span class="sr-only"> 4.9 out of 5</span><div class="v" aria-hidden="true" data-to="4.9" data-dec="1">0</div><span class="stars" aria-hidden="true">★★★★★</span></div>
+          </div>
+        </div>
+        <footer><span class="hint">1.4s · ease-out-expo · tabular nums</span><button class="mini" type="button" id="cuBtn">Replay</button><a class="mini open" href="57-count-up.html">Open 57 →</a></footer>
+      </article></div>
+<h2 class="grp" id="c-ambient">氛圍與吸睛 / Ambient & Attention <small>58–59</small></h2>
+<div class="grid"><article class="tile" id="e58" aria-labelledby="h58">
+        <header><span class="no" aria-hidden="true">58</span><h2 id="h58">Border Beam<span>邊緣流光</span></h2><p class="use">Point at the one recommended plan or new feature.</p></header>
+        <div class="stage night"><div class="center">
+          <div class="plans" id="beamPlans">
+            <div class="plan"><b>Starter</b><i>For trying it out</i><span class="p">$0<small>/mo</small></span><span class="pick">Choose</span></div>
+            <div class="plan rec"><span class="tag">Best</span><b>Studio</b><i>For solo makers</i><span class="p">$12<small>/mo</small></span><span class="pick">Upgrade</span></div>
+            <div class="plan"><b>Team</b><i>For small teams</i><span class="p">$29<small>/mo</small></span><span class="pick">Choose</span></div>
+          </div>
+        </div></div>
+        <footer><span class="hint">3.5s loop · linear · 1 per screen</span><button class="mini" type="button" id="beamBtn" aria-pressed="false">Pause</button><a class="mini open" href="58-border-beam.html">Open 58 →</a></footer>
+      </article>
+<article class="tile" id="e59" aria-labelledby="h59">
+        <header><span class="no" aria-hidden="true">59</span><h2 id="h59">Marquee<span>跑馬燈</span></h2><p class="use">Logo walls, testimonials, “trusted by” strips.</p></header>
         <div class="stage">
           <div class="mq" id="mq">
             <div class="row" style="--d:24s"><ul class="track" role="list" aria-label="Customers"></ul></div>
@@ -434,11 +500,11 @@
             <div class="row" style="--d:28s"><ul class="track" role="list" aria-label="More customers"></ul></div>
           </div>
         </div>
-        <footer><span class="hint">Linear · edge fade · pauses on hover</span><button class="mini" type="button" id="mqBtn" aria-pressed="false">Pause</button></footer>
-      </article>
-
-      <article class="tile" id="e10" aria-labelledby="h10">
-        <header><span class="no" aria-hidden="true">10</span><h2 id="h10">Shimmer<span>流光</span></h2><p class="use">Loading skeletons and a sheen on a promo button.</p></header>
+        <footer><span class="hint">Linear · edge fade · pauses on hover</span><button class="mini" type="button" id="mqBtn" aria-pressed="false">Pause</button><a class="mini open" href="59-marquee.html">Open 59 →</a></footer>
+      </article></div>
+<h2 class="grp" id="c-feedback">回饋與載入 / Feedback & Loading <small>60–60</small></h2>
+<div class="grid"><article class="tile" id="e60" aria-labelledby="h60">
+        <header><span class="no" aria-hidden="true">60</span><h2 id="h60">Shimmer<span>流光</span></h2><p class="use">Loading skeletons and a sheen on a promo button.</p></header>
         <div class="stage">
           <div class="sh-wrap">
             <div class="sk" id="sk" aria-busy="true" aria-live="polite">
@@ -448,81 +514,8 @@
             <button class="btn sheen" type="button">✦ Claim offer</button>
           </div>
         </div>
-        <footer><span class="hint">1.4s pass · aria-busy while loading</span><button class="mini" type="button" id="skBtn">Load content</button></footer>
-      </article>
-
-      <article class="tile" id="e11" aria-labelledby="h11">
-        <header><span class="no" aria-hidden="true">11</span><h2 id="h11">Count Up<span>數字滾動</span></h2><p class="use">Stats, KPIs and social proof.</p></header>
-        <div class="stage">
-          <div class="stats">
-            <div class="stat wide"><div><span class="k">Total users</span><span class="sr-only"> 10,000+</span><div class="v" aria-hidden="true" data-to="10000" data-suf="+">0</div></div>
-              <svg class="spark" viewBox="0 0 110 40" aria-hidden="true"><path d="M2 34 L18 30 L30 31 L44 24 L58 25 L72 17 L86 14 L98 12 L108 3" fill="none" stroke="#7B46E0" stroke-width="2"/></svg></div>
-            <div class="stat"><span class="k">Positive reviews</span><span class="sr-only"> 98%</span><div class="v" aria-hidden="true" data-to="98" data-suf="%">0</div><div class="meter"><i id="meter"></i></div></div>
-            <div class="stat"><span class="k">Average rating</span><span class="sr-only"> 4.9 out of 5</span><div class="v" aria-hidden="true" data-to="4.9" data-dec="1">0</div><span class="stars" aria-hidden="true">★★★★★</span></div>
-          </div>
-        </div>
-        <footer><span class="hint">1.4s · ease-out-expo · tabular nums</span><button class="mini" type="button" id="cuBtn">Replay</button></footer>
-      </article>
-
-      <article class="tile" id="e12" aria-labelledby="h12">
-        <header><span class="no" aria-hidden="true">12</span><h2 id="h12">Scroll Reveal<span>滾動出現</span></h2><p class="use">Lists, articles and feature sections.</p></header>
-        <div class="stage">
-          <div class="rv" id="rv" tabindex="0" aria-label="Scroll Reveal demo, scroll to reveal cards"></div>
-        </div>
-        <footer><span class="hint">Fade + rise 20px · 500ms · once</span><button class="mini" type="button" id="rvBtn">Reset</button></footer>
-      </article>
-
-      <article class="tile" id="e13" aria-labelledby="h13">
-        <header><span class="no" aria-hidden="true">13</span><h2 id="h13">Spring<span>彈性</span></h2><p class="use">Likes, toggles, sliders, playful moments.</p></header>
-        <div class="stage">
-          <div class="spr" id="spr">
-            <div class="lane"><span class="tag">ease-out</span><div class="rail"><span class="ball"></span></div></div>
-            <div class="lane sp"><span class="tag">spring</span><div class="rail"><span class="ball"></span></div></div>
-            <button class="like" type="button" id="like" aria-pressed="false" aria-label="Like, 128 likes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-8.6C1.2 8.3 3 5 6.2 5c2 0 3.2 1.1 3.8 2.2C10.6 6.1 11.8 5 13.8 5 17 5 18.8 8.3 17.2 11.4 15 15.6 12 20 12 20z" transform="translate(1.5 0)"/></svg><span id="likeN" aria-hidden="true">128</span></button>
-          </div>
-        </div>
-        <footer><span class="hint">Overshoot then settle · tap the heart</span><button class="mini" type="button" id="sprBtn">Play</button></footer>
-      </article>
-
-      <article class="tile" id="e14" aria-labelledby="h14">
-        <header><span class="no" aria-hidden="true">14</span><h2 id="h14">Stagger<span>錯峰</span></h2><p class="use">Grids, menus and lists entering together.</p></header>
-        <div class="stage">
-          <div class="stg in" id="stg">
-            <div class="col"><span>Together</span><div class="cells"></div></div>
-            <span class="sep" aria-hidden="true"></span>
-            <div class="col b"><span>One by one</span><div class="cells"></div></div>
-          </div>
-        </div>
-        <footer><span class="hint">70ms apart · whole run &lt; 500ms</span><button class="mini" type="button" id="stgBtn">Play</button></footer>
-      </article>
-
-      <article class="tile" id="e15" aria-labelledby="h15">
-        <header><span class="no" aria-hidden="true">15</span><h2 id="h15">Hover Lift<span>懸停上浮</span></h2><p class="use">Product cards and clickable tiles.</p></header>
-        <div class="stage">
-          <div class="hl-row">
-            <a class="prod" href="#e15" style="--g:linear-gradient(135deg,#CFE0FF,#6E9BF2)"><span class="pic"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 36 H4Z" fill="#fff"/><path d="M20 14 L27 36 H13Z" fill="#25407A"/></svg></span><b>Camp tent</b><small>★ 4.8 · 2k sold</small><span class="pr">$129</span></a>
-            <a class="prod" href="#e15" style="--g:linear-gradient(135deg,#FCE1B7,#F2A66B)"><span class="pic"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="8" y="10" width="24" height="26" rx="7" fill="#fff"/><path d="M14 10 a6 6 0 0 1 12 0" fill="none" stroke="#fff" stroke-width="3"/><rect x="16" y="20" width="8" height="3" rx="1.5" fill="#E2622D"/></svg></span><b>Day pack</b><small>★ 4.8 · 2k sold</small><span class="pr">$69</span></a>
-            <a class="prod" href="#e15" style="--g:linear-gradient(135deg,#CBE7A6,#3F8F7A)"><span class="pic"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="15" y="4" width="10" height="6" rx="2" fill="#285B4E"/><rect x="12" y="9" width="16" height="28" rx="6" fill="#fff"/><rect x="12" y="17" width="16" height="5" fill="#9FE3CF"/></svg></span><b>Flask</b><small>★ 4.8 · 2k sold</small><span class="pr">$24</span></a>
-          </div>
-        </div>
-        <footer><span class="hint">Rise 6px · 180ms · press settles</span></footer>
-      </article>
-
-      <article class="tile" id="e16" aria-labelledby="h16">
-        <header><span class="no" aria-hidden="true">16</span><h2 id="h16">Easing<span>緩動</span></h2><p class="use">How speed changes. The rule behind all the others.</p></header>
-        <div class="stage">
-          <div class="ez" id="ez">
-            <div class="lane lin"><span class="tag">linear</span><div class="rail"><span class="note"><i></i><s></s></span></div></div>
-            <div class="lane sp out"><span class="tag">ease-out</span><div class="rail"><span class="note"><i></i><s></s></span></div></div>
-            <svg class="curve" viewBox="0 0 300 82" preserveAspectRatio="none" aria-label="Speed over time: linear stays flat, ease-out starts fast and slows to a stop">
-              <text x="8" y="14">speed</text><text x="262" y="76">time</text>
-              <line x1="30" y1="44" x2="290" y2="44" stroke="#9BA3AE" stroke-width="2"/>
-              <path d="M30 12 C 110 40, 170 62, 290 66" fill="none" stroke="#5A40D4" stroke-width="2.5"/>
-            </svg>
-          </div>
-        </div>
-        <footer><span class="hint">Enter ease-out · exit ease-in · loops linear</span><button class="mini" type="button" id="ezBtn">Play</button></footer>
-      </article>
+        <footer><span class="hint">1.4s pass · aria-busy while loading</span><button class="mini" type="button" id="skBtn">Load content</button><a class="mini open" href="60-shimmer.html">Open 60 →</a></footer>
+      </article></div>
     </div>
 
     <section class="cheat" aria-labelledby="cheatH">
@@ -547,7 +540,7 @@
   </section>
 </main>
 
-<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/45-motion-essentials/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library" target="_blank" rel="noopener">Skills on GitHub</a></div></footer>
 
 <script>
 (() => {
@@ -584,7 +577,7 @@ applyMotion();
 })();
 
 /* Jump links */
-$('#jump').innerHTML = $$('.tile').map(t => `<a href="#${t.id}">${t.id.slice(1)} ${t.querySelector('h2').firstChild.textContent}</a>`).join('');
+$('#jump').innerHTML = $$('.grp').map(g => `<a href="#${g.id}">${g.textContent}</a>`).join('');
 
 /* Visibility: pause loops off screen, fire in-view effects */
 const onView = new Map();
@@ -685,7 +678,7 @@ function scramble() {
   scrRaf = requestAnimationFrame(tick);
 }
 let scrPlayed = false;
-onView.set($('#e05'), v => { if (v && !scrPlayed) { scrPlayed = true; scramble(); } });
+onView.set($('#e55'), v => { if (v && !scrPlayed) { scrPlayed = true; scramble(); } });
 $('#scrBtn').addEventListener('click', scramble);
 $('.term').addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') scramble(); });
 
@@ -735,9 +728,9 @@ function twStep() {
   else twN += twDel ? -1 : 1;
   twTimer = setTimeout(twStep, wait);
 }
-onView.set($('#e08'), v => { twVisible = v; twStep(); });
+onView.set($('#e56'), v => { twVisible = v; twStep(); });
 twBtn.addEventListener('click', () => { twPaused = !twPaused; twBtn.setAttribute('aria-pressed', String(twPaused)); twBtn.textContent = twPaused ? 'Play' : 'Pause'; twStep(); });
-document.addEventListener('visibilitychange', () => { twVisible = !document.hidden && $('#e08').classList.contains('vis'); twStep(); });
+document.addEventListener('visibilitychange', () => { twVisible = !document.hidden && $('#e56').classList.contains('vis'); twStep(); });
 document.addEventListener('motionchange', () => { twN = reduced() ? 999 : 0; twDel = false; twStep(); });
 
 /* 09 Marquee */
@@ -760,7 +753,7 @@ skBtn.addEventListener('click', () => {
 });
 
 /* 11 Count Up */
-const nums = $$('#e11 .v'); let cuRaf = 0;
+const nums = $$('#e57 .v'); let cuRaf = 0;
 const expo = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
 function countUp() {
   cancelAnimationFrame(cuRaf);
@@ -776,7 +769,7 @@ function countUp() {
   cuRaf = requestAnimationFrame(tick);
 }
 let cuPlayed = false;
-onView.set($('#e11'), v => { if (v && !cuPlayed) { cuPlayed = true; countUp(); } });
+onView.set($('#e57'), v => { if (v && !cuPlayed) { cuPlayed = true; countUp(); } });
 $('#cuBtn').addEventListener('click', countUp);
 
 /* 12 Scroll Reveal */

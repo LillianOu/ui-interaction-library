@@ -4,7 +4,7 @@ description: Use when letting users pick one option from a horizontal swipeable 
 ---
 # 03 — 滑動選擇 / Swipe Selection
 
-**Category:** 輸入與控制 / Input & Controls
+**Category:** 輸入與控制 / Inputs & Controls
 
 ## Effect
 

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>45 · Easing & Timing</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* 45 · Easing & Timing (緩動與時長). Interaction CSS for this demo only. */
+
+@property --beam{syntax:'<angle>';initial-value:0deg;inherits:false}
+:root{--night:#0E1122;--night-2:#161A33;--night-line:rgba(255,255,255,.1);--night-ink:#EEF0FF;--night-muted:#9AA0C8;--glow:#8C74FF;--glow-2:#3DCFEA;
+  --out:cubic-bezier(.2,.8,.2,1);--in:cubic-bezier(.4,0,1,1);--inout:cubic-bezier(.65,0,.35,1);--spring:cubic-bezier(.34,1.56,.64,1)}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px}
+.toolbar .btn{min-height:44px;font-size:15px}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.jump a{font-family:var(--f-mono);font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);text-decoration:none}
+.jump a:hover{color:var(--violet);border-color:var(--violet)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:14px}
+.tile{display:grid;grid-template-rows:auto 1fr auto;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden;scroll-margin-top:72px}
+.tile header{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center;padding:16px 18px 12px}
+.tile .no{grid-row:span 2;display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--violet);color:var(--on-fill);font-family:var(--f-display);font-weight:800;font-size:24px}
+.tile h2{font-size:18px;line-height:1.15}
+.tile h2 span{color:var(--muted);font-weight:600;font-size:15px;margin-left:6px}
+.tile .use{font-size:13.5px;color:var(--muted);line-height:1.35}
+.stage{position:relative;height:270px;margin:0 12px;border-radius:16px;overflow:hidden;background:linear-gradient(150deg,var(--cyan-soft),var(--violet-soft))}
+.stage.night{background:radial-gradient(120% 90% at 50% 0%,#1D2150,var(--night) 70%);color:var(--night-ink)}
+.tile footer{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:12px 18px 16px;font-size:13px;color:var(--muted)}
+.tile footer .hint{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em}
+.mini{font:600 13px/1 var(--f-body);min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.mini:hover{border-color:var(--violet);color:var(--violet)}
+.center{position:absolute;inset:0;display:grid;place-items:center;padding:16px}
+/* pause CSS loops when the tile is off screen */
+.tile:not(.vis) *, .tile:not(.vis) *::before, .tile:not(.vis) *::after{animation-play-state:paused!important}
+
+/* 16 Easing */
+.ez{position:absolute;inset:0;padding:14px 16px;display:grid;gap:8px;align-content:start;background:var(--surface)}
+.ez .lane .rail{height:40px}
+.note{position:absolute;left:0;top:0;width:96px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;gap:6px;padding:0 8px;box-shadow:0 6px 14px -10px rgba(0,0,0,.4)}
+.note i{width:22px;height:22px;border-radius:7px;background:#9BA3AE;flex:none}
+.note s{display:block;height:5px;border-radius:5px;background:var(--line);text-decoration:none;flex:1}
+.lane.out .note i{background:var(--violet)}
+.lane.lin .note{transition:transform 1s linear}
+.lane.out .note{transition:transform 1s var(--out)}
+.ez.on .note{transform:translateX(calc(100cqw - 96px))}
+.curve{width:100%;height:82px;border-radius:10px;border:1px solid var(--line)}
+.curve text{font:600 9px var(--f-mono);fill:var(--muted)}
+
+/* 13 Spring */
+.spr{position:absolute;inset:0;padding:18px 18px 14px;display:grid;align-content:space-between;background:var(--surface)}
+.lane{display:grid;gap:8px}
+.lane .tag{justify-self:start;font:600 11.5px var(--f-mono);padding:4px 9px;border-radius:999px;background:var(--bg);color:var(--muted)}
+.lane.sp .tag{background:var(--violet-soft);color:var(--violet)}
+.rail{position:relative;height:30px;container-type:inline-size}
+.rail::before{content:"";position:absolute;left:0;right:0;top:50%;height:6px;translate:0 -50%;border-radius:6px;background:var(--bg)}
+.ball{position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#9BA3AE 70%);box-shadow:0 6px 12px -6px rgba(0,0,0,.4);transition:transform .7s var(--out)}
+.lane.sp .ball{background:radial-gradient(circle at 35% 30%,#B8D2FF,#2F6BFF 70%);transition:transform .9s var(--springlin,var(--spring))}
+.spr.on .ball{transform:translateX(calc(100cqw - 30px))}
+.like{justify-self:start;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:14px;border:1px solid rgba(214,51,90,.25);background:#FFF0F3;color:#C21F4A;font:800 18px var(--f-body);cursor:pointer;min-height:48px}
+.like svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+.like[aria-pressed="true"] svg{fill:currentColor}
+
+/* Timing cheat sheet */
+.cheat{margin-top:28px;padding:20px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line)}
+.cheat h2{font-size:22px;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{text-align:left;padding:9px 8px;border-top:1px solid var(--line);vertical-align:top}
+.tbl th{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.tbl-wrap{overflow-x:auto}
+.rules{margin:14px 0 0;padding-left:20px;color:var(--muted);font-size:14.5px;display:grid;gap:4px}
+
+
+.single{max-width:640px;margin-inline:auto}
+.d-intro .lede a{color:var(--violet)}
+.single .stage{height:clamp(300px,62vw,380px)}
+.single .story{--h:clamp(300px,62vw,380px)}
+.single .tile{scroll-margin-top:0}
+.more{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:640px;margin:18px auto 0;font-size:14px;color:var(--muted)}
+.more a{font-family:var(--f-mono);font-size:12px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none}
+.more a[aria-current]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.more a:hover{border-color:var(--violet)}
+/* Reduced motion: page-level switch, set from the OS setting or the toolbar toggle */
+[data-motion="reduce"] .plan.rec::before{animation:none;background:linear-gradient(135deg,var(--glow),var(--glow-2))}
+[data-motion="reduce"] .tilt{transform:none!important}
+[data-motion="reduce"] .step,[data-motion="reduce"] .screen,[data-motion="reduce"] .screen .ring .fg{transition:none}
+[data-motion="reduce"] .para-hero .L{transform:none!important}
+[data-motion="reduce"] .mag{transform:none!important}
+[data-motion="reduce"] .mag .lab{transform:none!important}
+[data-motion="reduce"] .caret{animation:none}
+[data-motion="reduce"] .track{animation:none}
+[data-motion="reduce"] .row{overflow-x:auto}
+[data-motion="reduce"] .sk .b{animation:none}
+[data-motion="reduce"] .sheen::after{display:none}
+[data-motion="reduce"] .js .rv-card{opacity:1;transform:none;transition:none}
+[data-motion="reduce"] .ball,[data-motion="reduce"] .note,[data-motion="reduce"] .cell,[data-motion="reduce"] .prod{transition:none!important}
+[data-motion="reduce"] .prod:hover,[data-motion="reduce"] .prod:focus-visible{transform:none}
+[data-motion="reduce"] .spot::before{transition:none}
+
+@media (max-width:420px){
+  .stage{height:290px}
+  .tile h2 span{display:block;margin-left:0}
+  .plan{padding:10px 7px}.plan .p{font-size:24px}
+  .spot{padding:12px 8px}.spot span{font-size:11px}
+  .scr{font-size:28px}
+  .story-in{grid-template-columns:1fr 112px}
+}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="43-card-to-hero-carousel.html">Prev</a><a href="46-spring.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/45-easing-and-timing/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">45 · Motion · Motion Foundations 動效基礎</p>
+    <h1>Easing & Timing</h1>
+    <p class="zh">緩動與時長</p>
+    <p class="lede">How speed changes. The rule behind all the others. Part of the 16 motion essentials; see them all together on the <a href="motion-essentials.html">Motion Essentials showcase</a>.</p>
+    <div class="d-try"><span>Tap Play</span><span>Watch the two speeds</span><span>Trigger: Every animation</span></div>
+    <div class="toolbar"><button class="btn btn-ghost" type="button" id="motionBtn" aria-pressed="false">Preview reduced motion</button></div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="single">
+      <article class="tile" id="e45" aria-labelledby="h45">
+        <header><span class="no" aria-hidden="true">45</span><h2 id="h45">Easing<span>緩動</span></h2><p class="use">How speed changes. The rule behind all the others.</p></header>
+        <div class="stage">
+          <div class="ez" id="ez">
+            <div class="lane lin"><span class="tag">linear</span><div class="rail"><span class="note"><i></i><s></s></span></div></div>
+            <div class="lane sp out"><span class="tag">ease-out</span><div class="rail"><span class="note"><i></i><s></s></span></div></div>
+            <svg class="curve" viewBox="0 0 300 82" preserveAspectRatio="xMidYMid meet" aria-label="Speed over time: linear stays flat, ease-out starts fast and slows to a stop">
+              <text x="8" y="14">speed</text><text x="262" y="76">time</text>
+              <line x1="30" y1="44" x2="290" y2="44" stroke="#9BA3AE" stroke-width="2"/>
+              <path d="M30 12 C 110 40, 170 62, 290 66" fill="none" stroke="#5A40D4" stroke-width="2.5"/>
+            </svg>
+          </div>
+        </div>
+        <footer><span class="hint">Enter ease-out · exit ease-in · loops linear</span><button class="mini" type="button" id="ezBtn">Play</button></footer>
+      </article>
+    </div>
+    <nav class="more" aria-label="More in Motion Foundations"><span>More in Motion Foundations:</span><a href="45-easing-and-timing.html" aria-current="page">45 Easing & Timing</a><a href="46-spring.html">46 Spring</a><a href="47-stagger.html">47 Stagger</a></nav>
+    <div class="single" style="margin-top:18px"><section class="cheat" aria-labelledby="cheatH">
+      <h2 id="cheatH">Timing cheat sheet · 時長與緩動</h2>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>Size</th><th>Examples</th><th>Duration</th><th>Easing</th></tr></thead>
+        <tbody>
+          <tr><td>Micro</td><td>Hover, press, toggle</td><td>100–200ms</td><td>ease-out</td></tr>
+          <tr><td>Small</td><td>Tooltip, dropdown, toast</td><td>150–250ms</td><td>ease-out in, ease-in out</td></tr>
+          <tr><td>Medium</td><td>Panel, modal, card expand</td><td>250–400ms</td><td>ease-out or spring</td></tr>
+          <tr><td>Large</td><td>Page transition, hero</td><td>400–700ms</td><td>ease-in-out or spring</td></tr>
+          <tr><td>Ambient</td><td>Beam, marquee, shimmer</td><td>1.2–30s a cycle</td><td>linear, pausable</td></tr>
+        </tbody>
+      </table></div>
+      <ul class="rules">
+        <li>Exits run about 25% faster than entrances.</li>
+        <li>Stagger 40–80ms apart; keep the whole sequence under 500ms.</li>
+        <li>One hero effect per screen; every loop longer than 5s gets a pause.</li>
+        <li>Animate transform, opacity, filter, colour and shadow only.</li>
+      </ul>
+    </section></div>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>ui-interaction-library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/45-easing-and-timing/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+
+(() => {
+'use strict';
+const root = document.documentElement;
+root.classList.add('js');
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const mq = matchMedia('(prefers-reduced-motion: reduce)');
+const fine = matchMedia('(hover: hover) and (pointer: fine)');
+const motionBtn = $('#motionBtn');
+let forced = null;
+const reduced = () => root.dataset.motion === 'reduce';
+function applyMotion() {
+  const r = forced === null ? mq.matches : forced;
+  root.dataset.motion = r ? 'reduce' : 'full';
+  motionBtn.setAttribute('aria-pressed', String(r));
+  motionBtn.textContent = r ? 'Back to full motion' : 'Preview reduced motion';
+  document.dispatchEvent(new Event('motionchange'));
+}
+motionBtn.addEventListener('click', () => { forced = !reduced(); applyMotion(); });
+mq.addEventListener('change', () => { forced = null; applyMotion(); });
+applyMotion();
+
+/* Spring easing as CSS linear(), from a damped spring (stiffness 170, damping 14) */
+(function springEasing() {
+  if (!CSS.supports('transition-timing-function', 'linear(0, 1)')) return;
+  const k = 170, c = 14, m = 1, dt = 1 / 240; let x = 0, v = 0, t = 0; const pts = [];
+  while (t < 1.2) { const a = (-k * (x - 1) - c * v) / m; v += a * dt; x += v * dt; t += dt; pts.push(x); }
+  const n = 48, out = [];
+  for (let i = 0; i <= n; i++) out.push(pts[Math.min(pts.length - 1, Math.round(i / n * (pts.length - 1)))].toFixed(3));
+  out[n] = '1';
+  root.style.setProperty('--springlin', `linear(${out.join(', ')})`);
+})();
+
+/* Visibility: pause loops off screen, fire in-view effects */
+const onView = new Map();
+const io = new IntersectionObserver(es => es.forEach(e => {
+  e.target.classList.toggle('vis', e.isIntersecting);
+  const cb = onView.get(e.target); if (cb) cb(e.isIntersecting);
+}), { threshold: 0.25 });
+$$('.tile').forEach(t => io.observe(t));
+
+/* 16 Easing */
+$('#ezBtn').addEventListener('click', () => $('#ez').classList.toggle('on'));
+})();
+</script>
+</body>
+</html>

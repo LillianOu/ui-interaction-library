@@ -6,80 +6,156 @@ Each skill is an implementation recipe, not finished code. It tells you, or an A
 
 ## Catalogue / 目錄
 
-### 版面與導覽 / Layout & Navigation
+Sixty skills on four shelves. Each shelf holds a few categories, and every skill sits in exactly one category. Numbers are permanent IDs in the order skills were added, so they jump around inside a category; the folder for every skill stays flat in `skills/` so AI tools can find it.
 
-| No. | 中文 | English | Skill |
-| --- | --- | --- | --- |
-| 01 | 共享元素展開 | Shared Element Expansion | [`01-shared-element-expansion`](skills/01-shared-element-expansion/SKILL.md) |
-| 06 | 拖曳排序 | Drag to Reorder | [`06-drag-to-reorder`](skills/06-drag-to-reorder/SKILL.md) |
-| 07 | 拖曳展開與收合 | Drag to Expand & Collapse | [`07-drag-to-expand-and-collapse`](skills/07-drag-to-expand-and-collapse/SKILL.md) |
-| 30 | 後台菜單六式 | Dashboard Nav Patterns (Transparent Nav · Right Rail · Expanding Tab · Title as Nav · Icon Rail · Quick Actions) | [`30-dashboard-nav-patterns`](skills/30-dashboard-nav-patterns/SKILL.md) |
+| Shelf | Categories |
+| --- | --- |
+| 版面 / Layout | 導覽與視圖 Navigation & Views (5) · 網格與面板 Grids & Panels (5) |
+| 元件 / Components | 輸入與控制 Inputs & Controls (4) · 回饋與載入 Feedback & Loading (3) |
+| 動效 / Motion | 動效基礎 Motion Foundations (3) · 滾動動效 Scroll (5) · 游標與懸停 Cursor & Hover (7) · 文字動效 Text & Type (5) · 氛圍與吸睛 Ambient & Attention (3) |
+| 工具組 / Toolkits | 設計工具組 Design Toolkit (12) · 開發與工作流工具組 Dev & Workflow Toolkit (8) |
 
-### 輸入與控制 / Input & Controls
+### 版面 / Layout
 
-| No. | 中文 | English | Skill |
-| --- | --- | --- | --- |
-| 02 | 彈性數值調節 | Elastic Value Adjustment | [`02-elastic-value-adjustment`](skills/02-elastic-value-adjustment/SKILL.md) |
-| 03 | 滑動選擇 | Swipe Selection | [`03-swipe-selection`](skills/03-swipe-selection/SKILL.md) |
-| 05 | 浮動標籤 | Floating Label | [`05-floating-label`](skills/05-floating-label/SKILL.md) |
+How the page is arranged and how you move around it.
 
-### 回饋與狀態 / Feedback & State
+#### 導覽與視圖 / Navigation & Views
 
-| No. | 中文 | English | Skill |
-| --- | --- | --- | --- |
-| 04 | 動態狀態切換 | Animated State Transition | [`04-animated-state-transition`](skills/04-animated-state-transition/SKILL.md) |
-| 08 | 飛向目標的回饋 | Fly-to-Target Feedback | [`08-fly-to-target-feedback`](skills/08-fly-to-target-feedback/SKILL.md) |
+Moving between views and pages: expanding cards, sheets, tabs, menus, carousels.
 
-### 動態視覺效果 / Motion Effects
+| No. | 中文 | English | Trigger | Skill |
+| --- | --- | --- | --- | --- |
+| 01 | 共享元素展開 | Shared Element Expansion | Tap | [`01-shared-element-expansion`](skills/01-shared-element-expansion/SKILL.md) |
+| 07 | 拖曳展開與收合 | Drag to Expand & Collapse | Drag | [`07-drag-to-expand-and-collapse`](skills/07-drag-to-expand-and-collapse/SKILL.md) |
+| 27 | 檔案夾標籤頁 | Folder Tabs | Tap / keyboard | [`27-folder-tabs`](skills/27-folder-tabs/SKILL.md) |
+| 30 | 後台菜單六式 | Dashboard Nav Patterns (Transparent Nav · Right Rail · Expanding Tab · Title as Nav · Icon Rail · Quick Actions) | Tap / keyboard | [`30-dashboard-nav-patterns`](skills/30-dashboard-nav-patterns/SKILL.md) |
+| 43 | 卡片展開輪播 | Card-to-Hero Carousel | Click / tap / swipe | [`43-card-to-hero-carousel`](skills/43-card-to-hero-carousel/SKILL.md) |
+
+#### 網格與面板 / Grids & Panels
+
+Arranging and rearranging content: reorderable lists, reflowing grids, columns, rails, resizable splits.
+
+| No. | 中文 | English | Trigger | Skill |
+| --- | --- | --- | --- | --- |
+| 06 | 拖曳排序 | Drag to Reorder | Drag | [`06-drag-to-reorder`](skills/06-drag-to-reorder/SKILL.md) |
+| 24 | 點一格撐成通欄 | Expanding Grid | Tap / click | [`24-expanding-grid`](skills/24-expanding-grid/SKILL.md) |
+| 25 | 兩列錯速滾動 | Offset Columns | Scroll | [`25-offset-columns`](skills/25-offset-columns/SKILL.md) |
+| 26 | 左欄日期吸頂 | Sticky Date Rail | Scroll | [`26-sticky-date-rail`](skills/26-sticky-date-rail/SKILL.md) |
+| 29 | 拖動分屏比例 | Split View | Drag / keyboard | [`29-split-view`](skills/29-split-view/SKILL.md) |
+
+### 元件 / Components
+
+Things people touch, and what they get back.
+
+#### 輸入與控制 / Inputs & Controls
+
+Entering or choosing a value: fields, pickers, sliders, steppers, swipes.
+
+| No. | 中文 | English | Trigger | Skill |
+| --- | --- | --- | --- | --- |
+| 02 | 彈性數值調節 | Elastic Value Adjustment | Drag | [`02-elastic-value-adjustment`](skills/02-elastic-value-adjustment/SKILL.md) |
+| 03 | 滑動選擇 | Swipe Selection | Swipe | [`03-swipe-selection`](skills/03-swipe-selection/SKILL.md) |
+| 05 | 浮動標籤 | Floating Label | Type | [`05-floating-label`](skills/05-floating-label/SKILL.md) |
+| 28 | 圓泡堆疊選擇 | Bubble Picker | Tap / keyboard | [`28-bubble-picker`](skills/28-bubble-picker/SKILL.md) |
+
+#### 回饋與載入 / Feedback & Loading
+
+Confirming actions and showing loading, success, error or progress.
+
+| No. | 中文 | English | Trigger | Skill |
+| --- | --- | --- | --- | --- |
+| 04 | 動態狀態切換 | Animated State Transition | Tap | [`04-animated-state-transition`](skills/04-animated-state-transition/SKILL.md) |
+| 08 | 飛向目標的回饋 | Fly-to-Target Feedback | Tap | [`08-fly-to-target-feedback`](skills/08-fly-to-target-feedback/SKILL.md) |
+| 60 | 流光 | Shimmer | Loading / ambient | [`60-shimmer`](skills/60-shimmer/SKILL.md) |
+
+### 動效 / Motion
+
+Motion grouped by what triggers it. Start with Motion Foundations: its timing rules apply to every other entry.
+
+#### 動效基礎 / Motion Foundations
+
+The rules behind all motion: easing, duration, spring physics, stagger.
+
+| No. | 中文 | English | Trigger | Skill |
+| --- | --- | --- | --- | --- |
+| 45 | 緩動與時長 | Easing & Timing | Every animation | [`45-easing-and-timing`](skills/45-easing-and-timing/SKILL.md) |
+| 46 | 彈性 | Spring | Any state change | [`46-spring`](skills/46-spring/SKILL.md) |
+| 47 | 錯峰 | Stagger | Group entrance | [`47-stagger`](skills/47-stagger/SKILL.md) |
+
+#### 滾動動效 / Scroll
+
+Effects driven by scrolling: pinned stories, parallax, reveals, scroll-scrubbed transitions.
+
+| No. | 中文 | English | Trigger | Skill |
+| --- | --- | --- | --- | --- |
+| 10 | 滾動螺旋流動 | Scroll-driven Helix Flow | Scroll | [`10-scroll-helix-flow`](skills/10-scroll-helix-flow/SKILL.md) |
+| 12 | 滾動漩渦轉場 | Scroll-driven Vortex Transit | Scroll | [`12-scroll-vortex-transit`](skills/12-scroll-vortex-transit/SKILL.md) |
+| 48 | 滾動敘事 | Scroll Storytelling | Scroll | [`48-scroll-storytelling`](skills/48-scroll-storytelling/SKILL.md) |
+| 49 | 視差滾動 | Parallax | Scroll | [`49-parallax`](skills/49-parallax/SKILL.md) |
+| 50 | 滾動出現 | Scroll Reveal | In view | [`50-scroll-reveal`](skills/50-scroll-reveal/SKILL.md) |
+
+#### 游標與懸停 / Cursor & Hover
+
+Effects that follow or react to the pointer: glows, tilts, magnetic pulls, lifts, cursor-driven heroes.
 
 | No. | 中文 | English | Trigger | Skill |
 | --- | --- | --- | --- | --- |
 | 09 | 游標流光 | Cursor-driven Luminous Flow | Cursor | [`09-cursor-luminous-flow`](skills/09-cursor-luminous-flow/SKILL.md) |
-| 10 | 滾動螺旋流動 | Scroll-driven Helix Flow | Scroll | [`10-scroll-helix-flow`](skills/10-scroll-helix-flow/SKILL.md) |
-| 11 | 沉浸式漂浮 | Immersive Float | Click / tap | [`11-immersive-float`](skills/11-immersive-float/SKILL.md) |
-| 12 | 滾動漩渦轉場 | Scroll-driven Vortex Transit | Scroll | [`12-scroll-vortex-transit`](skills/12-scroll-vortex-transit/SKILL.md) |
 | 13 | 滑過開門綻放 | Hover-triggered Door Bloom | Hover / focus | [`13-hover-door-bloom`](skills/13-hover-door-bloom/SKILL.md) |
 | 14 | 游標驅動的動態主視覺 | Cursor-driven Animated Hero | Cursor / drag | [`14-cursor-driven-hero`](skills/14-cursor-driven-hero/SKILL.md) |
-| 43 | 卡片展開輪播 | Card-to-Hero Carousel | Click / tap / swipe | [`43-card-to-hero-carousel`](skills/43-card-to-hero-carousel/SKILL.md) |
-| 45 | 常用動效十六式 | 16 Essential Motion Effects (Border Beam · Spotlight · Tilt · Scroll Storytelling · Scramble Text · Parallax · Magnetic · Typewriter · Marquee · Shimmer · Count Up · Scroll Reveal · Spring · Stagger · Hover Lift · Easing) | Mixed | [`45-motion-essentials`](skills/45-motion-essentials/SKILL.md) |
+| 51 | 聚光 | Spotlight | Pointer move / focus | [`51-spotlight`](skills/51-spotlight/SKILL.md) |
+| 52 | 3D 傾斜 | Tilt | Pointer move / drag | [`52-tilt`](skills/52-tilt/SKILL.md) |
+| 53 | 磁吸 | Magnetic | Pointer near | [`53-magnetic`](skills/53-magnetic/SKILL.md) |
+| 54 | 懸停上浮 | Hover Lift | Hover / focus | [`54-hover-lift`](skills/54-hover-lift/SKILL.md) |
 
-### 排版互動 / Layout Relationships
+#### 文字動效 / Text & Type
 
-Eight interactions where pieces of a layout respond to each other: type opens onto images, cards make room, columns drift and panels trade space. Design the layout relationship first, then let the interaction move it.
+Headlines and numbers that move: knockout and inline-image type, scramble, typewriter, count up.
 
 | No. | 中文 | English | Trigger | Skill |
 | --- | --- | --- | --- | --- |
 | 22 | 鏤空大標題 | Knockout Title | Scroll | [`22-knockout-title`](skills/22-knockout-title/SKILL.md) |
 | 23 | 標題嵌小圖 | Inline Image Title | Tap / click | [`23-inline-image-title`](skills/23-inline-image-title/SKILL.md) |
-| 24 | 點一格撐成通欄 | Expanding Grid | Tap / click | [`24-expanding-grid`](skills/24-expanding-grid/SKILL.md) |
-| 25 | 兩列錯速滾動 | Offset Columns | Scroll | [`25-offset-columns`](skills/25-offset-columns/SKILL.md) |
-| 26 | 左欄日期吸頂 | Sticky Date Rail | Scroll | [`26-sticky-date-rail`](skills/26-sticky-date-rail/SKILL.md) |
-| 27 | 檔案夾標籤頁 | Folder Tabs | Tap / keyboard | [`27-folder-tabs`](skills/27-folder-tabs/SKILL.md) |
-| 28 | 圓泡堆疊選擇 | Bubble Picker | Tap / keyboard | [`28-bubble-picker`](skills/28-bubble-picker/SKILL.md) |
-| 29 | 拖動分屏比例 | Split View | Drag / keyboard | [`29-split-view`](skills/29-split-view/SKILL.md) |
+| 55 | 亂碼解碼 | Scramble Text | In view / hover | [`55-scramble-text`](skills/55-scramble-text/SKILL.md) |
+| 56 | 打字機 | Typewriter | In view / loop | [`56-typewriter`](skills/56-typewriter/SKILL.md) |
+| 57 | 數字滾動 | Count Up | In view | [`57-count-up`](skills/57-count-up/SKILL.md) |
 
-### 設計工具組 / Design Toolkit
+#### 氛圍與吸睛 / Ambient & Attention
 
-A crew of characters, each one a guide to the best open-source design skills for one job. Numbered in workflow order: sketch the flow, map the system, set the taste, gather references, build, produce, then inspect. Later additions take the next free number; 31 sits between taste and references in the workflow. Each crew member explains when to call the original skills and how to install them; it does not copy them.
+Self-running motion that sets a mood or points at one thing: floating scenes, border beams, marquees.
+
+| No. | 中文 | English | Trigger | Skill |
+| --- | --- | --- | --- | --- |
+| 11 | 沉浸式漂浮 | Immersive Float | Click / tap | [`11-immersive-float`](skills/11-immersive-float/SKILL.md) |
+| 58 | 邊緣流光 | Border Beam | Ambient loop | [`58-border-beam`](skills/58-border-beam/SKILL.md) |
+| 59 | 跑馬燈 | Marquee | Ambient loop | [`59-marquee`](skills/59-marquee/SKILL.md) |
+
+### 工具組 / Toolkits
+
+Character guides to other people's open-source skills; they credit and install the originals and copy nothing.
+
+#### 設計工具組 / Design Toolkit
+
+Guides to open-source design skills, one job each, numbered in workflow order.
 
 | No. | 中文 | English (powered by) | Job | Skill |
 | --- | --- | --- | --- | --- |
 | 15 | 松鼠草圖師 | Sketch Squirrel (Wireframer) | Lo-fi clickable wireframes | [`15-sketch-squirrel-wireframer`](skills/15-sketch-squirrel-wireframer/SKILL.md) |
 | 16 | 河狸藍圖師 | Blueprint Beaver (draw.io) | Editable system and flow diagrams | [`16-blueprint-beaver-drawio`](skills/16-blueprint-beaver-drawio/SKILL.md) |
 | 17 | 孔雀品味師 | Pearl Peacock (Taste Pack + Hallmark + Cinematic UI) | Visual direction for web and app UI without AI slop; strict anti-AI-look rules; film-directed pages; restyles; reference boards | [`17-pearl-peacock-taste-pack`](skills/17-pearl-peacock-taste-pack/SKILL.md) |
+| 31 | 變色龍換裝師 | Costume Chameleon (Awesome DESIGN.md + design-md-chrome) | Borrow a proven brand's design system as a DESIGN.md, or extract one from any site, then make it your own | [`31-costume-chameleon-awesome-design-md`](skills/31-costume-chameleon-awesome-design-md/SKILL.md) |
 | 18 | 喜鵲靈感庫 | Magpie Muse (UI UX Pro Max + UIZZE) | Palettes, fonts and real-screen references | [`18-magpie-muse-ui-references`](skills/18-magpie-muse-ui-references/SKILL.md) |
 | 19 | 螞蟻組件師 | Builder Ant (shadcn/ui) | Build with React components | [`19-builder-ant-shadcn`](skills/19-builder-ant-shadcn/SKILL.md) |
 | 20 | 章魚工作室 | Octo Studio (Huashu + Baoyu + Open Design) | Prototypes, decks and animations in one prompt; a full local design workspace | [`20-octo-studio-huashu-baoyu`](skills/20-octo-studio-huashu-baoyu/SKILL.md) |
-| 21 | 鷹眼質檢員 | Hawk Inspector (Quality Pack) | Standards, score, polish and motion check | [`21-hawk-inspector-quality-pack`](skills/21-hawk-inspector-quality-pack/SKILL.md) |
-| 31 | 變色龍換裝師 | Costume Chameleon (Awesome DESIGN.md + design-md-chrome) | Borrow a proven brand's design system as a DESIGN.md, or extract one from any site, then make it your own | [`31-costume-chameleon-awesome-design-md`](skills/31-costume-chameleon-awesome-design-md/SKILL.md) |
 | 32 | 燕子動效師 | Swift Swallow (GSAP Skills) | Scroll animation and timeline choreography in code | [`32-swift-swallow-gsap`](skills/32-swift-swallow-gsap/SKILL.md) |
 | 33 | 鵜鶘畫板師 | Canvas Pelican (PencilPlaybook) | Token-consistent screens on a Pencil.dev canvas | [`33-canvas-pelican-pencilplaybook`](skills/33-canvas-pelican-pencilplaybook/SKILL.md) |
 | 34 | 蜜蜂轉化師 | Buzz Bee (Landing Page Generator) | Landing page copy and structure that converts | [`34-buzz-bee-landing-page-generator`](skills/34-buzz-bee-landing-page-generator/SKILL.md) |
 | 35 | 螢火蟲大片師 | Glow Firefly (MotionSites Web Builder) | Cinematic heroes and landing pages with real video and a screenshot-and-fix loop; prompts for Lovable, Bolt and v0 | [`35-glow-firefly-motionsites`](skills/35-glow-firefly-motionsites/SKILL.md) |
+| 21 | 鷹眼質檢員 | Hawk Inspector (Quality Pack) | Standards, score, polish and motion check | [`21-hawk-inspector-quality-pack`](skills/21-hawk-inspector-quality-pack/SKILL.md) |
 
-### 開發與工作流工具組 / Dev & Workflow Toolkit
+#### 開發與工作流工具組 / Dev & Workflow Toolkit
 
-The same crew idea for building, testing and shipping: plan the work, shape the code, test it, drive a browser, make video, and find an audience. Picked from the skills.sh install top 10 of 2026-10-29; overlapping skills share one crew member, so ten skills become seven characters; 44 was added later. Each one credits and installs the originals; none are copied.
+Guides to open-source skills for planning, coding, testing, browsing, video and marketing.
 
 | No. | 中文 | English (powered by) | Job | Skill |
 | --- | --- | --- | --- | --- |
@@ -92,11 +168,11 @@ The same crew idea for building, testing and shipping: plan the work, shape the 
 | 42 | 狐獴瞭望員 | Meerkat Lookout (Reddit Automation) | Find real demand on Reddit and draft honest, disclosed replies | [`42-meerkat-lookout-reddit`](skills/42-meerkat-lookout-reddit/SKILL.md) |
 | 44 | 水獺片場師 | Studio Otter (OpenFilm) | Agent-made films you finish by hand in a real editor; ten built-in film styles; NLE export | [`44-studio-otter-openfilm`](skills/44-studio-otter-openfilm/SKILL.md) |
 
-Next number: **46**. Numbers 01–45 are all in use.
+Next number: **61**. Numbers 01–60 are all in use. New skills take the next number and join whichever category fits; see `CONTRIBUTING.md`.
 
 ## Live demo
 
-Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit (15–21, 31–35) and Dev & Workflow Toolkit (36–42, 44) skills are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the ten design skills they cover, showing which crew member carries each one.
+Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), skills 22–29 are shown together on `demo/returns-bench.html`, and the sixteen motion skills 45–60 are also shown side by side, grouped by category, on `demo/motion-essentials.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit (15–21, 31–35) and Dev & Workflow Toolkit (36–42, 44) skills are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the ten design skills they cover, showing which crew member carries each one.
 
 ## How to use
 

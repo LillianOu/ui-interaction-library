@@ -4,7 +4,7 @@ description: Use when a headline should carry a small rounded image inside the l
 ---
 # 23 — 標題嵌小圖 / Inline Image Title
 
-**Category:** 排版互動 / Layout Relationships
+**Category:** 文字動效 / Text & Type
 
 ## Effect
 
