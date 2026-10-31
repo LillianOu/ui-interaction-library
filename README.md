@@ -40,6 +40,7 @@ Each skill is an implementation recipe, not finished code. It tells you, or an A
 | 12 | 滾動漩渦轉場 | Scroll-driven Vortex Transit | Scroll | [`12-scroll-vortex-transit`](skills/12-scroll-vortex-transit/SKILL.md) |
 | 13 | 滑過開門綻放 | Hover-triggered Door Bloom | Hover / focus | [`13-hover-door-bloom`](skills/13-hover-door-bloom/SKILL.md) |
 | 14 | 游標驅動的動態主視覺 | Cursor-driven Animated Hero | Cursor / drag | [`14-cursor-driven-hero`](skills/14-cursor-driven-hero/SKILL.md) |
+| 43 | 卡片展開輪播 | Card-to-Hero Carousel | Click / tap / swipe | [`43-card-to-hero-carousel`](skills/43-card-to-hero-carousel/SKILL.md) |
 
 ### 排版互動 / Layout Relationships
 
@@ -89,7 +90,7 @@ The same crew idea for building, testing and shipping: plan the work, shape the 
 | 41 | 浣熊剪片師 | Reel Raccoon (HyperFrames Pack) | Video from web code, plus music, images and voiceover | [`41-reel-raccoon-hyperframes`](skills/41-reel-raccoon-hyperframes/SKILL.md) |
 | 42 | 狐獴瞭望員 | Meerkat Lookout (Reddit Automation) | Find real demand on Reddit and draft honest, disclosed replies | [`42-meerkat-lookout-reddit`](skills/42-meerkat-lookout-reddit/SKILL.md) |
 
-Next number: **43**. Numbers 01–42 are all in use.
+Next number: **44**. Numbers 01–43 are all in use.
 
 ## Live demo
 

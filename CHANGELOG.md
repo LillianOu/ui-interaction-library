@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.11.0] - 2026-10-31
+
+### Added
+
+- 43 Card-to-Hero Carousel (卡片展開輪播): a full-bleed hero with a queue of portrait cards; tapping a card grows it from its exact spot into the new background, the copy swaps with a stagger and the queue slides along with FLIP. Next grows, previous crossfades when its card is off screen, rapid taps stack, swipe and arrow keys work, live-region announcements, crossfade under reduced motion. Dependency-free reference demo at `demo/43-card-to-hero-carousel.html` with original generated scenes, linked between 14 and 30.
+
 ## [0.10.1] - 2026-10-31
 
 ### Added
