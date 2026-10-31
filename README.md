@@ -78,7 +78,7 @@ A crew of characters, each one a guide to the best open-source design skills for
 
 ### 開發與工作流工具組 / Dev & Workflow Toolkit
 
-The same crew idea for building, testing and shipping: plan the work, shape the code, test it, drive a browser, make video, and find an audience. Picked from the skills.sh install top 10 of 2026-10-29; overlapping skills share one crew member, so ten skills become seven characters. Each one credits and installs the originals; none are copied.
+The same crew idea for building, testing and shipping: plan the work, shape the code, test it, drive a browser, make video, and find an audience. Picked from the skills.sh install top 10 of 2026-10-29; overlapping skills share one crew member, so ten skills become seven characters; 44 was added later. Each one credits and installs the originals; none are copied.
 
 | No. | 中文 | English (powered by) | Job | Skill |
 | --- | --- | --- | --- | --- |
@@ -89,12 +89,13 @@ The same crew idea for building, testing and shipping: plan the work, shape the 
 | 40 | 雪貂操作員 | Ferret Fetcher (agent-browser) | Drive a real browser from a coding agent | [`40-ferret-fetcher-agent-browser`](skills/40-ferret-fetcher-agent-browser/SKILL.md) |
 | 41 | 浣熊剪片師 | Reel Raccoon (HyperFrames Pack) | Video from web code, plus music, images and voiceover | [`41-reel-raccoon-hyperframes`](skills/41-reel-raccoon-hyperframes/SKILL.md) |
 | 42 | 狐獴瞭望員 | Meerkat Lookout (Reddit Automation) | Find real demand on Reddit and draft honest, disclosed replies | [`42-meerkat-lookout-reddit`](skills/42-meerkat-lookout-reddit/SKILL.md) |
+| 44 | 水獺片場師 | Studio Otter (OpenFilm) | Agent-made films you finish by hand in a real editor; ten built-in film styles; NLE export | [`44-studio-otter-openfilm`](skills/44-studio-otter-openfilm/SKILL.md) |
 
-Next number: **44**. Numbers 01–43 are all in use.
+Next number: **45**. Numbers 01–44 are all in use.
 
 ## Live demo
 
-Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit (15–21, 31–35) and Dev & Workflow Toolkit (36–42) skills are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the ten design skills they cover, showing which crew member carries each one.
+Every interaction skill has a working demo in `demo/`. `demo/index.html` is the gallery; each skill has its own page named like its folder (for example `demo/07-drag-to-expand-and-collapse.html`), and skills 22–29 are shown together on `demo/returns-bench.html`. Deploy the repo on Vercel to browse them at a live link: `vercel.json` sends the site root to the gallery. Design Toolkit (15–21, 31–35) and Dev & Workflow Toolkit (36–42, 44) skills are guides, so they have no interaction demo; `demo/design-toolkit.html` is a visual field guide to the ten design skills they cover, showing which crew member carries each one.
 
 ## How to use
 
@@ -106,7 +107,7 @@ Every interaction skill has a working demo in `demo/`. `demo/index.html` is the 
 
 **By hand:** open a `SKILL.md` and paste its copy-ready prompt into any AI coding tool.
 
-**Design and Dev & Workflow crews (15–21, 31–42):** install the crew member as above, then install the originals it names with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call a character by name, for example "Ask Hawk Inspector to check this page."
+**Design and Dev & Workflow crews (15–21, 31–42, 44):** install the crew member as above, then install the originals it names with the commands in its `SKILL.md` (31 installs a `DESIGN.md` file into your project rather than a skill). Call a character by name, for example "Ask Hawk Inspector to check this page."
 
 ## Repository layout
 

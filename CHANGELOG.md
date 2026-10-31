@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.12.0] - 2026-10-31
+
+### Added
+
+- 44 Studio Otter (水獺片場師): guide to OpenFilm's openfilm skill (MIT), the open-source AI video agent where a coding agent writes a film as web pages and Studio, a local editor, lets you change it by hand. Routes to its built-in film styles and its look/render/get commands, notes the overlap with 41 Reel Raccoon, Flip Fox and Director Crane, and the OpenFilm trademark terms. Written in our own words; nothing copied.
+
 ## [0.11.0] - 2026-10-31
 
 ### Added
