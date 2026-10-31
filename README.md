@@ -39,7 +39,7 @@ Each skill is an implementation recipe, not finished code. It tells you, or an A
 | 11 | 沉浸式漂浮 | Immersive Float | Click / tap | [`11-immersive-float`](skills/11-immersive-float/SKILL.md) |
 | 12 | 滾動漩渦轉場 | Scroll-driven Vortex Transit | Scroll | [`12-scroll-vortex-transit`](skills/12-scroll-vortex-transit/SKILL.md) |
 | 13 | 滑過開門綻放 | Hover-triggered Door Bloom | Hover / focus | [`13-hover-door-bloom`](skills/13-hover-door-bloom/SKILL.md) |
-| 14 | 游標驅動主視覺 | Cursor-driven Hero | Cursor / drag | [`14-cursor-driven-hero`](skills/14-cursor-driven-hero/SKILL.md) |
+| 14 | 游標驅動的動態主視覺 | Cursor-driven Animated Hero | Cursor / drag | [`14-cursor-driven-hero`](skills/14-cursor-driven-hero/SKILL.md) |
 
 ### 排版互動 / Layout Relationships
 

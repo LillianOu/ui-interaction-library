@@ -6,7 +6,7 @@ All notable updates to this library are recorded here.
 
 ### Added
 
-- 14 Cursor-driven Hero (游標驅動主視覺): layered parallax hero with a spotlight that reveals a second layer; touch drift and drag, keyboard focus moves the spotlight, static under reduced motion. Fills the number that had been reserved, so 01–42 now run without gaps. Demo at `demo/14-cursor-driven-hero.html`, linked between 13 and 30.
+- 14 Cursor-driven Animated Hero (游標驅動的動態主視覺): layered parallax hero with a spotlight that reveals a second layer; touch drift and drag, keyboard focus moves the spotlight, static under reduced motion. Fills the number that had been reserved, so 01–42 now run without gaps. Demo at `demo/14-cursor-driven-hero.html`, linked between 13 and 30.
 
 ## [0.10.0] - 2026-10-31
 

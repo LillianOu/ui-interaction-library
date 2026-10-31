@@ -2,7 +2,7 @@
 name: 14-cursor-driven-hero
 description: Use when a landing page or portfolio hero should feel alive under the cursor without hiding its message. Layered parallax depth plus a soft spotlight that reveals a second layer, with touch, keyboard and reduced-motion fallbacks.
 ---
-# 14 — 游標驅動主視覺 / Cursor-driven Hero
+# 14 — 游標驅動的動態主視覺 / Cursor-driven Animated Hero
 
 **Category:** 動態視覺效果 / Motion Effects
 
