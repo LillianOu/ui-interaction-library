@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.17.1] - 2026-11-02
+
+### Fixed
+
+- Removed the last character names from skill text: Video-03 now points to Video-01 HyperFrames Video and Video-04 Remotion Shotcraft by ID and real name, and Design-07 says "this library" instead of "this crew".
+
 ## [0.17.0] - 2026-11-02
 
 ### Added

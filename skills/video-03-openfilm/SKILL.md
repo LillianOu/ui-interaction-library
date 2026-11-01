@@ -51,7 +51,7 @@ Requirements: Node.js 22.2+ and FFmpeg, plus git for saved versions; the first r
 
 ## Watch-outs
 
-- **Overlaps with Video-02 HyperFrames and Video-01 HyperFrames Video, and with Video-04 Remotion Shotcraft.** All make video from web code. Pick OpenFilm when you will edit by hand or need an NLE handoff; pick HyperFrames or Flip Fox for the tested HyperFrames workflow; pick Director Crane for its shot-by-shot product promos. Load one video skill per session so agents do not mix formats.
+- **Overlaps with Video-02 HyperFrames and Video-01 HyperFrames Video, and with Video-04 Remotion Shotcraft.** All make video from web code. Pick OpenFilm when you will edit by hand or need an NLE handoff; pick Video-01 HyperFrames Video for the tested HyperFrames workflow; pick Video-04 Remotion Shotcraft for its shot-by-shot product promos. Load one video skill per session so agents do not mix formats.
 - Very new: launched in October 2026 and patching daily (0.1.x). Pin a version for client work and re-run `openfilm doctor` after updates.
 - The one rule every shot must keep: the same moment always draws the same picture. Shots that rely on timers, random values or live data will flicker or differ between renders; `look` is how you catch it.
 - Generated video clips are the expensive part; Studio asks you to confirm each one. Check every generated asset's licence before publishing.

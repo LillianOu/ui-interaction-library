@@ -59,7 +59,7 @@ Requirements: Node to run the installer. `huashu-design` uses Python 3 and Playw
 ## Watch-outs
 
 - Open Design is a large, fast-moving product (dozens of releases, hundreds of bundled skills). It is the right choice when you want one place for many deliverables; for a single deck or prototype, a skill is lighter. Some reliability telemetry is always on; check its privacy settings before using it with client work.
-- A community "Claude Design Skill" (jiji262/claude-design-skill) is often listed alongside these. Its own README says it is a restructured copy of the system prompt of Anthropic's hosted Claude Design product, whose content belongs to Anthropic, so it does not meet this crew's open-licence rule and is not wrapped here. Claude apps already include Claude Design itself; use that.
+- A community "Claude Design Skill" (jiji262/claude-design-skill) is often listed alongside these. Its own README says it is a restructured copy of the system prompt of Anthropic's hosted Claude Design product, whose content belongs to Anthropic, so it does not meet this library's open-licence rule and is not wrapped here. Claude apps already include Claude Design itself; use that.
 - huashu-design and baoyu-design overlap heavily. Install both, but call one by name per job, or they will both try to answer "make a deck".
 - For flip-style video reels, Video-01 HyperFrames Video is the tested route; use Huashu + Baoyu for decks and prototypes.
 - These are presentation artefacts. Rebuild anything that ships to real users with Design-06 shadcn/ui and check it with Design-13 Quality Pack.
