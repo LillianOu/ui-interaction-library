@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.17.0] - 2026-11-02
+
+### Added
+
+- UI-41 ASCII Sharks (ASCII 鯊魚海洋), Ambient & Attention: a living ASCII ocean of fish schools and hunting sharks behind a hero, built on stackedlol/ascii-sharks (MIT, commit a0074c1). Skill recipe plus demo page `demo/ui-41-ascii-sharks.html`; the engine is bundled unchanged with its MIT notice in `demo/assets/vendor/ascii-sharks.min.js`.
+
 ## [0.16.1] - 2026-11-01
 
 ### Removed

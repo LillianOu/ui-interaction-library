@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UI-41 · ASCII Sharks</title>
+<link rel="stylesheet" href="assets/demo.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@600&display=swap">
+<style>
+/* UI-41 · ASCII Sharks (ASCII 鯊魚海洋). Interaction CSS for this demo only. */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px}
+.toolbar .btn{min-height:44px;font-size:15px}
+.toolbar select{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 15px var(--f-body)}
+
+.ocean{position:relative;border-radius:28px;overflow:hidden;background:#000;min-height:clamp(420px,70vh,720px);border:1px solid var(--line)}
+.ocean canvas{position:absolute;inset:0;display:block;width:100%;height:100%;font-family:"Geist Mono",ui-monospace,Menlo,monospace}
+.hero{position:relative;z-index:1;display:grid;place-items:center;min-height:inherit;padding:24px;pointer-events:none}
+.card{max-width:520px;text-align:center;padding:clamp(20px,4vw,36px);border-radius:22px;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#EEF2F6}
+.card p.k{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8FE3F2;margin:0 0 10px}
+.card h2{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,7vw,60px);line-height:.95;margin:0 0 12px}
+.card .sub{color:#B9C3CC;font-size:16px;line-height:1.45;margin:0 0 20px}
+.card .btn{pointer-events:auto;background:#EEF2F6;color:#000}
+.pause{position:absolute;z-index:2;right:14px;bottom:14px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.6);color:#EEF2F6;font:600 14px var(--f-body);cursor:pointer}
+.pause:focus-visible,.card .btn:focus-visible{outline:3px solid #8FE3F2;outline-offset:3px}
+.credit{margin:12px auto 0;max-width:640px;font-size:13px;color:var(--muted);text-align:center}
+.credit a{color:inherit}
+
+.more{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:640px;margin:18px auto 0;font-size:14px;color:var(--muted)}
+.more a{font-family:var(--f-mono);font-size:12px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none}
+.more a[aria-current]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.more a:hover{border-color:var(--violet)}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="ui-40-shimmer.html">Prev</a><a href="ui-23-dashboard-nav-patterns.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/ui-41-ascii-sharks/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">UI-41 · Motion · Ambient & Attention 氛圍與吸睛</p>
+    <h1>ASCII Sharks</h1>
+    <p class="zh">ASCII 鯊魚海洋</p>
+    <p class="lede">A living ocean drawn in monospace characters. Fish school and scatter, sharks hunt the stragglers. Move your mouse through a school, or click to splash.</p>
+    <div class="d-try"><span>Mouse: fish flee</span><span>Click / tap: splash</span><span>Pause button</span><span>Trigger: Ambient loop</span></div>
+    <div class="toolbar">
+      <label class="sr-only" for="kinds">Sharks</label>
+      <select id="kinds">
+        <option value="">Four classics</option>
+        <option value="hammerhead,mako,classic">Hammerhead · Mako · Classic</option>
+        <option value="thresher,tiger,nurse">Thresher · Tiger · Nurse</option>
+        <option value="greathammer,zebra">Great Hammer · Zebra</option>
+      </select>
+    </div>
+  </section>
+  <section class="d-stage wrap" aria-label="Demo">
+    <div class="ocean">
+      <canvas id="sea" aria-hidden="true"></canvas>
+      <div class="hero">
+        <div class="card">
+          <p class="k">// hero background</p>
+          <h2>Deep work, live.</h2>
+          <p class="sub">Your headline sits on a scrim so it stays readable while the ocean moves behind it.</p>
+          <a class="btn" href="#">Get started</a>
+        </div>
+      </div>
+      <button class="pause" type="button" id="pauseBtn" aria-pressed="false">Pause</button>
+    </div>
+    <p class="credit">Engine: <a href="https://github.com/stackedlol/ascii-sharks" target="_blank" rel="noopener">stackedlol/ascii-sharks</a> (MIT), bundled unchanged.</p>
+    <nav class="more" aria-label="More in Ambient & Attention"><span>More in Ambient & Attention:</span><a href="ui-11-immersive-float.html">UI-11 Immersive Float</a><a href="ui-38-border-beam.html">UI-38 Border Beam</a><a href="ui-39-marquee.html">UI-39 Marquee</a><a href="ui-41-ascii-sharks.html" aria-current="page">UI-41 ASCII Sharks</a></nav>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>Skill Library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/ui-41-ascii-sharks/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script src="assets/vendor/ascii-sharks.min.js"></script>
+<script>
+(() => {
+'use strict';
+const canvas = document.getElementById('sea');
+const pauseBtn = document.getElementById('pauseBtn');
+const kinds = document.getElementById('kinds');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+let engine = null;
+let paused = false;
+
+function spec() {
+  const v = kinds.value;
+  return v ? v.split(',').map((kind, i) => ({ kind, size: 1 - i * 0.15 })) : undefined;
+}
+function start() {
+  if (engine) engine.destroy();
+  engine = new AsciiSharks.OceanEngine(canvas, spec());
+}
+function setPaused(p) {
+  paused = p;
+  pauseBtn.setAttribute('aria-pressed', String(p));
+  pauseBtn.textContent = p ? 'Play' : 'Pause';
+  if (p) { engine && engine.destroy(); engine = null; } else start();
+}
+function syncReduce() { pauseBtn.hidden = reduce.matches; }
+
+pauseBtn.addEventListener('click', () => setPaused(!paused));
+kinds.addEventListener('change', () => { if (!paused) start(); });
+reduce.addEventListener('change', syncReduce);
+document.querySelector('.card .btn').addEventListener('click', e => e.preventDefault());
+
+syncReduce();
+start();
+})();
+</script>
+</body>
+</html>
