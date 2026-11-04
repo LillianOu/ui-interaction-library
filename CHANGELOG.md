@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.18.0] - 2026-11-04
+
+### Added
+
+- UI-42 Neumorphic Controls (新擬態元件六式), Inputs & Controls: six soft-UI controls on one surface — light switch, thermostat dial, media player, file upload, booking picker and quantity stepper — each with press-sink-and-spring-back feedback, contrast rules, keyboard support and reduced-motion handling. Skill recipe with bilingual prompt terms, plus demo page `demo/ui-42-neumorphic-controls.html`.
+
 ## [0.17.1] - 2026-11-02
 
 ### Fixed

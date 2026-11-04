@@ -6,7 +6,7 @@ Every skill Lilian O. uses, in one place, sorted by category. Each entry is a se
 
 ```
 Skill Library
-├── 1. UI Library        effects you put into pages and apps       UI-01 … UI-41
+├── 1. UI Library        effects you put into pages and apps       UI-01 … UI-42
 ├── 2. Tool Library      tools you use to make things
 │   ├── Design                                                      Design-01 … Design-13
 │   ├── Dev & Workflow                                              Dev-01 … Dev-06
@@ -24,7 +24,7 @@ Reusable interactions and motion effects. Each is an implementation recipe with 
 | Shelf | Categories |
 | --- | --- |
 | 版面 / Layout | 導覽與視圖 Navigation & Views (5) · 網格與面板 Grids & Panels (5) |
-| 元件 / Components | 輸入與控制 Inputs & Controls (4) · 回饋與載入 Feedback & Loading (3) |
+| 元件 / Components | 輸入與控制 Inputs & Controls (5) · 回饋與載入 Feedback & Loading (3) |
 | 動效 / Motion | 動效基礎 Motion Foundations (3) · 滾動動效 Scroll (5) · 游標與懸停 Cursor & Hover (7) · 文字動效 Text & Type (5) · 氛圍與吸睛 Ambient & Attention (4) |
 
 ### 版面 / Layout
@@ -69,6 +69,7 @@ Entering or choosing a value: fields, pickers, sliders, steppers, swipes.
 | UI-03 | 滑動選擇 | Swipe Selection | Swipe | [`ui-03-swipe-selection`](skills/ui-03-swipe-selection/SKILL.md) |
 | UI-05 | 浮動標籤 | Floating Label | Type | [`ui-05-floating-label`](skills/ui-05-floating-label/SKILL.md) |
 | UI-21 | 圓泡堆疊選擇 | Bubble Picker | Tap / keyboard | [`ui-21-bubble-picker`](skills/ui-21-bubble-picker/SKILL.md) |
+| UI-42 | 新擬態元件六式 | Neumorphic Controls (Light Switch · Thermostat Dial · Media Player · File Upload · Booking · Quantity Stepper) | Press / drag / keyboard | [`ui-42-neumorphic-controls`](skills/ui-42-neumorphic-controls/SKILL.md) |
 
 #### 回饋與載入 / Feedback & Loading
 
@@ -206,7 +207,7 @@ Links to check, not skills.
 
 | Category | Next |
 | --- | --- |
-| UI | UI-42 |
+| UI | UI-43 |
 | Design | Design-14 |
 | Dev & Workflow | Dev-07 |
 | Video & Media | Video-06 |

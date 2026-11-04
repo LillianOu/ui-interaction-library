@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UI-42 · Neumorphic Controls</title>
+<link rel="stylesheet" href="assets/demo.css">
+<style>
+/* UI-42 · Neumorphic Controls (新擬態元件六式). Interaction CSS for this demo only. */
+:root{
+  --nm-bg:#E7ECF2; --nm-hi:#FFFFFF; --nm-lo:#A9B6C7; --nm-ink:#2A323C; --nm-muted:#56606C;
+  --raise:8px 8px 18px var(--nm-lo),-8px -8px 18px var(--nm-hi);
+  --raise-sm:4px 4px 9px var(--nm-lo),-4px -4px 9px var(--nm-hi);
+  --sink:inset 6px 6px 12px var(--nm-lo),inset -6px -6px 12px var(--nm-hi);
+  --sink-sm:inset 3px 3px 6px var(--nm-lo),inset -3px -3px 6px var(--nm-hi);
+  --sage:#6E9A68; --lav:#8A74C4; --copper:#B2733F; --teal:#2F7F89; --leaf:#7DAE68; --rose:#B0546F;
+  --spring:cubic-bezier(.34,1.56,.64,1); --out:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --nm-bg:#20252C; --nm-hi:#2C333C; --nm-lo:#14181D; --nm-ink:#E6EBF0; --nm-muted:#A4AEB9;
+  --raise:6px 6px 14px var(--nm-lo),-6px -6px 14px var(--nm-hi); --raise-sm:3px 3px 7px var(--nm-lo),-3px -3px 7px var(--nm-hi);
+  --sink:inset 5px 5px 10px var(--nm-lo),inset -5px -5px 10px var(--nm-hi); --sink-sm:inset 3px 3px 6px var(--nm-lo),inset -3px -3px 6px var(--nm-hi);
+  --sage:#93C08C; --lav:#B3A2EA; --copper:#DC9C68; --teal:#5DB7C2; --leaf:#A3D38E; --rose:#E08AA3 }}
+
+body{background:var(--nm-bg)}
+.d-top{background:color-mix(in srgb,var(--nm-bg) 82%,transparent)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.toolbar .btn{min-height:44px;font-size:15px}
+
+.nm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:28px}
+.nm-card{--acc:var(--sage);position:relative;display:grid;grid-template-rows:auto 1fr auto;gap:14px;min-height:360px;padding:24px 24px 22px;border-radius:30px;background:var(--nm-bg);box-shadow:var(--raise);color:var(--nm-ink);scroll-margin-top:72px}
+.nm-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font:600 12px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--nm-muted)}
+.nm-head b{color:var(--nm-ink);font-weight:600}
+.nm-head .live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--acc);margin-right:7px;vertical-align:1px}
+.nm-body{display:grid;place-items:center;align-content:center;gap:18px;text-align:center}
+.nm-foot{font-size:15px;color:var(--nm-muted)}
+.nm-foot span{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-top:4px;opacity:.85}
+.status{font-weight:600;font-size:16px;min-height:1.5em}
+.nm-card :focus-visible{outline:3px solid var(--acc);outline-offset:4px}
+
+/* shared press feel */
+.press{transition:box-shadow .16s var(--out),transform .28s var(--spring)}
+.press.down{box-shadow:var(--sink-sm)!important;transform:scale(.97)}
+
+/* 01 switch */
+.sw{width:156px;height:76px;border-radius:999px;border:0;padding:0;background:var(--nm-bg);box-shadow:var(--sink);cursor:pointer;position:relative;touch-action:manipulation}
+.sw .knob{position:absolute;top:10px;left:10px;width:56px;height:56px;border-radius:50%;background:var(--nm-bg);box-shadow:var(--raise-sm);transition:transform .42s var(--spring),background-color .3s}
+.sw[aria-checked="true"] .knob{transform:translateX(80px);background:var(--acc)}
+.sw.down .knob{transform:scale(.92)}
+.sw.down[aria-checked="true"] .knob{transform:translateX(80px) scale(.92)}
+.sw.down{box-shadow:inset 9px 9px 16px var(--nm-lo),inset -9px -9px 16px var(--nm-hi)}
+
+/* 02 dial */
+.dial-wrap{position:relative;width:200px;height:200px;touch-action:none}
+.dial-wrap svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.dial{position:absolute;inset:22px;border-radius:50%;background:var(--nm-bg);box-shadow:var(--raise);display:grid;place-items:center;cursor:grab}
+.dial:active{cursor:grabbing}
+.dial .num{font:500 52px/1 var(--f-body);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.dial .num sup{font-size:18px;vertical-align:28px;margin-left:2px}
+.arc-bg{fill:none;stroke:var(--nm-lo);stroke-opacity:.35;stroke-width:6;stroke-linecap:round}
+.arc{fill:none;stroke:var(--acc);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .12s linear}
+.tick{stroke:var(--nm-muted);stroke-width:1.4;stroke-linecap:round;opacity:.7}
+.dot{fill:var(--acc)}
+.range{width:min(100%,250px);accent-color:var(--acc)}
+.range{-webkit-appearance:none;appearance:none;height:12px;border-radius:999px;background:var(--nm-bg);box-shadow:var(--sink-sm)}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--nm-bg);border:4px solid var(--acc);box-shadow:var(--raise-sm);cursor:pointer}
+.range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--nm-bg);border:4px solid var(--acc);box-shadow:var(--raise-sm);cursor:pointer}
+
+/* 03 player */
+.bars{display:flex;gap:6px;align-items:center;height:64px}
+.bars i{display:block;width:5px;height:60px;border-radius:4px;background:var(--acc);transform:scaleY(.18);transform-origin:center;transition:transform .45s var(--out)}
+.playing .bars i{animation:eq 1s var(--d) infinite alternate ease-in-out}
+@keyframes eq{0%{transform:scaleY(.2)}50%{transform:scaleY(var(--h))}100%{transform:scaleY(.35)}}
+.play{width:96px;height:96px;border-radius:50%;border:0;background:var(--nm-bg);box-shadow:var(--raise);cursor:pointer;display:grid;place-items:center;color:var(--acc)}
+.play svg{width:30px;height:30px}
+.track{display:flex;align-items:center;gap:12px;width:100%;max-width:280px;font:500 12px var(--f-mono);color:var(--nm-muted)}
+.track .bar{flex:1;height:10px;border-radius:999px;box-shadow:var(--sink-sm);overflow:hidden}
+.track .fill,.up-bar .fill{height:100%;width:0;background:var(--acc);border-radius:inherit}
+
+/* 04 upload */
+.well{position:relative;width:min(100%,260px);height:170px;border-radius:24px;box-shadow:var(--sink);display:grid;place-items:center;align-content:center;gap:16px}
+.files{position:absolute;top:22px;left:0;right:0;height:30px}
+.files i{position:absolute;top:0;left:50%;width:58px;height:30px;margin-left:-29px;border-radius:8px;background:var(--nm-bg);box-shadow:var(--raise-sm);transition:transform .5s var(--spring),opacity .4s}
+.files i:nth-child(1){transform:translateX(-72px) rotate(-6deg)}
+.files i:nth-child(3){transform:translateX(72px) rotate(6deg)}
+.gather .files i{transform:translateY(0) scaleX(1.6) scaleY(.3);opacity:.6}
+.gather .files i:nth-child(2){transition-delay:.06s}.gather .files i:nth-child(3){transition-delay:.12s}
+.up-btn{display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:0 24px;border-radius:999px;border:0;background:var(--nm-bg);box-shadow:var(--raise-sm);font:600 16px var(--f-body);color:var(--acc);cursor:pointer;margin-top:26px}
+.up-btn svg{width:18px;height:18px}
+.up-bar{width:180px;height:8px;border-radius:999px;box-shadow:var(--sink-sm);overflow:hidden}
+
+/* 05 booking */
+.days{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.day{width:50px;padding:9px 0;border-radius:14px;border:0;background:var(--nm-bg);box-shadow:var(--raise-sm);color:var(--nm-ink);font:500 15px/1.5 var(--f-body);cursor:pointer;display:grid}
+.day b{font-size:19px;font-weight:600}
+.day[aria-checked="true"]{background:var(--acc);color:#14200F;box-shadow:var(--sink-sm)}
+.day:disabled{box-shadow:none;opacity:.45;cursor:not-allowed;text-decoration:line-through}
+.slots-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--out);width:100%}
+.slots-wrap.open{grid-template-rows:1fr}
+.slots-wrap>div{overflow:hidden;min-height:0}
+.slots-wrap:not(.open)>div{visibility:hidden}
+.slots{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:12px 8px}
+.slot{min-width:96px;min-height:44px;border-radius:14px;border:0;background:var(--nm-bg);box-shadow:var(--raise-sm);color:var(--nm-ink);font:500 15px var(--f-body);cursor:pointer}
+.slot[aria-checked="true"]{box-shadow:var(--sink-sm);color:var(--nm-ink);outline:2px solid var(--acc);outline-offset:-2px}
+
+/* 06 stepper */
+.stepper{display:flex;align-items:center;gap:22px}
+.step{width:68px;height:68px;border-radius:50%;border:0;background:var(--nm-bg);box-shadow:var(--raise-sm);color:var(--nm-ink);font:400 30px/1 var(--f-body);cursor:pointer;display:grid;place-items:center}
+.step:disabled{box-shadow:none;opacity:.4;cursor:not-allowed}
+.qty{min-width:64px;font:400 72px/1 var(--f-body);color:var(--acc);font-variant-numeric:tabular-nums}
+.qty.bump{animation:bump .3s var(--spring)}
+@keyframes bump{40%{transform:translateY(-6px) scale(1.06)}}
+
+.more{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:34px 0 0;font-size:14px;color:var(--muted)}
+.more a{font-family:var(--f-mono);font-size:12px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none}
+.more a[aria-current]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* Reduced motion: keep the sink and the state change, drop the travel */
+[data-motion="reduce"] .sw .knob,[data-motion="reduce"] .files i,[data-motion="reduce"] .slots-wrap,[data-motion="reduce"] .bars i,[data-motion="reduce"] .arc{transition:none!important}
+[data-motion="reduce"] .playing .bars i{animation:none;transform:scaleY(calc(var(--h) * .7))}
+[data-motion="reduce"] .qty.bump{animation:none}
+</style>
+</head>
+<body>
+<header class="d-top"><div class="wrap">
+  <a href="./">← All demos</a>
+  <nav class="d-nav"><a href="ui-41-ascii-sharks.html">Prev</a><a href="ui-23-dashboard-nav-patterns.html">Next</a><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/ui-42-neumorphic-controls/SKILL.md" target="_blank" rel="noopener">Skill</a></nav>
+</div></header>
+
+<main>
+  <section class="d-intro wrap">
+    <p class="d-num">UI-42 · Inputs &amp; Controls</p>
+    <h1>Neumorphic Controls</h1>
+    <p class="zh">新擬態元件六式</p>
+    <p class="lede">Six soft-UI controls moulded from one surface. Press and hold any of them: it sinks, then springs back and changes state when you let go. Drag off before releasing to cancel.</p>
+    <div class="d-try"><span>Mouse</span><span>Touch</span><span>Keyboard: Tab, Space, arrows, Home/End, Esc</span></div>
+    <div class="toolbar"><button class="btn btn-ghost" id="motionBtn" aria-pressed="false">Reduce motion: off</button></div>
+  </section>
+
+  <section class="wrap" aria-label="Demo">
+    <div class="nm-grid">
+
+      <article class="nm-card" id="v01" style="--acc:var(--sage)">
+        <div class="nm-head"><b>01 / Power</b><span class="live">Live</span></div>
+        <div class="nm-body">
+          <button class="sw press" role="switch" aria-checked="false" aria-label="Ambient light" id="sw"><span class="knob"></span></button>
+          <p class="status" id="swStatus">Ambient light · Off</p>
+        </div>
+        <p class="nm-foot">A softer kind of switch<span>Light Switch · 燈光開關</span></p>
+      </article>
+
+      <article class="nm-card" id="v02" style="--acc:var(--lav)">
+        <div class="nm-head"><b>02 / Climate</b><span>Home</span></div>
+        <div class="nm-body">
+          <div class="dial-wrap" id="dialWrap">
+            <svg viewBox="0 0 200 200" aria-hidden="true"><g id="ticks"></g><path class="arc-bg" id="arcBg"/><path class="arc" id="arc"/><circle class="dot" id="dot" r="5"/></svg>
+            <div class="dial" id="dial" role="slider" tabindex="0" aria-label="Temperature" aria-valuemin="16" aria-valuemax="30" aria-valuenow="22" aria-valuetext="22 degrees"><span class="num"><span id="temp">22</span><sup>°</sup></span></div>
+          </div>
+          <input class="range" type="range" min="16" max="30" value="22" id="range" aria-label="Temperature slider">
+        </div>
+        <p class="nm-foot">Drag the dial · find your comfort zone<span>Thermostat Dial · 溫控旋鈕</span></p>
+      </article>
+
+      <article class="nm-card" id="v03" style="--acc:var(--copper)">
+        <div class="nm-head"><b>03 / Audio</b><span>Stereo</span></div>
+        <div class="nm-body" id="player">
+          <div class="bars" id="bars" aria-hidden="true"></div>
+          <button class="play press" id="play" aria-pressed="false" aria-label="Play">
+            <svg viewBox="0 0 24 24" fill="currentColor" id="playIcon"><path d="M7 4.5v15l13-7.5z"/></svg>
+          </button>
+          <p class="status" id="plStatus">Quiet hours · Paused</p>
+          <div class="track"><div class="bar" role="progressbar" aria-label="Playback" aria-valuemin="0" aria-valuemax="204" aria-valuenow="0" id="plProg"><div class="fill" id="plFill"></div></div><span id="plTime">0:00 / 3:24</span></div>
+        </div>
+        <p class="nm-foot">Make room for a little rhythm<span>Media Player · 播放器</span></p>
+      </article>
+
+      <article class="nm-card" id="v04" style="--acc:var(--teal)">
+        <div class="nm-head"><b>04 / Transfer</b><span>Cloud</span></div>
+        <div class="nm-body">
+          <div class="well" id="well">
+            <div class="files" aria-hidden="true"><i></i><i></i><i></i></div>
+            <button class="up-btn press" id="upBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="upIcon"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span id="upLabel">Upload</span></button>
+            <div class="up-bar" role="progressbar" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="upProg"><div class="fill" id="upFill"></div></div>
+          </div>
+          <p class="status" id="upStatus" aria-live="polite">Ready</p>
+        </div>
+        <p class="nm-foot">Demo only · no files are uploaded<span>File Upload · 文件上傳</span></p>
+      </article>
+
+      <article class="nm-card" id="v05" style="--acc:var(--leaf)">
+        <div class="nm-head"><b>05 / Booking</b><span>November</span></div>
+        <div class="nm-body">
+          <div class="days" role="radiogroup" aria-label="Day" id="days"></div>
+          <div class="slots-wrap" id="slotsWrap"><div><div class="slots" role="radiogroup" aria-label="Time" id="slots"></div></div></div>
+          <p class="status" id="bkStatus" aria-live="polite">Choose a day</p>
+        </div>
+        <p class="nm-foot">A moment worth saving<span>Booking Picker · 預約組件</span></p>
+      </article>
+
+      <article class="nm-card" id="v06" style="--acc:var(--rose)">
+        <div class="nm-head"><b>06 / Quantity</b><span>Your bag</span></div>
+        <div class="nm-body">
+          <div class="stepper">
+            <button class="step press" id="dec" aria-label="Decrease quantity">−</button>
+            <output class="qty" id="qty" aria-live="polite" aria-label="Quantity">3</output>
+            <button class="step press" id="inc" aria-label="Increase quantity">+</button>
+          </div>
+          <p class="status" id="sub">Subtotal · $72</p>
+        </div>
+        <p class="nm-foot">A little more of what you love<span>Quantity Stepper · 數量調節</span></p>
+      </article>
+
+    </div>
+    <nav class="more" aria-label="More in Inputs & Controls"><span>More in Inputs &amp; Controls:</span><a href="ui-02-elastic-value-adjustment.html">UI-02 Elastic Value</a><a href="ui-03-swipe-selection.html">UI-03 Swipe Selection</a><a href="ui-05-floating-label.html">UI-05 Floating Label</a><a href="ui-42-neumorphic-controls.html" aria-current="page">UI-42 Neumorphic Controls</a></nav>
+  </section>
+</main>
+
+<footer class="d-foot"><div class="wrap"><span>Skill Library · Lilian O.</span><a href="https://github.com/LillianOu/ui-interaction-library/blob/main/skills/ui-42-neumorphic-controls/SKILL.md" target="_blank" rel="noopener">Read the skill</a></div></footer>
+
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const root = document.documentElement;
+const mq = matchMedia('(prefers-reduced-motion: reduce)');
+let reduce = mq.matches;
+const setMotion = () => { root.dataset.motion = reduce ? 'reduce' : 'full'; $('motionBtn').setAttribute('aria-pressed', reduce); $('motionBtn').textContent = 'Reduce motion: ' + (reduce ? 'on' : 'off'); };
+$('motionBtn').addEventListener('click', () => { reduce = !reduce; setMotion(); });
+mq.addEventListener?.('change', e => { reduce = e.matches; setMotion(); });
+setMotion();
+
+/* shared press: sink on pointerdown, release on up/cancel/leave; click commits */
+document.querySelectorAll('.press, .day, .slot').forEach(el => {
+  const up = () => el.classList.remove('down');
+  el.addEventListener('pointerdown', e => { if (!el.disabled && e.button === 0) el.classList.add('down'); });
+  ['pointerup','pointercancel','pointerleave','blur'].forEach(t => el.addEventListener(t, up));
+  el.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') el.classList.add('down'); });
+  el.addEventListener('keyup', up);
+});
+
+/* 01 switch */
+$('sw').addEventListener('click', () => {
+  const on = $('sw').getAttribute('aria-checked') !== 'true';
+  $('sw').setAttribute('aria-checked', on);
+  $('swStatus').textContent = 'Ambient light · ' + (on ? 'On' : 'Off');
+});
+
+/* 02 dial: 270° sweep from 135° to 405° */
+const MIN = 16, MAX = 30, C = 100, R = 92, A0 = 135, SWEEP = 270;
+const pt = (deg, r) => { const a = deg * Math.PI / 180; return [C + r * Math.cos(a), C + r * Math.sin(a)]; };
+const arcPath = (a1, a2, r) => { const [x1,y1] = pt(a1, r), [x2,y2] = pt(a2, r); return `M${x1} ${y1} A${r} ${r} 0 ${a2 - a1 > 180 ? 1 : 0} 1 ${x2} ${y2}`; };
+$('arcBg').setAttribute('d', arcPath(A0, A0 + SWEEP, R));
+$('arc').setAttribute('d', arcPath(A0, A0 + SWEEP, R));
+const arcLen = $('arc').getTotalLength();
+$('arc').style.strokeDasharray = arcLen;
+let ticks = '';
+for (let i = 0; i <= 28; i++) { const d = A0 + SWEEP * i / 28, [x1,y1] = pt(d, 66), [x2,y2] = pt(d, i % 7 ? 70 : 73); ticks += `<line class="tick" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; }
+$('ticks').innerHTML = ticks;
+let temp = 22;
+const setTemp = v => {
+  temp = Math.max(MIN, Math.min(MAX, Math.round(v)));
+  const t = (temp - MIN) / (MAX - MIN);
+  $('arc').style.strokeDashoffset = arcLen * (1 - t);
+  const [dx, dy] = pt(A0 + SWEEP * t, 62); $('dot').setAttribute('cx', dx); $('dot').setAttribute('cy', dy);
+  $('temp').textContent = temp; $('range').value = temp;
+  $('dial').setAttribute('aria-valuenow', temp); $('dial').setAttribute('aria-valuetext', temp + ' degrees');
+};
+setTemp(22);
+const angleToTemp = e => {
+  const r = $('dialWrap').getBoundingClientRect();
+  let a = Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)) * 180 / Math.PI;
+  a = (a - A0 + 720) % 360;                         // 0..360 from start
+  if (a > SWEEP) a = a > SWEEP + (360 - SWEEP) / 2 ? 0 : SWEEP;   // clamp in the gap, no wrap
+  return MIN + (MAX - MIN) * a / SWEEP;
+};
+let dragging = false;
+$('dial').addEventListener('pointerdown', e => { dragging = true; $('dial').setPointerCapture(e.pointerId); setTemp(angleToTemp(e)); });
+$('dial').addEventListener('pointermove', e => { if (dragging) setTemp(angleToTemp(e)); });
+['pointerup','pointercancel'].forEach(t => $('dial').addEventListener(t, () => dragging = false));
+$('dial').addEventListener('keydown', e => {
+  const m = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1, PageUp: 5, PageDown: -5 };
+  if (e.key in m) setTemp(temp + m[e.key]); else if (e.key === 'Home') setTemp(MIN); else if (e.key === 'End') setTemp(MAX); else return;
+  e.preventDefault();
+});
+$('range').addEventListener('input', e => setTemp(+e.target.value));
+
+/* 03 player */
+const H = [.5,.8,.4,.95,.6,.75,.35,.9,.55,.7,.45,.85,.6,.8,.4,.65];
+$('bars').innerHTML = H.map((h, i) => `<i style="--h:${h};--d:${-(i * 0.13).toFixed(2)}s"></i>`).join('');
+const TOTAL = 204; let pos = 0, playing = false, raf = 0, last = 0, lastSec = -1;
+const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+const PLAY = '<path d="M7 4.5v15l13-7.5z"/>', PAUSE = '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
+const tick = now => {
+  pos = (pos + (now - last) / 1000) % TOTAL; last = now;
+  $('plFill').style.width = (pos / TOTAL * 100) + '%';
+  const s = Math.floor(pos); if (s !== lastSec) { lastSec = s; $('plTime').textContent = fmt(s) + ' / ' + fmt(TOTAL); $('plProg').setAttribute('aria-valuenow', s); }
+  raf = requestAnimationFrame(tick);
+};
+const setPlaying = p => {
+  playing = p; $('player').classList.toggle('playing', p);
+  $('play').setAttribute('aria-pressed', p); $('play').setAttribute('aria-label', p ? 'Pause' : 'Play');
+  $('playIcon').innerHTML = p ? PAUSE : PLAY;
+  $('plStatus').textContent = 'Quiet hours · ' + (p ? 'Playing' : 'Paused');
+  cancelAnimationFrame(raf); if (p) { last = performance.now(); raf = requestAnimationFrame(tick); }
+};
+$('play').addEventListener('click', () => setPlaying(!playing));
+document.addEventListener('visibilitychange', () => { if (document.hidden && playing) setPlaying(false); });
+
+/* 04 upload (simulated) */
+let upTimer = 0, upState = 'idle';
+const setUp = (pct) => { $('upFill').style.width = pct + '%'; $('upProg').setAttribute('aria-valuenow', Math.round(pct)); };
+const resetUp = () => { clearInterval(upTimer); upState = 'idle'; $('well').classList.remove('gather'); $('upLabel').textContent = 'Upload'; $('upIcon').innerHTML = '<path d="M12 19V5M6 11l6-6 6 6"/>'; setUp(0); };
+const startUp = () => {
+  upState = 'running'; $('well').classList.add('gather'); $('upLabel').textContent = 'Cancel';
+  $('upStatus').textContent = 'Uploading 3 files…'; let p = 0;
+  upTimer = setInterval(() => {
+    p = Math.min(100, p + 2 + Math.random() * 4); setUp(p);
+    $('upStatus').textContent = Math.round(p) + '% · Simulating transfer';
+    if (p >= 100) {
+      clearInterval(upTimer); upState = 'done';
+      $('upIcon').innerHTML = '<path d="M5 12.5l4.5 4.5L19 7.5"/>'; $('upLabel').textContent = 'Done';
+      $('upStatus').textContent = 'Uploaded 3 files';
+      upTimer = setTimeout(() => { resetUp(); $('upStatus').textContent = 'Ready'; }, 1500);
+    }
+  }, 90);
+};
+const cancelUp = () => { resetUp(); $('upStatus').textContent = 'Upload cancelled'; };
+$('upBtn').addEventListener('click', () => { if (upState === 'idle') startUp(); else if (upState === 'running') cancelUp(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && upState === 'running') cancelUp(); });
+
+/* 05 booking: roving radiogroups */
+const DAYS = [['Mon','09',false],['Tue','10',true],['Wed','11',true],['Thu','12',true],['Fri','13',true]];
+const SLOTS = ['10:30 AM','2:00 PM','4:30 PM'];
+let day = null, slot = null;
+$('days').innerHTML = DAYS.map(([d,n,ok], i) => `<button class="day" role="radio" aria-checked="false" tabindex="${i === 1 ? 0 : -1}" ${ok ? '' : 'disabled aria-label="' + d + ' ' + n + ', full"'} data-i="${i}">${d}<b>${n}</b></button>`).join('');
+$('slots').innerHTML = SLOTS.map((s, i) => `<button class="slot" role="radio" aria-checked="false" tabindex="${i ? -1 : 0}" data-i="${i}">${s}</button>`).join('');
+const radio = (group, onPick) => {
+  const items = () => [...group.querySelectorAll('[role=radio]:not(:disabled)')];
+  const pick = el => { group.querySelectorAll('[role=radio]').forEach(b => { b.setAttribute('aria-checked', b === el); b.tabIndex = b === el ? 0 : -1; }); onPick(+el.dataset.i); };
+  group.addEventListener('click', e => { const b = e.target.closest('[role=radio]'); if (b && !b.disabled) pick(b); });
+  group.addEventListener('keydown', e => {
+    const list = items(), i = list.indexOf(document.activeElement); if (i < 0) return;
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return;
+    e.preventDefault(); const n = list[(i + d + list.length) % list.length]; n.focus(); pick(n);
+  });
+};
+const bkText = () => {
+  if (day === null) return 'Choose a day';
+  const [d, n] = DAYS[day];
+  return slot === null ? `${d} ${n} · choose a time` : `Booked · ${d} ${n} Nov · ${SLOTS[slot]}`;
+};
+radio($('days'), i => { day = i; slot = null; $('slots').querySelectorAll('.slot').forEach((b, k) => { b.setAttribute('aria-checked', false); b.tabIndex = k ? -1 : 0; }); $('slotsWrap').classList.add('open'); $('bkStatus').textContent = bkText(); });
+radio($('slots'), i => { slot = i; $('bkStatus').textContent = bkText(); });
+
+/* 06 stepper */
+const PRICE = 24, QMIN = 1, QMAX = 9; let q = 3;
+const money = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', maximumFractionDigits: 0 });
+const setQ = v => {
+  const n = Math.max(QMIN, Math.min(QMAX, v)); if (n === q) return; q = n;
+  $('qty').textContent = q; $('qty').classList.remove('bump'); void $('qty').offsetWidth; $('qty').classList.add('bump');
+  $('sub').textContent = 'Subtotal · ' + money.format(q * PRICE).replace('A$', '$');
+  $('dec').disabled = q <= QMIN; $('inc').disabled = q >= QMAX;
+  if (document.activeElement && document.activeElement.disabled) (q <= QMIN ? $('inc') : $('dec')).focus();
+};
+$('dec').addEventListener('click', () => setQ(q - 1));
+$('inc').addEventListener('click', () => setQ(q + 1));
+})();
+</script>
+</body>
+</html>
