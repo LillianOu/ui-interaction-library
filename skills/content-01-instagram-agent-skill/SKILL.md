@@ -42,7 +42,15 @@ A set of fourteen Claude skills that cover the writing side of running an Instag
 
 ## Install
 
-In Claude Code, as a plugin:
+**In the Claude app (no Terminal, about 5 minutes):**
+
+1. Download the repo as a ZIP from [GoldenSharkStudio/instagram-agent-skill](https://github.com/GoldenSharkStudio/instagram-agent-skill) (green **Code** button → **Download ZIP**) and unzip it.
+2. In the `skills/` folder, zip each `ig-*` folder on its own (for example `ig-reel.zip`).
+3. In Claude, open **Settings → Capabilities** and turn on **Code execution and file creation**.
+4. Go to **Settings → Customize → Skills → Add**, and upload the zips. Start with `ig-setup`, `ig-reel`, `ig-caption`, `ig-story` and `ig-dm`.
+5. In a new chat, say: "Use ig-setup", then paste three of your own captions.
+
+**In Claude Code, as a plugin:**
 
 ```
 /plugin marketplace add GoldenSharkStudio/instagram-agent-skill

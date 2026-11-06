@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.19.1] - 2026-11-07
+
+### Changed
+
+- Content-01 instagram-agent-skill: install steps for the Claude app (upload in Settings, no Terminal) now come first.
+
 ## [0.19.0] - 2026-11-07
 
 ### Added
