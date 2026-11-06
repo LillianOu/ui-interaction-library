@@ -4,7 +4,7 @@ These rules apply to Claude, Claude Code, Codex and any other AI agent working i
 
 ## Start here
 
-1. Read [`README.md`](README.md). It is the Skill Library index: UI Library, Tool Library (Design, Dev & Workflow, Video & Media), Learning Library and References.
+1. Read [`README.md`](README.md). It is the Skill Library index: UI Library, Tool Library (Design, Dev & Workflow, Video & Media, Content & Social), Learning Library and References.
 2. Pick the entry that fits the job, then read its `skills/<category>-<NN>-<name>/SKILL.md` in full before building. Never build from the one-line summary in the README.
 3. For a UI Library entry, open its demo page in `demo/` too and match its behaviour.
 4. For a guide skill, install the original tool with the commands in its `SKILL.md`, then use it as the guide describes.

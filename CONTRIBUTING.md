@@ -1,6 +1,6 @@
 # Adding a skill
 
-1. Pick the category it fits and take that category's next number (see "Next numbers" in the README). Each category numbers from 01: UI-, Design-, Dev-, Video-, Learning-.
+1. Pick the category it fits and take that category's next number (see "Next numbers" in the README). Each category numbers from 01: UI-, Design-, Dev-, Video-, Content-, Learning-.
 2. Copy `templates/SKILL-TEMPLATE.md` to `skills/<category>-<NN>-<kebab-case-name>/SKILL.md`, for example `skills/ui-41-glass-card/SKILL.md`.
 3. Set `name` in the frontmatter to exactly the folder name, for example `ui-14-cursor-driven-hero`.
 4. Write `description` as one sentence that starts with "Use when…", so AI tools know when to pick the skill.
@@ -31,6 +31,7 @@ Skills sit inside the Skill Library's sections (UI Library, Tool Library, Learni
 | 工具庫 / Tool Library | 設計 / Design | Design tools, one job each, listed in workflow order |
 | 工具庫 / Tool Library | 開發與工作流 / Dev & Workflow | Tools for planning, coding, testing, browsing and marketing |
 | 工具庫 / Tool Library | 影片與媒體 / Video & Media | Tools that make videos, reels and media |
+| 工具庫 / Tool Library | 內容與社群 / Content & Social | Tools that plan and write posts for social platforms: hooks, scripts, captions, replies, DMs |
 | 學習庫 / Learning Library | 學習 / Learning | Tools that turn books, courses, talks and transcripts into usable knowledge |
 
 Motion skills take their durations and curves from UI-25 Easing & Timing. If a new skill fits none of these categories, add a category to this table, the README and the demo gallery in the same change.

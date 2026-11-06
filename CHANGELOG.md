@@ -2,6 +2,13 @@
 
 All notable updates to this library are recorded here.
 
+## [0.19.0] - 2026-11-07
+
+### Added
+
+- New Tool Library category Content & Social (內容與社群), IDs Content-NN, for tools that plan and write social posts.
+- Content-01 instagram-agent-skill: guide to GoldenSharkStudio/instagram-agent-skill (MIT, commit 6a28b3b), fourteen ig-* skills covering Reel hooks and scripts, captions, carousels, stories, comments, replies, DMs, profile, weekly plan, repurposing and audits. English and Brazilian Portuguese only.
+
 ## [0.18.0] - 2026-11-04
 
 ### Added

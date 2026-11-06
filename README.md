@@ -10,7 +10,8 @@ Skill Library
 ├── 2. Tool Library      tools you use to make things
 │   ├── Design                                                      Design-01 … Design-13
 │   ├── Dev & Workflow                                              Dev-01 … Dev-06
-│   └── Video & Media                                               Video-01 … Video-05
+│   ├── Video & Media                                               Video-01 … Video-05
+│   └── Content & Social                                            Content-01
 ├── 3. Learning Library  learning from books, courses and talks     Learning-01
 └── 4. References        links to check, not skills
 ```
@@ -189,6 +190,14 @@ In workflow order.
 | Video-04 | [Remotion Shotcraft](skills/video-04-remotion-shotcraft/SKILL.md) | Cinematic product promo videos of a website or app |
 | Video-05 | [Sena & Pudding Reel Builder](skills/video-05-sena-pudding-reel-builder/SKILL.md) | Builds the Sena & Pudding English reels by script |
 
+### Content & Social / 內容與社群
+
+Planning and writing posts for social platforms. These write; you post.
+
+| No. | Skill | Job |
+| --- | --- | --- |
+| Content-01 | [instagram-agent-skill](skills/content-01-instagram-agent-skill/SKILL.md) | Fourteen Instagram skills: Reel hooks and scripts, captions, carousels, stories, replies, DMs, profile, plan, audit (English) |
+
 ## 3. Learning Library / 學習庫
 
 Turning books, courses, talks and podcasts into knowledge you can use.
@@ -211,6 +220,7 @@ Links to check, not skills.
 | Design | Design-14 |
 | Dev & Workflow | Dev-07 |
 | Video & Media | Video-06 |
+| Content & Social | Content-02 |
 | Learning | Learning-02 |
 
 A new skill joins the category it fits and takes that category's next number; see `CONTRIBUTING.md`.
