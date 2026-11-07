@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.20.0] - 2026-11-08
+
+### Added
+
+- Design-14 unslop: guide to heydamir/unslop by Damir Sokolovsky (CC BY 4.0, commit 1d13095). Audits a vibecoded, AI-looking screen, sets a product-specific direction, then redesigns it in nine ordered passes; optional live-site snapshot and before-and-after story video.
+
 ## [0.19.1] - 2026-11-07
 
 ### Changed

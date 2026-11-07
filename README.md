@@ -8,7 +8,7 @@ Every skill Lilian O. uses, in one place, sorted by category. Each entry is a se
 Skill Library
 ├── 1. UI Library        effects you put into pages and apps       UI-01 … UI-42
 ├── 2. Tool Library      tools you use to make things
-│   ├── Design                                                      Design-01 … Design-13
+│   ├── Design                                                      Design-01 … Design-14
 │   ├── Dev & Workflow                                              Dev-01 … Dev-06
 │   ├── Video & Media                                               Video-01 … Video-05
 │   └── Content & Social                                            Content-01
@@ -168,6 +168,7 @@ In workflow order.
 | Design-11 | [MotionSites Web Builder](skills/design-11-motionsites/SKILL.md) | Cinematic heroes with real video; prompts for Lovable, Bolt and v0 |
 | Design-12 | [Framer](skills/design-12-framer/SKILL.md) | Planning and building sites in Framer: layout, breakpoints, CMS, interactions, publishing |
 | Design-13 | [Quality Pack](skills/design-13-quality-pack/SKILL.md) | Standards, score, polish and motion check |
+| Design-14 | [unslop](skills/design-14-unslop/SKILL.md) | Redesign a vibecoded, AI-looking screen into one with its own character |
 
 ### Dev & Workflow / 開發與工作流
 
@@ -217,7 +218,7 @@ Links to check, not skills.
 | Category | Next |
 | --- | --- |
 | UI | UI-43 |
-| Design | Design-14 |
+| Design | Design-15 |
 | Dev & Workflow | Dev-07 |
 | Video & Media | Video-06 |
 | Content & Social | Content-02 |
