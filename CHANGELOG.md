@@ -2,6 +2,14 @@
 
 All notable updates to this library are recorded here.
 
+## [0.21.0] - 2026-11-11
+
+### Added
+
+- New Tool Library category: Music / 音樂.
+- Music-01 Suno Lyric Weaver: rhymed, hook-first Suno lyrics with section tags, built for Mandarin.
+- Music-02 Suno Style Prompt: Suno Style prompt with genre blend, groove, instruments, vocal, mood, exclusions and A/B variants.
+
 ## [0.20.0] - 2026-11-08
 
 ### Added

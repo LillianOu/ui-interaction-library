@@ -11,7 +11,8 @@ Skill Library
 │   ├── Design                                                      Design-01 … Design-14
 │   ├── Dev & Workflow                                              Dev-01 … Dev-06
 │   ├── Video & Media                                               Video-01 … Video-05
-│   └── Content & Social                                            Content-01
+│   ├── Content & Social                                            Content-01
+│   └── Music                                                       Music-01 … Music-02
 ├── 3. Learning Library  learning from books, courses and talks     Learning-01
 └── 4. References        links to check, not skills
 ```
@@ -199,6 +200,15 @@ Planning and writing posts for social platforms. These write; you post.
 | --- | --- | --- |
 | Content-01 | [instagram-agent-skill](skills/content-01-instagram-agent-skill/SKILL.md) | Fourteen Instagram skills: Reel hooks and scripts, captions, carousels, stories, replies, DMs, profile, plan, audit (English) |
 
+### Music / 音樂
+
+Writing songs for AI music tools. Use Music-01 for the lyrics, then Music-02 for the style prompt.
+
+| No. | Skill | Job |
+| --- | --- | --- |
+| Music-01 | [Suno Lyric Weaver](skills/music-01-suno-lyric-weaver/SKILL.md) | Rhymed, hook-first Suno lyrics with section tags; built for Mandarin |
+| Music-02 | [Suno Style Prompt](skills/music-02-suno-style-prompt/SKILL.md) | Suno Style prompt: genre blend, BPM, instruments, vocal, mood, exclusions, A/B variants |
+
 ## 3. Learning Library / 學習庫
 
 Turning books, courses, talks and podcasts into knowledge you can use.
@@ -222,6 +232,7 @@ Links to check, not skills.
 | Dev & Workflow | Dev-07 |
 | Video & Media | Video-06 |
 | Content & Social | Content-02 |
+| Music | Music-03 |
 | Learning | Learning-02 |
 
 A new skill joins the category it fits and takes that category's next number; see `CONTRIBUTING.md`.
