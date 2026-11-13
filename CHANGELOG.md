@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.22.0] - 2026-11-13
+
+### Added
+
+- Design-15 Motion Prompt: guide to showheyohtaki/motion-prompt (MIT, commit da14d9c). A numbered gallery of named motion-graphics moves, camera moves and transitions, UI parts, landing-page effects, photo looks and art styles, each with a live sample; the skill opens it as a picker and rebuilds your picks in the project.
+
 ## [0.21.0] - 2026-11-11
 
 ### Added
