@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.23.0] - 2026-11-16
+
+### Added
+
+- Dev-07 Playwright CLI: guide to microsoft/playwright-cli (Apache-2.0, commit b217248). Tests a site in a real browser, records walkthrough videos, mocks network requests and saves checked flows as rerunnable Playwright tests. Use it or Dev-05 agent-browser per session, not both.
+
 ## [0.22.0] - 2026-11-13
 
 ### Added

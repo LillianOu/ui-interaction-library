@@ -9,7 +9,7 @@ Skill Library
 ├── 1. UI Library        effects you put into pages and apps       UI-01 … UI-42
 ├── 2. Tool Library      tools you use to make things
 │   ├── Design                                                      Design-01 … Design-15
-│   ├── Dev & Workflow                                              Dev-01 … Dev-06
+│   ├── Dev & Workflow                                              Dev-01 … Dev-07
 │   ├── Video & Media                                               Video-01 … Video-05
 │   ├── Content & Social                                            Content-01
 │   └── Music                                                       Music-01 … Music-02
@@ -182,6 +182,7 @@ In workflow order.
 | Dev-04 | [TDD](skills/dev-04-tdd/SKILL.md) | Build and fix test-first |
 | Dev-05 | [agent-browser](skills/dev-05-agent-browser/SKILL.md) | Drive a real browser from a coding agent |
 | Dev-06 | [Reddit Automation](skills/dev-06-reddit-automation/SKILL.md) | Find real demand on Reddit and draft honest, disclosed replies |
+| Dev-07 | [Playwright CLI](skills/dev-07-playwright-cli/SKILL.md) | Test a site in a real browser, record a walkthrough video, save the flow as a rerunnable test |
 
 ### Video & Media / 影片與媒體
 
@@ -230,7 +231,7 @@ Links to check, not skills.
 | --- | --- |
 | UI | UI-43 |
 | Design | Design-16 |
-| Dev & Workflow | Dev-07 |
+| Dev & Workflow | Dev-08 |
 | Video & Media | Video-06 |
 | Content & Social | Content-02 |
 | Music | Music-03 |
