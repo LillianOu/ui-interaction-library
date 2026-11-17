@@ -8,9 +8,9 @@ Every skill Lilian O. uses, in one place, sorted by category. Each entry is a se
 Skill Library
 ├── 1. UI Library        effects you put into pages and apps       UI-01 … UI-42
 ├── 2. Tool Library      tools you use to make things
-│   ├── Design                                                      Design-01 … Design-15
+│   ├── Design                                                      Design-01 … Design-17
 │   ├── Dev & Workflow                                              Dev-01 … Dev-07
-│   ├── Video & Media                                               Video-01 … Video-05
+│   ├── Video & Media                                               Video-01 … Video-06
 │   ├── Content & Social                                            Content-01
 │   └── Music                                                       Music-01 … Music-02
 ├── 3. Learning Library  learning from books, courses and talks     Learning-01
@@ -171,6 +171,8 @@ In workflow order.
 | Design-13 | [Quality Pack](skills/design-13-quality-pack/SKILL.md) | Standards, score, polish and motion check |
 | Design-14 | [unslop](skills/design-14-unslop/SKILL.md) | Redesign a vibecoded, AI-looking screen into one with its own character |
 | Design-15 | [Motion Prompt](skills/design-15-motion-prompt/SKILL.md) | Name and pick motion, camera, UI, web, photo and art-style effects by number from a gallery of live samples |
+| Design-16 | [Pixel2Motion](skills/design-16-pixel2motion/SKILL.md) | Rebuild a raster logo as a clean SVG and animate it into a logo reveal, with HTML and GIF/video previews |
+| Design-17 | [motion-design-skill](skills/design-17-motion-design-skill/SKILL.md) | Motion principles for any animation: purpose, timing, easing and choreography, in any library |
 
 ### Dev & Workflow / 開發與工作流
 
@@ -193,6 +195,7 @@ In workflow order.
 | Video-03 | [OpenFilm](skills/video-03-openfilm/SKILL.md) | Agent-made films you finish by hand in a real editor; NLE export |
 | Video-04 | [Remotion Shotcraft](skills/video-04-remotion-shotcraft/SKILL.md) | Cinematic product promo videos of a website or app |
 | Video-05 | [Sena & Pudding Reel Builder](skills/video-05-sena-pudding-reel-builder/SKILL.md) | Builds the Sena & Pudding English reels by script |
+| Video-06 | [story-to-handdrawn-video](skills/video-06-story-to-handdrawn-video/SKILL.md) | Chinese story or ordered pages → silent 3:4 hand-drawn picture-book animation |
 
 ### Content & Social / 內容與社群
 
@@ -230,9 +233,9 @@ Links to check, not skills.
 | Category | Next |
 | --- | --- |
 | UI | UI-43 |
-| Design | Design-16 |
+| Design | Design-18 |
 | Dev & Workflow | Dev-08 |
-| Video & Media | Video-06 |
+| Video & Media | Video-07 |
 | Content & Social | Content-02 |
 | Music | Music-03 |
 | Learning | Learning-02 |

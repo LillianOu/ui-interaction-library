@@ -2,6 +2,14 @@
 
 All notable updates to this library are recorded here.
 
+## [0.24.0] - 2026-11-17
+
+### Added
+
+- Design-16 Pixel2Motion: guide to nolangz/pixel2motion (MIT, commit e9faedb). Rebuilds a raster logo as a minimal, checked SVG and animates it into a logo reveal or loop, with HTML, GIF/video previews and motion checks.
+- Design-17 motion-design-skill: guide to LottieFiles/motion-design-skill (MIT, commit f9a8a04). Motion principles (purpose, timing, easing, choreography) for any animation library.
+- Video-06 story-to-handdrawn-video: guide to gnipbao/story-to-handdrawn-video (MIT, commit 198aefa). Turns a Chinese story or ordered pages into a silent 3:4 hand-drawn animation rendered with Remotion.
+
 ## [0.23.0] - 2026-11-16
 
 ### Added
