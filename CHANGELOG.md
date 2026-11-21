@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.26.0] - 2026-11-21
+
+### Added
+
+- Dev-08 BettaFish (微舆): guide to 666ghj/BettaFish (GPL-2.0, commit b67928f). A self-hosted multi-agent app that researches public opinion across news and social media (including Chinese platforms) and writes an HTML report. Needs Docker, a database and model API keys; notes on crawler terms, cost and licence.
+
 ## [0.25.0] - 2026-11-21
 
 ### Added
