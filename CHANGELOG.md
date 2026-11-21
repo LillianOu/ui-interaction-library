@@ -2,6 +2,20 @@
 
 All notable updates to this library are recorded here.
 
+## [0.27.0] - 2026-11-21
+
+### Added
+
+- Dev-09 Modern Web Guidance: guide to GoogleChrome/modern-web-guidance (Apache-2.0, commit 64a6d70). Makes coding agents look up modern, accessible web platform guides before writing code.
+- Dev-10 security-audit-skill: guide to cloudflare/security-audit-skill (MIT, commit c1c8a8c). Staged security audit of a codebase with verified findings.
+- Dev-11 Matt Pocock Skills: guide to mattpocock/skills (MIT, commit 5863806) for to-spec, prototype, diagnosing-bugs, code-review, teach and handoff. Dev-02 to Dev-04 already cover grill-me, grill-with-docs, improve-codebase-architecture and tdd.
+- Dev-12 T3 Code: guide to pingdotgg/t3code (MIT, commit c1464d6). App window for Claude Code, Codex and other agents.
+- Dev-13 Orca: guide to stablyai/orca (MIT, commit 0c5714b). Parallel coding agents in separate worktrees.
+- Dev-14 Obscura: guide to h4ckf0r0day/obscura (Apache-2.0, commit 58a04dd). Light headless browser with Markdown output and an MCP server.
+- Design-18 Astryx: guide to facebook/astryx (MIT, commit 7869990). Agent-ready React design system.
+- Video-08 VoiceStudio: guide to debpalash/VoiceStudio (AGPL-3.0, commit 54465ec). Local voiceover, dubbing, transcription and audiobooks.
+- Content-02 Sherlock: guide to sherlock-project/sherlock (MIT, commit c588d7c). Brand-handle availability check across social sites.
+
 ## [0.26.0] - 2026-11-21
 
 ### Added

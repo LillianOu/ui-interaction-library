@@ -8,10 +8,10 @@ Every skill Lilian O. uses, in one place, sorted by category. Each entry is a se
 Skill Library
 ├── 1. UI Library        effects you put into pages and apps       UI-01 … UI-42
 ├── 2. Tool Library      tools you use to make things
-│   ├── Design                                                      Design-01 … Design-17
-│   ├── Dev & Workflow                                              Dev-01 … Dev-08
-│   ├── Video & Media                                               Video-01 … Video-07
-│   ├── Content & Social                                            Content-01
+│   ├── Design                                                      Design-01 … Design-18
+│   ├── Dev & Workflow                                              Dev-01 … Dev-14
+│   ├── Video & Media                                               Video-01 … Video-08
+│   ├── Content & Social                                            Content-01 … Content-02
 │   └── Music                                                       Music-01 … Music-02
 ├── 3. Learning Library  learning from books, courses and talks     Learning-01
 └── 4. References        links to check, not skills
@@ -173,6 +173,7 @@ In workflow order.
 | Design-15 | [Motion Prompt](skills/design-15-motion-prompt/SKILL.md) | Name and pick motion, camera, UI, web, photo and art-style effects by number from a gallery of live samples |
 | Design-16 | [Pixel2Motion](skills/design-16-pixel2motion/SKILL.md) | Rebuild a raster logo as a clean SVG and animate it into a logo reveal, with HTML and GIF/video previews |
 | Design-17 | [motion-design-skill](skills/design-17-motion-design-skill/SKILL.md) | Motion principles for any animation: purpose, timing, easing and choreography, in any library |
+| Design-18 | [Astryx](skills/design-18-astryx/SKILL.md) | Meta's open-source React design system: 150+ accessible components, themes and templates that AI agents can read |
 
 ### Dev & Workflow / 開發與工作流
 
@@ -186,6 +187,12 @@ In workflow order.
 | Dev-06 | [Reddit Automation](skills/dev-06-reddit-automation/SKILL.md) | Find real demand on Reddit and draft honest, disclosed replies |
 | Dev-07 | [Playwright CLI](skills/dev-07-playwright-cli/SKILL.md) | Test a site in a real browser, record a walkthrough video, save the flow as a rerunnable test |
 | Dev-08 | [BettaFish (微舆)](skills/dev-08-bettafish/SKILL.md) | Multi-agent research reports on what people say about a brand or topic across news and social media |
+| Dev-09 | [Modern Web Guidance](skills/dev-09-modern-web-guidance/SKILL.md) | Make the agent use modern, accessible browser features instead of old workarounds |
+| Dev-10 | [security-audit-skill](skills/dev-10-security-audit-skill/SKILL.md) | Security check of an app before launch or sale, with verified findings |
+| Dev-11 | [Matt Pocock Skills](skills/dev-11-matt-pocock-skills/SKILL.md) | Plan, prototype, debug, review, learn and hand over: to-spec, prototype, diagnosing-bugs, code-review, teach, handoff |
+| Dev-12 | [T3 Code](skills/dev-12-t3-code/SKILL.md) | Run Claude Code or Codex in an app window (desktop, web, phone) instead of Terminal |
+| Dev-13 | [Orca](skills/dev-13-orca/SKILL.md) | Run several coding agents side by side, each in its own copy of the project |
+| Dev-14 | [Obscura](skills/dev-14-obscura/SKILL.md) | Light browser for agents that reads many pages as clean Markdown |
 
 ### Video & Media / 影片與媒體
 
@@ -198,6 +205,7 @@ In workflow order.
 | Video-05 | [Sena & Pudding Reel Builder](skills/video-05-sena-pudding-reel-builder/SKILL.md) | Builds the Sena & Pudding English reels by script |
 | Video-06 | [story-to-handdrawn-video](skills/video-06-story-to-handdrawn-video/SKILL.md) | Chinese story or ordered pages → silent 3:4 hand-drawn picture-book animation |
 | Video-07 | [Remotion Skills (official)](skills/video-07-remotion-skills/SKILL.md) | Build, preview and render any custom Remotion video; fix Remotion code. Remotion License applies |
+| Video-08 | [VoiceStudio](skills/video-08-voicestudio/SKILL.md) | Voiceovers, dubbing, transcripts and audiobooks on your own computer |
 
 ### Content & Social / 內容與社群
 
@@ -206,6 +214,7 @@ Planning and writing posts for social platforms. These write; you post.
 | No. | Skill | Job |
 | --- | --- | --- |
 | Content-01 | [instagram-agent-skill](skills/content-01-instagram-agent-skill/SKILL.md) | Fourteen Instagram skills: Reel hooks and scripts, captions, carousels, stories, replies, DMs, profile, plan, audit (English) |
+| Content-02 | [Sherlock](skills/content-02-sherlock/SKILL.md) | Check which social sites already have your brand handle |
 
 ### Music / 音樂
 
@@ -235,10 +244,10 @@ Links to check, not skills.
 | Category | Next |
 | --- | --- |
 | UI | UI-43 |
-| Design | Design-18 |
-| Dev & Workflow | Dev-09 |
-| Video & Media | Video-08 |
-| Content & Social | Content-02 |
+| Design | Design-19 |
+| Dev & Workflow | Dev-15 |
+| Video & Media | Video-09 |
+| Content & Social | Content-03 |
 | Music | Music-03 |
 | Learning | Learning-02 |
 
