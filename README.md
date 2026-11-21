@@ -10,7 +10,7 @@ Skill Library
 ├── 2. Tool Library      tools you use to make things
 │   ├── Design                                                      Design-01 … Design-17
 │   ├── Dev & Workflow                                              Dev-01 … Dev-07
-│   ├── Video & Media                                               Video-01 … Video-06
+│   ├── Video & Media                                               Video-01 … Video-07
 │   ├── Content & Social                                            Content-01
 │   └── Music                                                       Music-01 … Music-02
 ├── 3. Learning Library  learning from books, courses and talks     Learning-01
@@ -196,6 +196,7 @@ In workflow order.
 | Video-04 | [Remotion Shotcraft](skills/video-04-remotion-shotcraft/SKILL.md) | Cinematic product promo videos of a website or app |
 | Video-05 | [Sena & Pudding Reel Builder](skills/video-05-sena-pudding-reel-builder/SKILL.md) | Builds the Sena & Pudding English reels by script |
 | Video-06 | [story-to-handdrawn-video](skills/video-06-story-to-handdrawn-video/SKILL.md) | Chinese story or ordered pages → silent 3:4 hand-drawn picture-book animation |
+| Video-07 | [Remotion Skills (official)](skills/video-07-remotion-skills/SKILL.md) | Build, preview and render any custom Remotion video; fix Remotion code. Remotion License applies |
 
 ### Content & Social / 內容與社群
 
@@ -235,7 +236,7 @@ Links to check, not skills.
 | UI | UI-43 |
 | Design | Design-18 |
 | Dev & Workflow | Dev-08 |
-| Video & Media | Video-07 |
+| Video & Media | Video-08 |
 | Content & Social | Content-02 |
 | Music | Music-03 |
 | Learning | Learning-02 |

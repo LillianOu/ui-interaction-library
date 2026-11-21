@@ -2,6 +2,12 @@
 
 All notable updates to this library are recorded here.
 
+## [0.25.0] - 2026-11-21
+
+### Added
+
+- Video-07 Remotion Skills (official): guide to remotion-dev/skills (commit 3e20ac7, skills version 4.0.544). Official Remotion agent skills for creating, writing, previewing and rendering videos, plus captions, maps, docs lookup and upgrades. The skills repo has no licence file and Remotion itself is under the Remotion License (paid for larger companies); added at Lilian's request as a link-only guide.
+
 ## [0.24.0] - 2026-11-17
 
 ### Added
